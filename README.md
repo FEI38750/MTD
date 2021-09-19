@@ -11,6 +11,8 @@ For example:
 <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 # Notes
+* Make the script executable with command chmod +x <fileName> before installation, when nessary. For example: 
+<addr><pre><code>chmod +x ~/MTD/Install.sh</code></pre>
 * Installation may take 1-2 days.
 * If conda hasn't been installed in your system, please use the code below to install the conda:
 <addr><pre><code>URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -18,3 +20,4 @@ curl $URL > miniconda-installer.sh
 bash miniconda-installer.sh -b</code></pre>
 Conda will be installed in your home directory, such as path: ~/miniconda3\
 * File management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC.
+
