@@ -12,7 +12,7 @@ For example:
 <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 ## Notes
-* Make the script executable with command chmod +x <fileName> before installation, when nessary. For example: 
+* Make the script executable with command chmod +x [filename] before installation, when nessary. For example: 
 <addr><pre><code>chmod +x ~/MTD/Install.sh</code></pre>
 * Installation may take 1-2 days.
 * If conda hasn't been installed in your system, please use the code below to install the conda:
