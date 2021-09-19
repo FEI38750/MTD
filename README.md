@@ -4,9 +4,11 @@ The MTD has two pipelines to detect and quantify microbiomes by analyzing bulk R
 Requirements:
 * 160 Gb RAM
 * 550 Gb storage space
+* Conda was installed
 # Install
 1. Download directly or git clone MTD(git clone https://github.com/FEI38750/MTD.git)
-2. Open the setup.sh by a text editor. Modify parameters: MTD_path=(path of the MTD folder), threads=(number of threads you want to use for installation), conda_path=(path of miniconda/anaconda on your system). Then save and run setup.sh.
-<pre><code>bash setup.sh
+2. In termial, type bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]\
+For example:
+<pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 
