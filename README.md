@@ -10,7 +10,7 @@ MTD is a software has two pipelines to detect and quantify microbiomes by analyz
 For example:
 <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
-# Notes
+## Notes
 * Make the script executable with command chmod +x <fileName> before installation, when nessary. For example: 
 <addr><pre><code>chmod +x ~/MTD/Install.sh</code></pre>
 * Installation may take 1-2 days.
