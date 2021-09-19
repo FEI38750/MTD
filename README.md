@@ -4,6 +4,7 @@ MTD is a software has two pipelines to detect and quantify microbiomes by analyz
 * 160 Gb RAM
 * 550 Gb storage space
 * Conda was installed
+* GNU/Linux system with Bash
 # Installation
 1. Download directly or git clone MTD(git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (require 550Gb) will be installed in this MTD folder.
 2. In termial, type **bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
@@ -19,5 +20,5 @@ For example:
 curl $URL > miniconda-installer.sh
 bash miniconda-installer.sh -b</code></pre>
 Conda then will be installed in your home directory, such as path: ~/miniconda3
-* Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC.
+* Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
 
