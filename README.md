@@ -33,3 +33,5 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
 <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
+## Single-cell RNA-seq
+  
