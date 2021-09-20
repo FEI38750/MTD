@@ -33,9 +33,11 @@ For example:
 <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
 ## Single-cell RNA-seq
 In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
-  Single cell RNAseq platform(-p): enter 1 for 10x or 2 for dropseq platform\
+  Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
   For example:
 <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output/ -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
+### Notes
+* 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length). Please run MTD_singleCell.sh for the second reads.
   
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
