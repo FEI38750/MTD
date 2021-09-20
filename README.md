@@ -43,5 +43,8 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
 * The whitelist.txt contains the cell barcodes gotten from the normal single-cell RNAseq analysis for the host reads. Each cell barcode occupies one line. For example:\
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/whitelist_img.png" width=20% height=20%>
   
+# Outputs
+  ## Bulk RNA-seq
+  
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
