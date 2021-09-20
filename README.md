@@ -21,4 +21,13 @@ curl $URL > miniconda-installer.sh
 bash miniconda-installer.sh -b</code></pre>
 Conda then will be installed in your home directory, such as path: ~/miniconda3
 * Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
-
+# Run MTD
+## Bulk RNA-seq
+1. Store all the paried end fastq files (accepted: fastq, fastq.gz, fq, fq.gz) to be analyzed in a folder, subfolders for each sample are accepted.
+  The paried fastq files from the same sample must be named identical except the suffix such as sample1_1.fq.gz and sample1_2.fq.gz
+2. Prepare the samplesheet.csv
+  Put samplesheet.csv in the same folder as the fastq files.
+3. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
+Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
+For example:
+<pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
