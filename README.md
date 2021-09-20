@@ -37,7 +37,7 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   For example:
 <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output/ -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
 ### Notes
-* 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length). Please run MTD_singleCell.sh for the second reads.
+* 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length).
 * -i [path/to/Input_folder] contains the single-cell RNAseq raw data in fastq format (accepted: fastq, fastq.gz, fq, fq.gz). For example: ~/scRNAseq_rawData/ contains Scsample1_1.fastq and Scsample1_2.fastq for sample Scsample1.
 * The paired fastq files must be named starting with the sample name followed by "_1" and "_2". For example, Scsample1_1.fastq and Scsample1_2.fastq are paired end fastq files for Scsample1. Scsample1_1.fastq contains barcodes (e.g., 26bp length) and Scsample1_1.fastq contains transcript's sequences (e.g., 98bp length).
 * The whitelist.txt contains the cell barcodes gotten from the normal single-cell RNAseq analysis for the host reads. Each cell barcode occupies one line.\
