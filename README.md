@@ -21,8 +21,8 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 * Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
 # Run MTD
 ## Bulk RNA-seq
-1. Store all the paried end fastq files (accepted: fastq, fastq.gz, fq, fq.gz) to be analyzed in a folder, subfolders for each sample are accepted.
-  The paried fastq files must be named start with the sample name followed by "_1" and "_2". For example, sample1_1.fq.gz and sample1_2.fq.gz are paired end fastq files for sample1.
+1. Store all the paired-end fastq files (accepted: fastq, fastq.gz, fq, fq.gz) to be analyzed in a folder, subfolders for each sample are accepted.
+  The paired fastq files must be named starting with the sample name followed by "_1" and "_2". For example, sample1_1.fq.gz and sample1_2.fq.gz are paired-end fastq files for sample1.
 2. Prepare the samplesheet.csv. You can copy and modify the one in MTD folder.
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
 3. Put samplesheet.csv in the same folder as the fastq files.
@@ -39,7 +39,7 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
 ### Notes
 * 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length). Please run MTD_singleCell.sh for the second reads.
 * -i [path/to/Input_folder] contains the single-cell RNAseq raw data in fastq format (accepted: fastq, fastq.gz, fq, fq.gz). For example: ~/scRNAseq_rawData/ contains Scsample1_1.fastq and Scsample1_2.fastq for sample Scsample1.
-* The paried fastq files must be named start with the sample name followed by "_1" and "_2". For example, Scsample1_1.fastq and Scsample1_2.fastq are paired end fastq files for Scsample1. Scsample1_1.fastq contains barcodes (e.g., 26bp length) and Scsample1_1.fastq contains transcript's sequences (e.g., 98bp length).
+* The paired fastq files must be named starting with the sample name followed by "_1" and "_2". For example, Scsample1_1.fastq and Scsample1_2.fastq are paired end fastq files for Scsample1. Scsample1_1.fastq contains barcodes (e.g., 26bp length) and Scsample1_1.fastq contains transcript's sequences (e.g., 98bp length).
   
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
