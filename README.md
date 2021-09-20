@@ -34,4 +34,5 @@ Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
 <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
 ## Single-cell RNA-seq
-  
+In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**
+<pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output/ -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
