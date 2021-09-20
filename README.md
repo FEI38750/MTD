@@ -27,7 +27,7 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
 3. Put samplesheet.csv in the same folder as the fastq files.
   ![image2](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial2.jpg)
-3. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
+4. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
 <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
