@@ -25,8 +25,9 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 ## Bulk RNA-seq
 1. Store all the paried end fastq files (accepted: fastq, fastq.gz, fq, fq.gz) to be analyzed in a folder, subfolders for each sample are accepted.
   The paried fastq files from the same sample must be named identical except the suffix such as sample1_1.fq.gz and sample1_2.fq.gz
-2. Prepare the samplesheet.csv
-  Put samplesheet.csv in the same folder as the fastq files.
+2. Prepare the samplesheet.csv. You can copy and modify the one in MTD folder.
+  ![image1](/Users/feiwu/Downloads/Tutorial1.jpg)
+3. Put samplesheet.csv in the same folder as the fastq files.
 3. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
