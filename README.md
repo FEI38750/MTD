@@ -45,6 +45,6 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   
 # Outputs
   ## Bulk RNA-seq
-  
+  ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.pdf)
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
