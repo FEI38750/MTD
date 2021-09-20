@@ -12,8 +12,6 @@ For example:
 <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 ## Notes
-* Make the script executable with command chmod +x [filename] before installation, when nessary. For example: 
-<addr><pre><code>chmod +x ~/MTD/Install.sh</code></pre>
 * Installation may take 1-2 days.
 * If conda hasn't been installed in your system, please use the code below to install the conda:
 <addr><pre><code>URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -38,3 +36,6 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   Single cell RNAseq platform(-p): enter 1 for 10x or 2 for dropseq platform\
   For example:
 <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output/ -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
+  
+# Licence
+This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
