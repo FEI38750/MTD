@@ -69,7 +69,7 @@ host pathways and microbiome species
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/SingleCell_results.jpg" width=75% height=75%>
   
 ## Notes
-  - For your reference, the MTD running time would be:
+  - For reference, the MTD running time would be:
     - Bulk RNA-seq: for 10 samples, 20 fastq files (total 47 Gb) by using 20 threads CPU is ~8 hours (except correlation analysis). In addition, the correlation analysis may need a further ~26-30hours (results in halla folder). So the total running time would be ~34-38 hours.
     - Single-cell RNA-seq: for a fastq file contain ~2000 cells, by using 20 threads CPU is ~2 hours.
   
