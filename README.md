@@ -30,12 +30,12 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 4. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
-<pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output/ -h 9544 -t 20</code></pre>
+<pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
 ## Single-cell RNA-seq
 In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
   Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
   For example:
-<pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output/ -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
+<pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
 ### Notes
 * 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length).
 * -i [path/to/Input_folder] contains the single-cell RNAseq raw data in fastq format (accepted: fastq, fastq.gz, fq, fq.gz). For example: ~/scRNAseq_rawData/ contains Scsample1_1.fastq and Scsample1_2.fastq for sample Scsample1.
