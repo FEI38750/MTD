@@ -48,7 +48,7 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
   The results are generated automatically and saved in the output folder defined by the user.\
   The output included:
-  
+  ![output](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
 * For host: [path/to/output_folder]/Host_DEG/\
 The count matrix (host_counts_DEG.csv) contains the Ensembl gene ID, gene symbol, chromosome name, gene position, functional descriptions, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts. This comprehensive count matrix facilitates the user to perform downstream analyses such as pathway enrichment and customized data visualization.\
 The data visualization includes the heatmap (with/without gene name), Venn Diagram, PCA, barplot, and volcano plots.\
