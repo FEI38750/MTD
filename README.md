@@ -65,7 +65,7 @@ hmn_pathway_abundance_files contain pathway results of those molecules.
 host gene and microbiome species\
 host pathways and microbiome species
  ## Single-cell RNA-seq
-  Count matrix for the single-cell microbiome is automatically generated and saved in the output folder.
+  **Count matrix** for the single-cell microbiome is automatically generated and saved in the output folder.
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/SingleCell_results.jpg" width=75% height=75%>\
   
 # Licence
