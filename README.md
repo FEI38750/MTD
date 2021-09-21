@@ -64,5 +64,7 @@ hmn_pathway_abundance_files contain pathway results of those molecules.
 * **Association analysis**: halla folder contains the results of association between:\
 host gene and microbiome species\
 host pathways and microbiome species
+ ## Single-cell RNA-seq
+  
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
