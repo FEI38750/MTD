@@ -49,12 +49,20 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   The results are generated automatically and saved in the output folder defined by the user.\
   The output included:\
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/Output_folder.jpg" width=70% height=70%>
-* For host: [path/to/output_folder]/Host_DEG/\
+* For **host**: [path/to/output_folder]/Host_DEG/\
 The count matrix (host_counts_DEG.csv) contains the Ensembl gene ID, gene symbol, chromosome name, gene position, functional descriptions, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts. This comprehensive count matrix facilitates the user to perform downstream analyses such as pathway enrichment and customized data visualization.\
 The data visualization includes the heatmap (with/without gene name), Venn Diagram, PCA, barplot, and volcano plots.\
 The individual group comparison results are saved in the corresponding subfolder (e.g., group1_vs_group2).
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/Host_DEG.jpg" width=70% height=70%>
-* For microbiome: [path/to/output_folder]/Nonhost_DEG/
-  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Nonhost_DEG.jpg" width=70% height=70%>
+* For **microbiome**: [path/to/output_folder]/Nonhost_DEG/\
+  The count matrix (bracken_normalized_species_all_DEG.csv) contains the name and taxonomy ID of microbiome species, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts.\
+Diversity analysis, unclassified reads comparison, abundance&DEG heatmaps, phylogenetic trees.\
+Venn Diagram, heatmap, PCA, barplot, and volcano plots for the results of species abundance and group comparisons.\
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Nonhost_DEG.jpg" width=70% height=70%>\
+* **Microbiome metabolic molecules**: hmn_genefamily_abundance_files contain microbiome metabolic molecules and group comparison results. Results are translated to kegg and go terms to facilitate reading.\
+hmn_pathway_abundance_files contain pathway results of those molecules.\
+* **Association analysis**: halla folder contains the results of association between:\
+host gene and microbiome species\
+host pathways and microbiome species
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
