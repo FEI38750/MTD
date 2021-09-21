@@ -48,12 +48,13 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
   The results are generated automatically and saved in the output folder defined by the user.\
   The output included:
-  ![output](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Output_folder.jpg" width=70% height=70%>
 * For host: [path/to/output_folder]/Host_DEG/\
 The count matrix (host_counts_DEG.csv) contains the Ensembl gene ID, gene symbol, chromosome name, gene position, functional descriptions, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts. This comprehensive count matrix facilitates the user to perform downstream analyses such as pathway enrichment and customized data visualization.\
 The data visualization includes the heatmap (with/without gene name), Venn Diagram, PCA, barplot, and volcano plots.\
 The individual group comparison results are saved in the corresponding subfolder (e.g., group1_vs_group2).
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Host_DEG.jpg" width=70% height=70%>
 * For microbiome: [path/to/output_folder]/Nonhost_DEG/
-  
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Nonhost_DEG.jpg" width=70% height=70%>
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
