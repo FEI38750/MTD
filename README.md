@@ -1,5 +1,5 @@
 # MTD: Meta-Transcriptome Detector
-MTD is a software has two pipelines to detect and quantify microbiomes by analyzing bulk RNA-seq data and single-cell RNA-seq data, respectively. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
+MTD is a software has two pipelines to detect and quantify microbiomes by analyzing bulk RNA-seq data and single-cell RNA-seq data, respectively. It supports a broad spectrum of the microbiome species and vectors, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
 # Requirements
 * 160 Gb RAM
 * 550 Gb storage space
@@ -45,6 +45,15 @@ In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder
   
 # Outputs
   ## Bulk RNA-seq
-  ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.pdf)
+  ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
+  The results are generated automatically and saved in the output folder defined by the user.\
+  The output included:
+  
+* For host: [path/to/output_folder]/Host_DEG/\
+The count matrix (host_counts_DEG.csv) contains the Ensembl gene ID, gene symbol, chromosome name, gene position, functional descriptions, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts. This comprehensive count matrix facilitates the user to perform downstream analyses such as pathway enrichment and customized data visualization.\
+The data visualization includes the heatmap (with/without gene name), Venn Diagram, PCA, barplot, and volcano plots.\
+The individual group comparison results are saved in the corresponding subfolder (e.g., group1_vs_group2).
+* For microbiome: [path/to/output_folder]/Nonhost_DEG/
+  
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
