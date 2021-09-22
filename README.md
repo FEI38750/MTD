@@ -2,11 +2,11 @@
 MTD is a software has two pipelines to detect and quantify microbiomes by analyzing bulk RNA-seq data and single-cell RNA-seq data, respectively. It supports a broad spectrum of the microbiome species and vectors, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
 # Requirements
 * 160 Gb RAM
-* 550 Gb storage space
+* 560 Gb storage space
 * Conda was installed
 * GNU/Linux system with Bash
 # Installation
-1. Download directly or git clone MTD(git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (require 550Gb) will be installed in this MTD folder.
+1. Download directly or git clone MTD(git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (~530Gb) will be installed in this MTD folder.
 2. In termial, type **bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
 For example:
 <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
@@ -18,6 +18,7 @@ For example:
 curl $URL > miniconda-installer.sh
 bash miniconda-installer.sh -b</code></pre>
 Conda then will be installed in your home directory, such as path: ~/miniconda3
+* MTD conda environments occupies ~24Gb in your conda folder.
 * Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
 # Run MTD
 ## Bulk RNA-seq
