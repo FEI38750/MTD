@@ -1,0 +1,11 @@
+sample_name,group,,comparisons,group1,vs,group2
+sample1,Treatment1,,,Treatment1,vs,Control
+sample2,Treatment1,,,Treatment2,vs,Control
+sample3,Treatment1,,,,,
+sample4,Treatment2,,,,,
+sample5,Treatment2,,,,,
+sample6,Treatment2,,,,,
+sample7,Treatment2,,,,,
+sample8,Control,,,,,
+sample9,Control,,,,,
+sample10,Control,,,,,

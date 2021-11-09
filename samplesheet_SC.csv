@@ -1,0 +1,9 @@
+fastq_files,host_matrix_folder
+~/SC_Raw/SRR4210_R1.fastq,~/SC_folder/sample1
+~/SC_Raw/SRR4210_R2.fastq,~/SC_folder/sample1
+~/SC_Raw/SRR4211_R1.fastq,~/SC_folder/sample1
+~/SC_Raw/SRR4211_R2.fastq,~/SC_folder/sample1
+~/SC_Raw/SRR4212_R1.fastq,~/SC_folder/sample2
+~/SC_Raw/SRR4212_R2.fastq,~/SC_folder/sample2
+~/SC_Raw/SRR4213_R1.fastq,~/SC_folder/sample2
+~/SC_Raw/SRR4213_R2.fastq,~/SC_folder/sample2

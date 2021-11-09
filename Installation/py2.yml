@@ -1,0 +1,27 @@
+name: py2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - ca-certificates=2020.12.5=ha878542_0
+  - certifi=2019.11.28=py27h8c360ce_1
+  - ld_impl_linux-64=2.35.1=hea4e1c9_2
+  - libffi=3.2.1=he1b5a44_1007
+  - libgcc-ng=9.3.0=h2828fa1_18
+  - libgomp=9.3.0=h2828fa1_18
+  - libstdcxx-ng=9.3.0=h6de172a_18
+  - ncurses=6.2=h58526e2_4
+  - openssl=1.1.1j=h7f98852_0
+  - pip=20.1.1=pyh9f0ad1d_0
+  - python=2.7.15=h5a48372_1011_cpython
+  - python_abi=2.7=1_cp27mu
+  - readline=8.0=he28a2e2_2
+  - setuptools=44.0.0=py27_0
+  - sqlite=3.34.0=h74cdb3f_0
+  - tk=8.6.10=h21135ba_1
+  - wheel=0.36.2=pyhd3deb0d_0
+  - zlib=1.2.11=h516909a_1010
+
