@@ -1,15 +1,16 @@
 # MTD: Meta-Transcriptome Detector
-MTD is a software has two pipelines to detect and quantify microbiomes by analyzing bulk RNA-seq data and single-cell RNA-seq data, respectively. It supports a broad spectrum of the microbiome species and vectors, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
+MTD is a software that has two sub-pipelines to detect and quantify microbiomes by analyzing bulk RNA-seq data and single-cell RNA-seq data, respectively. It supports comprehensive microbiome species and vectors, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
 # Requirements
 * 160 Gb RAM
 * 560 Gb storage space
 * Conda was installed
 * GNU/Linux system with Bash
 # Installation
-1. Download directly or git clone MTD(git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (~530Gb) will be installed in this MTD folder.
-2. In termial, type **bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
+1. Download directly or git clone MTD (git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (~530Gb) will be installed in this MTD folder.
+2. In termial, type\
+**bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
 For example:
-<pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
+​       <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 ## Notes
 * Installation may take 1-2 days.
@@ -28,15 +29,19 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
 3. Put samplesheet.csv in the same folder as the fastq files.
   ![image2](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial2.jpg)
-4. In termial, type **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
+4. In termial, type\
+  **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
-<pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
+​       <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
 ## Single-cell RNA-seq
-In termial, type **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
+1. Put the count matrix of host genes in a folder named with the sample name. In this folder, 10x should be a matrix.mtx, a genes.tsv, and a barcodes.tsv; or a single .h5 file. Dropseq should be a .dge.txt file.
+2. Type this folder path into the column host_matrix_folder of the samplesheet_SC.csv. For example:
+In termial, type\
+  **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/Input_folder] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
   Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
   For example:
-<pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
+​       <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/ -o ~/output -h 10090 -t 20 -p 1 -d 3 -c ~/scRNAseq_rawData/SRR12345678.whitelist.txt</code></pre>
 ### Notes
 * 10x and Dropseq use paired end sequence. The second fastq file contains transcript's sequences (e.g., 98bp length).
 * -i [path/to/Input_folder] contains the single-cell RNAseq raw data in fastq format (accepted: fastq, fastq.gz, fq, fq.gz). For example: ~/scRNAseq_rawData/ contains Scsample1_1.fastq and Scsample1_2.fastq for sample Scsample1.
