@@ -1,0 +1,13 @@
+## 2021-03-25 12:44:30
+input gct:	
+gene.set.database:	
+sample.norm.type:	rank
+weight:	0.75
+statistic:	area.under.RES
+output.score.type	NES
+nperm:	1000
+global.fdr:	FALSE
+min.overlap:	10
+correl.type:	z.score
+export.signat.gct:	TRUE
+run.parallel:	TRUE
