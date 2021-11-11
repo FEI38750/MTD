@@ -1,8 +1,5 @@
 args = commandArgs(trailingOnly=TRUE)
 
-# args[1]<-"/Users/feiwu/Downloads/ssgsea-results-scores.gct"
-# args[2]<-"/Users/feiwu/Box/RNA-Seq/Dual-seq/samplesheet.csv"
-
 setwd(dirname(args[1]))
 setwd("../halla")
 # read the original samplesheet
