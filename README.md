@@ -89,5 +89,8 @@ host pathways and microbiome species
     <code>bash ~/MTD/Update.sh -t 20</code>
   - Users can modify the contaminant list (conta_ls.txt) in the MTD folder by adding the taxonomy ID of the microbe in the second column of the list and its name in the first column (optional).
   
+# Citation
+Wu, F., Liu, Y.-Z., & Ling, B. (2021). MTD: a unique pipeline for host and meta-transcriptome joint and integrative analyses of RNA-seq data. bioRxiv, 2021.2011.2016.468881. doi:10.1101/2021.11.16.468881
+  
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
