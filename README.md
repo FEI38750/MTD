@@ -72,7 +72,7 @@ host gene and microbiome species\
 host pathways and microbiome species
  ## Single-cell RNA-seq
   **Count matrix** for the single-cell microbiome is automatically generated and saved in the output folder.\
-  <img src="https://github.com/FEI38750/MTD/blob/main/Img/SingleCell_results.jpg" width=80% height=80%>\
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/MTD_SC_countMatrix_demo.jpg" width=85% height=85%>\
   The results of correlation test between microbiome and host genes are generated automatically and saved in the output folder defined by the user.
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/SC_corr.jpg">
   
