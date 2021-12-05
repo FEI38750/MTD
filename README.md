@@ -1,5 +1,11 @@
 # MTD: Meta-Transcriptome Detector
 MTD is a software that has two sub-pipelines to jointly analyze of host transcriptome with its microbiome by using bulk RNA-seq and single-cell RNA-seq data, respectively. It supports comprehensive microbiome species and vectors, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
+# Key Points
+* MTD enables **simultaneous analyses** of the microbiome and the host cell transcriptome in **bulk** and **single-cell RNA-seq data**.
+* The **correlation** between the microbiome and the host transcriptome can be automatically analyzed.
+* MTD has an extensive microbiome detection capacity, including **viruses, bacteria, protozoa, fungi, plasmids, and vectors**.
+* Installation and use MTD is as easy as **one command line** without the requirement of administrator/root privilege.
+* **Decontamination function** is enabled to eliminate the common contaminant microbes in the laboratory environment.
 # Requirements
 * 160 Gb RAM
 * 560 Gb storage space
