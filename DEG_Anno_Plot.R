@@ -695,9 +695,9 @@ for (i in 1:nrow(coldata_vs)){
       ggtitle(paste0(group1,"_vs_",group2)) +
       #geom_text(aes(x=log2FoldChange+0.6),label="*") +
       theme_bw() +
-      scale_y_discrete(breaks=bar$Name,labels=str_trunc(bar$Name,40)) +
+      scale_y_discrete(breaks=bar[,1],labels=str_trunc(bar[,1],40)) +
       guides(fill = guide_legend(reverse = TRUE)) #reverse the legend to put "Up" in an upper position
-    ggsave(paste0(group1,"_vs_",group2,"/Barplot_",group1,"_vs_",group2,".pdf"),height=0.2*length(bar_plot[["data"]][["Name"]]),limitsize = FALSE)
+    ggsave(paste0(group1,"_vs_",group2,"/Barplot_",group1,"_vs_",group2,".pdf"),height=0.2*length(bar_plot[["data"]][[1]]),limitsize = FALSE)
   }
 }
 
