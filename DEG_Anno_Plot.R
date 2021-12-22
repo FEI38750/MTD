@@ -136,15 +136,8 @@ if (filename == "host_counts.txt"){
   counter<-0
   while (exists("gene_ID")==F & counter<=5){
     library("biomaRt")
-    if (args[3]=="9544"){
-      ensembl=useMart("ensembl",dataset="mmulatta_gene_ensembl")
-    }
-    if (args[3]=="9606"){
-      ensembl=useMart("ensembl",dataset="hsapiens_gene_ensembl")
-    }
-    if (args[3]=="10090"){
-      ensembl=useMart("ensembl",dataset="mmusculus_gene_ensembl")
-    }
+    host_sp<-read.csv(args[4]) # read a list of supported host species
+    ensembl=useMart("ensembl",dataset=host_sp[host_sp$Taxon_ID==args[3],2]) # match host taxID with biomart ensembl database
     names(merge.nt)[1]<-"GeneID"
     genes <- merge.nt$GeneID
     gene_ID <- getBM(filters="ensembl_gene_id",

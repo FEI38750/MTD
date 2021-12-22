@@ -342,7 +342,7 @@ cd $outputdr
 sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
 
 # DEG & Annotation & Plots & preprocess for host
-Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid
+Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv
 
 # ssGSEA
 Rscript $MTDIR/gct_making.R $outputdr/Host_DEG/host_counts_DEG.csv $inputdr/samplesheet.csv
