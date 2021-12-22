@@ -90,6 +90,7 @@ host pathways and microbiome species
     **bash Customized_host.sh -t [threads] -d [host_genome_Ensembl_address] -c [host_taxid] -g [host_gtf_Ensembl_address]**\
       For example:\
       <code>bash ~/MTD/Customized_host.sh -t 20 -d http://ftp.ensembl.org/pub/release-104/fasta/callithrix_jacchus/dna/Callithrix_jacchus.ASM275486v1.dna.toplevel.fa.gz -c 9483 -g http://ftp.ensembl.org/pub/release-104/gtf/callithrix_jacchus/Callithrix_jacchus.ASM275486v1.104.gtf.gz </code>
+  - MTD supported ~200 host species. Please refer to HostSpecies.csv for their Taxonomy IDs and names.
   - Users can update microbiome databases easily by one command line: **bash Update.sh -t [threads]**\
       For example:\
     <code>bash ~/MTD/Update.sh -t 20</code>
