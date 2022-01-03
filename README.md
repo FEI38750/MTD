@@ -45,7 +45,7 @@ For example:
 1. Put the count matrix of host genes in a folder named with the sample name. In this folder, 10x should be a matrix.mtx, a genes.tsv, and a barcodes.tsv; or a single .h5 file. Dropseq should be a .dge.txt file.
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder_SC1.jpg" width=70%>
 2. Type this folder path into the column host_matrix_folder of the samplesheet_SC.csv. For example:
-&nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/samplesheet_SC.jpg">
+&nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/samplesheet_SC1.jpg">
   Then MTD will read the corresponding file paths from this samplesheet_SC.csv for single-cell analysis.
 3. In termial, type\
   **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/samplesheet_SC.csv] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
