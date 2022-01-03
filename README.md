@@ -33,8 +33,8 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   The paired fastq files must be named starting with the sample name followed by "_1" and "_2". For example, sample1_1.fq.gz and sample1_2.fq.gz are paired-end fastq files for sample1.
 2. Prepare the samplesheet.csv. You can copy and modify the one in MTD folder.
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
-3. Put samplesheet.csv in the same folder as the fastq files.
-  ![image2](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial2.jpg)
+3. Put samplesheet.csv in the same folder as the fastq files.\
+&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder.jpg" width=50%>
 4. In termial, type\
   **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
