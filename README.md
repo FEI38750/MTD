@@ -46,6 +46,7 @@ For example:
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder_SC1.jpg" width=70%>
 2. Type this folder path into the column host_matrix_folder of the samplesheet_SC.csv. For example:
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/samplesheet_SC.jpg">
+  Then MTD will read the corresponding file paths from this samplesheet_SC.csv for single-cell analysis.
 3. In termial, type\
   **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/samplesheet_SC.csv] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
   Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
