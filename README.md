@@ -40,7 +40,11 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
-​       <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
+        <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
+### Notes
+* Test run: For user who does not have the bulk RNA-seq raw data on hand could have a test run by command:
+  <pre><code>bash [path/to/MTD]/MTD.sh -i [path/to/MTD]/test/Bulk_RNAseq/samplesheet.csv -o [path/to/MTD]/test/Bulk_RNAseq t -h 9606 -t [threads]</code></pre>
+  
 ## Single-cell RNA-seq
 1. Put the count matrix of host genes in a folder named with the sample name. In this folder, 10x should be a matrix.mtx, a genes.tsv, and a barcodes.tsv; or a single .h5 file. Dropseq should be a .dge.txt file.
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder_SC1.jpg" width=70%>
@@ -52,11 +56,12 @@ For example:
   Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
   prime_direction(-d): specifying barcode locations: enter 3 or 5 for barcodes are at the 3’ end or 5' end of the read\
   For example:
-​       <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/samplesheet_SC.csv -o ~/output -h 10090 -t 20 -p 1 -d 3</code></pre>
+        <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/samplesheet_SC.csv -o ~/output -h 10090 -t 20 -p 1 -d 3</code></pre>
 ### Notes
 * 10x and Dropseq use paired end sequence. The first fastq file contains barcodes (e.g., 26bp length in SRR4210_R1.fastq). The second fastq file contains transcript's sequences (e.g., 98bp length in SRR4210_R2.fastq).
 * Default QC is *subset= nFeature_RNA>200 & nFeature_RNA < 2\*median(number_of_Feature_RNA) & percent.mt < 10*\
   In addition, user can customize QC by adding -l [Minimum nFeature_RNA] -r [Maximum nFeature_RNA] -m [percent.mt]
+* Test run:
   
 # Outputs
   ## Bulk RNA-seq
