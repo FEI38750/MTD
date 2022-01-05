@@ -67,7 +67,6 @@ For example:
 * 10x and Dropseq use paired end sequence. The first fastq file contains barcodes (e.g., 26bp length in SRR4210_R1.fastq). The second fastq file contains transcript's sequences (e.g., 98bp length in SRR4210_R2.fastq).
 * Default QC is *subset= nFeature_RNA>200 & nFeature_RNA < 2\*median(number_of_Feature_RNA) & percent.mt < 10*\
   In addition, user can customize QC by adding -l [Minimum nFeature_RNA] -r [Maximum nFeature_RNA] -m [percent.mt]
-* Test run:
   
 # Outputs
   ## Bulk RNA-seq
