@@ -19,7 +19,7 @@ For example:
         <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 ## Notes
-* Installation may take 1-2 days.
+* Installation may take 1-2 days (10-20 CPUs).
 * If conda hasn't been installed in your system, please use the code below to install the conda:
 <addr><pre><code>URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 curl $URL > miniconda-installer.sh
