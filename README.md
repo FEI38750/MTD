@@ -16,7 +16,7 @@ MTD is a software that has two sub-pipelines to jointly analyze of host transcri
 2. In termial, type\
 **bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
 For example:
-​       <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
+        <pre><code>bash ~/MTD/Install.sh -t 20 -p ~/miniconda3
 </code></pre>
 ## Notes
 * Installation may take 1-2 days.
@@ -29,6 +29,7 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 * Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
 # Run MTD
 ## Bulk RNA-seq
+### Preparation of the raw data (local data)
 1. Store all the paired-end fastq files (accepted: fastq, fastq.gz, fq, fq.gz) to be analyzed in a folder, subfolders for each sample are accepted.
   The paired fastq files must be named starting with the sample name followed by "_1" and "_2". For example, sample1_1.fq.gz and sample1_2.fq.gz are paired-end fastq files for sample1.
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder1.jpg">
@@ -36,7 +37,11 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
 3. Put samplesheet.csv in the same folder as the fastq files.\
 &nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder.jpg" width=50%>
-4. In termial, type\
+### Preparation of the raw data (SRA data)
+Alternatively, MTD can directly use data from SRA NCBI as input samples. Users just need to enter the corresponding SRR accessions to the sample_name column of samplesheet.csv
+&nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/SRR_bulk.jpg">
+### Run
+In termial, type\
   **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
 For example:
