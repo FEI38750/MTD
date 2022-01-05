@@ -37,7 +37,7 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
   ![image1](https://github.com/FEI38750/MTD/blob/main/Img/Tutorial1.jpg)
 3. Put samplesheet.csv in the same folder as the fastq files.\
 &nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder.jpg" width=50%>
-### Preparation of the raw data (SRA data)
+### Preparation of the raw data (online SRA data)
 Alternatively, MTD can directly use data from SRA NCBI as input samples. Users just need to enter the corresponding SRR accessions into the sample_name column of samplesheet.csv \
 <img src="https://github.com/FEI38750/MTD/blob/main/Img/SRR_bulk.png" width=60%> \
 SRR inputs samples from NCBI can be downloaded and prepared automatically.
