@@ -38,9 +38,10 @@ Conda then will be installed in your home directory, such as path: ~/miniconda3
 3. Put samplesheet.csv in the same folder as the fastq files.\
 &nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder.jpg" width=50%>
 ### Preparation of the raw data (SRA data)
-Alternatively, MTD can directly use data from SRA NCBI as input samples. Users just need to enter the corresponding SRR accessions to the sample_name column of samplesheet.csv
-&nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/SRR_bulk.jpg">
-### Run
+Alternatively, MTD can directly use data from SRA NCBI as input samples. Users just need to enter the corresponding SRR accessions into the sample_name column of samplesheet.csv \
+<img src="https://github.com/FEI38750/MTD/blob/main/Img/SRR_bulk.png" width=60%> \
+SRR inputs samples from NCBI can be downloaded and prepared automatically.
+### Run MTD (Bulk RNA-seq)
 In termial, type\
   **bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads]**\
 Host species taxonomy ID: human:9606, mouse:10090, rhesus monkey:9544\
