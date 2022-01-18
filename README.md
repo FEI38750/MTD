@@ -78,7 +78,7 @@ For example:
 The count matrix (host_counts_DEG.csv) contains the Ensembl gene ID, gene symbol, chromosome name, gene position, functional descriptions, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts. This comprehensive count matrix facilitates the user to perform downstream analyses such as pathway enrichment and customized data visualization.\
 The data visualization includes the heatmap (with/without gene name), Venn Diagram, PCA, barplot, and volcano plots.\
 The individual group comparison results are saved in the corresponding subfolder (e.g., group1_vs_group2).\
-  <img src="https://github.com/FEI38750/MTD/blob/main/Img/bulk_output_folder.jpg" width=70% height=70%>
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/bulk_output_folder.jpg" width=100% height=100%>
 * For **microbiome**: [path/to/output_folder]/Nonhost_DEG/\
   The count matrix (bracken_normalized_species_all_DEG.csv) contains the name and taxonomy ID of microbiome species, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts.\
 Diversity analysis, unclassified reads comparison, abundance&DEG heatmaps, phylogenetic trees.\
