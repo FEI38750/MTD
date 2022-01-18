@@ -70,7 +70,7 @@ For example:
   
 # Outputs
   ## Bulk RNA-seq
-  ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.jpg)
+  ![image1](https://github.com/FEI38750/MTD/blob/main/Img/MTD_bulk.png)
   The results are generated automatically and saved in the output folder defined by the user.\
   The output included:\
   <img src="https://github.com/FEI38750/MTD/blob/main/Img/Output_folder.jpg" width=70% height=70%>
