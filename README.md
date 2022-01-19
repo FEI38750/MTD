@@ -111,7 +111,7 @@ host pathways and microbiome species
 ## Advanced options
   - For users who want to tune parameters, MTD has the optional settings by additional flags for the potential important steps. Please refer to the MTD/Tutorial/Advanced_options.xlsx for explanations.\
   - For users who have advanced knowledge and wants to have further complicated settings, could add or change corresponding parameters inside the source code MTD/MTD.sh, for example, by searching #fastp to locate the code block of fastp settings then add additional parameters according to the options on https://github.com/OpenGene/fastp#all-options \
-  - For users who run the MTD job on HPC interactively, it is optimal running through the screen tool, which can prevent the interruption due to the user end (e.g. internet disconnect). Screen has already installed in the MTD Conda environment, user first type: <code>bash conda activate MTD</code> to activate the environment.\
+  - For users who run the MTD job on HPC interactively, it is optimal running through the Linux GNU Screen tool, which can prevent the interruption due to the user end (e.g. internet disconnect). Screen has already installed in the MTD Conda environment, user first type: <code>bash conda activate MTD</code> to activate the environment.\
     To start a screen session, simply type screen in your console: <code>screen</code> \
     To resume your screen session use the following command: <code>screen -r</code> \
     To close your screen session use: <code>screen -X -S [session # you want to kill] quit</code>
