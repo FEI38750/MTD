@@ -111,7 +111,7 @@ host pathways and microbiome species
 ## Advanced options
   - Users can provide additional metadata information of the samples (metadata.csv) for more complex experimental designs and analysis. In addition to sample_name and group, users can add the additional columns that represent covariants for the analysis. So the covariants, such as batch, group, age, sex, etc., can be adjusted during the read count abundance analysis through DESeq2, ANCOM-BC, and MaAsLin2 in MTD.\
 Further information about a proper experimental and formula design, please refer to DESeq2 manual:
-https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
+https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html \
 Prepare the metadata.csv. You can copy and modify the one in MTD folder.\
         <img src="https://github.com/FEI38750/MTD/blob/main/Img/metadata.jpg" width=80% height=80%>
   - For users who want to tune parameters, MTD has the optional settings by additional flags for the potential important steps. Please refer to the MTD/Tutorial/Advanced_options.xlsx for explanations.
