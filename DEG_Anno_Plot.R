@@ -68,10 +68,16 @@ coldata_vs<- coldata0[c("group1","group2")]
 coldata_vs<-coldata_vs[rowSums(is.na(coldata_vs)) == 0,] #remove the NA rows
 # read samplesheet as factors (as.is = F) for Deseq2 statistical analysis
 coldata_factor <- read.csv(args[2], header = T, as.is = F)
+coldata_factor[]<-lapply(coldata_factor, factor)
 coldata<-coldata_factor[,1:2]
+# update the coldata if metadata is provided
+if (basename(args[5])=="metadata.csv"){
+  coldata <- read.csv(args[5], header = T, as.is = F)
+  coldata[]<-lapply(coldata, factor)
+}
 
 if (filename == "host_counts.txt"){
-  # make cts(count matrix) has consistent order with samplesheet
+  # make cts(count matrix) has consistent order with samplesheet/metadata
   cts<-cts[coldata$sample_name]
   # load the datastructure to DESeq
   dds <- DESeqDataSetFromMatrix(countData = cts,
@@ -101,12 +107,20 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
   coldata<-merge(coldata,as.data.frame(transcriptome_size), by.x="sample_name",by.y="row.names")
   coldata<-coldata[order(coldata$order), ]
   coldata<-subset(coldata, select = -c(order))
-  # make cts(count matrix) has consistent order with samplesheet
+  # make cts(count matrix) has consistent order with samplesheet/metadata
   cts<-cts[coldata$sample_name]
   # load the datastructure to DESeq
   dds <- DESeqDataSetFromMatrix(countData = cts,
                                 colData = coldata,
                                 design= ~ group + transcriptome_size)
+}
+
+# adjust the design if metadata is provided
+if (basename(args[5])=="metadata.csv"){
+  funNew <- function(x){
+    as.formula(paste("~", paste(x, collapse = " + ")))
+  }
+  design(dds)<-funNew(names(coldata)[2:ncol(coldata)])
 }
 
 # perform the DESeq analysis
@@ -132,9 +146,9 @@ write.csv(norm,file=paste0(sub(".tsv$|.txt$","",filename),"_normalized.csv"))
 # merge and add suffixes; normalized and normalized&transformed
 merge.nt<-merge(norm,normtrans,by="row.names", suffixes=c(".norm",".normtrans"))
 if (filename == "host_counts.txt"){
-  # add annotations; try up to 5 times if biomaRt server not response
+  # add annotations; try up to 120 times/20 mins if biomaRt server not response
   counter<-0
-  while (exists("gene_ID")==F & counter<=5){
+  while (exists("gene_ID")==F & counter<=120){
     library("biomaRt")
     host_sp<-read.csv(args[4]) # read a list of supported host species
     ensembl=useMart("ensembl",dataset=host_sp[host_sp$Taxon_ID==args[3],2]) # match host taxID with biomart ensembl database
@@ -147,7 +161,19 @@ if (filename == "host_counts.txt"){
                      values=genes,mart=ensembl)
     names(gene_ID)[names(gene_ID)=="external_gene_name"]<-"gene_name" #rename the first column
     counter<-counter+1
+    # delay 10 seconds for each try
+    if (counter>1){
+      print(paste0("Retry to get gene annotations from ensembl: ",counter," times")) 
+    }
+    Sys.sleep(10)
   }
+  if (exists("gene_ID")==F){
+    stop("Failed to get gene annotations from ensembl server, please try again later")
+  }
+  gene_len<-read.table(args[1], row.names=1, sep="\t",header=T, quote="")
+  gene_len<-gene_len["Length"]
+  colnames(gene_len)<-"gene_length"
+  gene_ID<-merge(gene_ID,gene_len,by.x="ensembl_gene_id", by.y="row.names")
 }
 # #to add entrezid separately; caution: may bring a issue of "duplicate" ENTREZID!!
 # library(clusterProfiler)
@@ -220,6 +246,300 @@ if (filename == "host_counts.txt"){
 } else {comparison_nonhost(dds, coldata_vs, filename,cts,merge.nt)}
 
 
+## MaAsLin2 ##
+library("Maaslin2")
+system("mkdir -p MaAsLin2_results")
+features <- t(cts)
+metadata <- coldata
+rownames(metadata)<-metadata[,1]
+metadata<-metadata[,-1]
+covar<-toString(shQuote(names(coldata)[2:ncol(coldata)]))
+for (r in 1:length(unique(coldata_vs[,2]))){
+  fit_data <- Maaslin2(features, metadata, paste0('MaAsLin2_results/ref_',unique(coldata_vs[,2])[r]),
+                       fixed_effects = cat(covar, "\n"),
+                       reference = paste0("group,",unique(coldata_vs[,2])[r]),
+                       plot_heatmap = T, plot_scatter = T,
+                       cores=4)
+}
+if (filename == "host_counts.txt"){ #prepare for gene symbol
+  system("mkdir -p MaAsLin2_results/gene_symbol")
+  DEG<-read.csv(paste0(sub(".tsv$|.txt$","",filename),"_DEG.csv"),header = T)
+  df.DEG<-DEG[!duplicated(DEG$hybrid_name),] #remove duplicate gene symbol
+  df4features <- data.frame(df.DEG$hybrid_name, df.DEG[names(cts)], row.names=1)
+  features.symbol <- t(df4features)
+  for (r in 1:length(unique(coldata_vs[,2]))){
+    fit_data <- Maaslin2(features.symbol, metadata, paste0('MaAsLin2_results/gene_symbol/ref_',unique(coldata_vs[,2])[r]),
+                         fixed_effects = cat(covar, "\n"),
+                         reference = paste0("group,",unique(coldata_vs[,2])[r]),
+                         plot_heatmap = T, plot_scatter = T,
+                         cores=4)
+  }
+  write("The number of genes may be less due to the duplicated gene symbols being removed.","MaAsLin2_results/gene_symbol/Readme.txt")
+}
+
+### Pathway enrichment for host genes ###
+if (filename == "host_counts.txt"){
+  do.db <- host_sp[host_sp$Taxon_ID==args[3],4] # match host taxID with DO.db database
+  # check if variable is NULL
+  if(is.null(do.db)){
+    print("host species is not supported for pathway enrichment yet")
+  } else {
+    # if package is not installed, install it
+    if (!requireNamespace(do.db, quietly = TRUE))
+      BiocManager::install(do.db)
+    
+    library(clusterProfiler)
+    library(enrichplot)
+    library(ggnewscale)
+    library(do.db, character.only = TRUE)
+    library(ggplot2)
+    
+    # function to make plots for GSEA results
+    plots4gsea<-function(edb, data, datax, edb0, genelist, group1, group2){
+      # save the top10 GSEA results
+      if (nrow(data@result)==0){
+        write("No enrichment result was found.",paste0(edb,"/No_enrichment_result_found.txt"))
+      } else {
+        if (nrow(data@result) >= 10){
+          gseaplot2(data, geneSetID = 1:10,rel_heights = c(2, 0.5, 1))
+          ggsave(paste0(edb,"/Top10_GSEA_GO.pdf"),height = 10.5, width = 8)
+        } else {
+          gseaplot2(data, geneSetID = 1:length(data@result))
+          ggsave(paste0(edb,"/GSEA_GO.pdf"),height = (6+0.5*nrow(data@result)))
+        }
+        # save all plots of the GSEA GO results
+        dir.create(paste0(edb,"/GSEA_all"))
+        for (g in 1:nrow(data@result)){
+          gseaplot2(data, geneSetID = g, title = data$Description[g])
+          ggsave(paste0(edb,"/GSEA_all/",data$Description[g],"_GSEA_",edb0,".pdf"))
+        }
+        # ridgeline plot for expression distribution of GSEA GO result
+        ridgeplot(data)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"),height = 0.48*nrow(data@result))
+        # dot plot
+        dotplot(data) + ggtitle("dotplot for GSEA")
+        ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 0.48*nrow(data@result), width = 6)
+        #networks
+        cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"),scale=nrow(data@result)/12,limitsize=F)
+        # tree plot
+        datax2 <- pairwise_termsim(datax)
+        treeplot(datax2)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=0.48*nrow(data@result))
+        # enrichment map
+        emapplot(datax2,layout="kk")
+        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"),scale=nrow(data@result)/12)
+        # Heatmap-like functional classification
+        heatplot(datax2, foldChange=genelist)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=2+0.24*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        # upset plot
+        pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
+        p.upset<-upsetplot(data, n=nrow(data@result))
+        print(p.upset) # save pdf inside a function
+        dev.off()
+        # bar plot
+        bar<-data@result
+        bar$c<-with(bar,reorder(Description,-log(pvalue)))
+        p.bar<-ggplot(bar,aes(x=-log(pvalue),y=c,fill=enrichmentScore))+
+          geom_bar(stat="identity") +
+          scale_fill_gradient2(low="blue",high="red") +
+          labs(x="-log(p-value)",y="Description", fill="enrichmentScore") +
+          ggtitle(paste0(group1,"_vs_",group2)) +
+          #geom_text(aes(x=-log(pvalue)+0.6),label=round(bar$enrichmentScore,2),size= 3) + # could add value on bar
+          theme_bw() +
+          theme(text = element_text(size = 18))+
+          scale_y_discrete(breaks=bar$Description,labels=stringr::str_trunc(bar$Description,40))
+        ggsave(paste0(edb,"/GSEA_",edb0,"_barplots.pdf"),plot =p.bar,width=10,height=nrow(data@result)/12*5,limitsize=F)
+        
+        # to save plots for all results
+        if (nrow(data@result)>30){
+          ridgeplot(data,showCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots_all.pdf"),height = 0.48*nrow(data@result),limitsize=F)
+          dotplot(data, showCatdatary=nrow(data@result)) + ggtitle("dotplot for GSEA")
+          ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot_all.pdf"),height = 0.48*nrow(data@result), width = 6,limitsize=F)
+          cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6, showCatdatary = round(nrow(data@result)/6))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_net_all.pdf"),limitsize=F)
+          treeplot(datax2,showCatdatary =nrow(data@result),nCluster = round(nrow(data@result)/6))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_tree_all.pdf"),height=0.48*nrow(data@result),limitsize=F)
+          emapplot(datax2,layout="kk",showCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_map_all.pdf"),scale=nrow(data@result)/12,limitsize=F)
+          heatplot(datax2, foldChange=genelist, howCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_heat_all.pdf"),height=1+0.3*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        }
+      }
+    }
+    
+    # function for KEGG Pathview plots
+    pathview.p<-function(kk,ko.db,kegg_gene_list,dir){
+      if (nrow(kk@result)==0){
+        write("No enrichment result was found on KEGG.","No_KEGG_enrichment_result.txt")
+      } else {
+        library("pathview")
+        for (g in 1:nrow(kk@result)){
+          pathview(gene.data  = kegg_gene_list,
+                   pathway.id = kk@result[g,1],
+                   species    = ko.db,
+                   limit      = list(gene=max(abs(kegg_gene_list)), cpd=1))
+        }
+      }
+    }
+    
+    # function for pathway enrichment by using comparison results between groups
+    enrichment <- function(coldata_vs,args1,do.db){
+      for (i in 1:nrow(coldata_vs)){
+        group1<-coldata_vs$group1[i]
+        group2<-coldata_vs$group2[i]
+        setwd(paste0(group1,"_vs_",group2)) # go into each comparison folder
+        dir.create("GO")
+        dir.create("KEGG")
+        dir.create("KEGG/Modules")
+        # prepare genelist for GSEA
+        df.compare<-read.csv(paste0("host_counts_",group1,"_vs_",group2,".csv"),header = T)
+        df.compare<-df.compare[df.compare$pvalue<0.05,]
+        # feature 1: numeric vector
+        genelist<-df.compare$log2FoldChange
+        # feature 2: named vector
+        names(genelist) = as.character(df.compare$X)
+        # feature 3: decreasing order
+        genelist = sort(genelist, decreasing = TRUE)
+        
+        ## GSEA for GO ##
+        ego <- gseGO(geneList     = genelist,
+                     OrgDb        = do.db,
+                     keyType      = 'ENSEMBL',
+                     ont          = "ALL",
+                     minGSSize    = 10,
+                     maxGSSize    = 500,
+                     pvalueCutoff = 0.05,
+                     verbose      = FALSE)
+        
+        # save the full table of GSEA GO results
+        write.csv(ego@result,"GO/GSEA_GO_results.csv")
+        egox <- setReadable(ego, do.db)
+        write.csv(egox@result,"GO/GSEA_GO_results_symbol.csv")
+        # draw plots for GO GSEA results
+        plots4gsea("GO",ego,egox,"GO", genelist, group1, group2)
+        
+        ## GSEA for KEGG ##
+        # KEGG pathway gene set enrichment analysis
+        ko.db <- host_sp[host_sp$Taxon_ID==args[3],6] # match host taxID with KEGG database
+        
+        # Convert gene IDs for gseKEGG function
+        # Some genes will be lost here because not all IDs will be converted
+        ENS2ENT.ids<-bitr(names(genelist), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
+        dedup_ENS2ENT.ids = ENS2ENT.ids[!duplicated(ENS2ENT.ids[c("ENSEMBL")]),]
+        # Create a new dataframe df4kegg which has only the genes which were successfully ID converted
+        df4kegg = df.compare[df.compare$X %in% dedup_ENS2ENT.ids$ENSEMBL,]
+        # Create a new column in df4kegg with the corresponding ENTREZ IDs
+        df4kegg$Y = dedup_ENS2ENT.ids$ENTREZID
+        # Create a vector of the gene log2FoldChange
+        kegg_gene_list <- df4kegg$log2FoldChange
+        # Name vector with ENTREZ ids
+        names(kegg_gene_list) <- df4kegg$Y
+        # omit any NA values 
+        kegg_gene_list<-na.omit(kegg_gene_list)
+        # sort the list in decreasing order (required for clusterProfiler)
+        kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
+        
+        # KEGG pathway gene set enrichment analysis
+        kk.p <- gseKEGG(geneList     = kegg_gene_list,
+                        organism     = ko.db,
+                        keyType      = 'ncbi-geneid',
+                        minGSSize    = 8,
+                        pvalueCutoff = 0.05,
+                        verbose      = FALSE)
+        # KEGG (Modules) functional enrichment analysis
+        kk.f <- gseMKEGG(geneList = kegg_gene_list,
+                         organism = ko.db,
+                         keyType  = 'ncbi-geneid',
+                         minGSSize = 8,
+                         pvalueCutoff = 0.05)
+        
+        # save the full table of GSEA KEGG results
+        write.csv(kk.p@result,"KEGG/GSEA_KEGG_results.csv")
+        kkx.p <- setReadable(kk.p, do.db, 'ENTREZID')
+        write.csv(kkx.p@result,"KEGG/GSEA_KEGG_results_symbol.csv")
+        write.csv(kk.f@result,"KEGG/Modules/GSEA_KEGG_results.csv")
+        kkx.f <- setReadable(kk.f, do.db, 'ENTREZID')
+        write.csv(kkx.f@result,"KEGG/Modules/GSEA_KEGG_results_symbol.csv")
+        
+        # draw plots for KEGG GSEA results
+        plots4gsea("KEGG",kk.p,kkx.p,"KEGG",kegg_gene_list)
+        plots4gsea("KEGG/Modules",kk.f,kkx.f,"KEGG",kegg_gene_list)
+        
+        # KEGG pathview plots
+        dir.create("KEGG/Pathview") ; setwd("KEGG/Pathview")
+        pathview.p(kk.p,ko.db,kegg_gene_list)
+        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
+        dir.create("KEGG/Modules/Pathview") ; setwd("KEGG/Modules/Pathview")
+        pathview.p(kk.f,ko.db,kegg_gene_list)
+        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
+        
+        setwd("../") # go back to the Host_DEG folder
+      }
+    }
+    
+    ## run GSEA enrichment analysis ##
+    enrichment(coldata_vs,args[1],do.db)
+    
+    # function for preparing genelist for biological theme comparison - compareCluster
+    BTC <- function(coldata_vs,do.db){
+      genelist.ct<-list()
+      for (i in 1:nrow(coldata_vs)){
+        group1<-coldata_vs$group1[i]
+        group2<-coldata_vs$group2[i]
+        # prepare genelist for enrichment
+        df.btc<-read.csv(paste0(getwd(),"/",group1,"_vs_",group2,"/","host_counts_",group1,"_vs_",group2,".csv"),header = T)
+        # filter DEG
+        flt_up <- df.btc[df.btc$log2FoldChange > 0.5 & df.btc$pvalue < 0.05,]
+        flt_down <- df.btc[df.btc$log2FoldChange < 0.5 & df.btc$pvalue < 0.05,]
+        # up-regulated gene name
+        genelist.u<-flt_up$X
+        # down-regulated gene name
+        genelist.d<-flt_down$X
+        # Some genes will be lost here because not all IDs will be converted
+        ENS2ENT.u<-bitr(genelist.u, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        ENS2ENT.d<-bitr(genelist.d, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
+        dedup_ENS2ENT.u = ENS2ENT.u[!duplicated(ENS2ENT.u[c("ENSEMBL")]),]
+        dedup_ENS2ENT.u = dedup_ENS2ENT.u$ENTREZID
+        dedup_ENS2ENT.d = ENS2ENT.d[!duplicated(ENS2ENT.d[c("ENSEMBL")]),]
+        dedup_ENS2ENT.d = dedup_ENS2ENT.d$ENTREZID
+        # make a list
+        genelist.c<-list(dedup_ENS2ENT.u,dedup_ENS2ENT.d)
+        names(genelist.c) <- c(paste0(group1,"_vs_",group2,"_UP"), paste0(group1,"_vs_",group2,"_DOWN"))
+        genelist.ct<-c(genelist.ct,genelist.c)
+      }
+      return(genelist.ct)
+    }
+    ## run biological theme comparison ##
+    genelist.ct <- BTC(coldata_vs,do.db)
+    # GO enrichment comparison
+    cgo <- compareCluster(genelist.ct, fun = enrichGO, OrgDb=do.db)
+    cgo <- setReadable(cgo, OrgDb = do.db, keyType="ENTREZID")
+    dotplot(cgo, showCategory = nrow(cgo@compareClusterResult)) +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+    ggsave("biological_theme_comparison_GO.pdf",height = 0.54*nrow(cgo@compareClusterResult), width = 3*length(unique(cgo@compareClusterResult$Cluster)))
+    ggsave("biological_theme_comparison_GO_net.pdf",
+           plot = cnetplot(cgo,cex_label_gene = 0.6, showCatdatary = round(nrow(cgo@compareClusterResult)/6)),
+           limitsize=F)
+    # KEGG enrichment comparison
+    ck <- compareCluster(genelist.ct, fun = enrichKEGG)
+    ck <- setReadable(ck, OrgDb = do.db, keyType="ENTREZID")
+    dotplot(ck, showCategory = nrow(ck@compareClusterResult)) +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+    ggsave("biological_theme_comparison_KEGG.pdf",height = 0.54*nrow(ck@compareClusterResult), width = 3*length(unique(ck@compareClusterResult$Cluster)))
+    ggsave("biological_theme_comparison_KEGG_net.pdf",
+           plot = cnetplot(ck,cex_label_gene = 0.6, showCatdatary = round(nrow(ck@compareClusterResult)/6)),
+           limitsize=F)
+  }
+}
+
+if (filename == "host_counts.txt"){
+  setwd(paste0(dirname(args[1]),"/Host_DEG")) # go back to the Host_DEG folder
+}
+
 ### Plots ###
 library(ggplot2)
 library(ggrepel)
@@ -229,6 +549,15 @@ library(colorspace)
 library(RColorBrewer)
 # subset normtrans for visualization; consider all groups; to integrate in the comparison function?? DEG=Anno.merge.all
 DEG<-read.csv(paste0(sub(".tsv$|.txt$","",filename),"_DEG.csv"),header = T)
+
+# count gene TPM
+if (filename == "host_counts.txt"){
+  RPK <- DEG[,as.character(coldata[,1])]/DEG$gene_length
+  TPM <- RPK*1000000/sum(RPK)
+  TPM<-cbind(DEG[,c("gene_name","hybrid_name")],TPM)
+  write.csv(TPM,file=paste0(sub(".tsv$|.txt$","",filename),"_TPM.csv"),row.names=F)
+}
+
 # filter by log2 <0.5 & >0.5 and p-value <0.05 for all groups
 flt_groups_all<-data.frame()
 for (i in 1:length(grep("pvalue",names(DEG)))){
@@ -374,13 +703,17 @@ if (filename %in% c("bracken_species_all",
                     "bracken_genus_all")){
   library(phyloseq)
   library(vegan)
-  #Imported biom file into phyloseq object
-  biomfilename=paste0(dirname(args[1]),"/bracken_species_all.biom")
+  #Imported original biom file into phyloseq object
+  biomfilename=paste0(dirname(args[1]),"/temp/bracken_species_all0.biom")
   data<-import_biom(biomfilename,parseFunction = parse_taxonomy_default)
   colnames(tax_table(data)) <- c("Kingdom", "Phylum", "Class", "Order", "Family",  "Genus", "Species")
+  #Imported host transcriptome size adjusted & normtrans biom file into phyloseq object
+  biomfilename.adj=paste0(dirname(args[1]),"/bracken_species_all.biom")
+  data.adj<-import_biom(biomfilename.adj,parseFunction = parse_taxonomy_default)
+  colnames(tax_table(data.adj)) <- c("Kingdom", "Phylum", "Class", "Order", "Family",  "Genus", "Species")
   #Estimated and exported alpha diversity
   #The measures of diversity that aren't totally reliant on singletons, eg. Shannon/Simpson, are valid to use, and users can ignore the warning in phyloseq when calculating those measures.
-  data.alpha<-estimate_richness(data)
+  data.alpha<-estimate_richness(data.adj)
   write.csv(data.alpha, file="alpha-diversity.csv")
   theme_set(theme_bw())
   p.alpha <- plot_richness(data,measures = c("Shannon","Simpson"))
@@ -388,14 +721,169 @@ if (filename %in% c("bracken_species_all",
   ggsave("Alpha_diversity_sample.pdf")
   #Estimated and exported beta diversity (Bray-Curtis)
   #to transformation data by vst before beta diversity analysis
-  samples4phyloseq<-as.data.frame(coldata$group, row.names = as.character(coldata$sample_name))
-  colnames(samples4phyloseq)<-"group"
-  sampledata<-sample_data(samples4phyloseq)
-  data<-merge_phyloseq(data,sampledata)
-  dds1 <- phyloseq_to_deseq2(data, ~ group)
+  if (basename(args[5])=="metadata.csv"){
+    samples4phyloseq<-as.data.frame(coldata[2:ncol(coldata)], row.names = as.character(coldata$sample_name))
+    sampledata<-sample_data(samples4phyloseq)
+    data<-merge_phyloseq(data,sampledata)
+    dds1 <- phyloseq_to_deseq2(data, funNew(names(coldata)[2:ncol(coldata)]))
+  } else {
+    samples4phyloseq<-as.data.frame(coldata$group, row.names = as.character(coldata$sample_name))
+    colnames(samples4phyloseq)<-"group"
+    sampledata<-sample_data(samples4phyloseq)
+    data<-merge_phyloseq(data,sampledata)
+    dds1 <- phyloseq_to_deseq2(data, ~ group)
+  }
+  ## ANCOMBC ##
+  pseq <- phyloseq::tax_glom(data, taxrank = "Species") # species taxid
+  pseq1 <- microbiome::aggregate_taxa(data,"Species") # species name
+  
+  ancombc_out <- function(pseq,formula){
+    ancombc(
+      phyloseq = pseq, 
+      formula = formula, 
+      p_adj_method = "fdr", 
+      zero_cut = 0.90, # by default prevalence filter of 10% is applied
+      lib_cut = 0, 
+      group = "group", 
+      struc_zero = TRUE, 
+      neg_lb = TRUE, 
+      tol = 1e-5, 
+      max_iter = 100, 
+      conserve = TRUE, 
+      alpha = 0.05, 
+      global = TRUE
+    )
+  } 
+  
+  if (basename(args[5])=="metadata.csv"){
+    out <- ancombc_out(pseq,paste(names(coldata)[2:ncol(coldata)], collapse = " + "))
+    out1 <- ancombc_out(pseq1,paste(names(coldata)[2:ncol(coldata)], collapse = " + "))
+  } else {
+    out <- ancombc_out(pseq,"group") # taxid
+    out1 <- ancombc_out(pseq1,"group") # species name
+  }
+
+  res <- out$res # taxid
+  res_global = out$res_global
+  res1 <- out1$res # species name
+  res_global1 = out1$res_global
+  
+  system("mkdir -p ANCOMBC_results")
+  write.csv(res[["diff_abn"]], file="ANCOMBC_results/diff_abundance.csv")
+  write.csv(res[["W"]], file="ANCOMBC_results/Test_statistics.csv")
+  write.csv(res[["p_val"]], file="ANCOMBC_results/p_value.csv")
+  write.csv(res[["q_val"]], file="ANCOMBC_results/q_value.csv")
+  write.csv(res_global, file="ANCOMBC_results/Global_test.csv")
+  
+  system("mkdir -p ANCOMBC_results/with_species_names")
+  write.csv(res1[["diff_abn"]], file="ANCOMBC_results/with_species_names/diff_abundance_name.csv")
+  write.csv(res1[["W"]], file="ANCOMBC_results/with_species_names/Test_statistics_name.csv")
+  write.csv(res1[["p_val"]], file="ANCOMBC_results/with_species_names/p_value_name.csv")
+  write.csv(res1[["q_val"]], file="ANCOMBC_results/with_species_names/q_value_name.csv")
+  write.csv(res_global1, file="ANCOMBC_results/with_species_names/Global_test_name.csv")
+  
+  ## heatmap for ANCOMBC results ##
+  ANCOMBC_plot <- function(res){
+    library(tidyr)
+    heat.mw <- res[["W"]] %>% 
+      rownames_to_column("taxid") %>% #preserve rownames
+      gather(key, value, -taxid)
+    heat.md <- res[["diff_abn"]] %>% 
+      rownames_to_column("taxid") %>% #preserve rownames
+      gather(key, value, -taxid)
+    heat.m<-merge(heat.mw,heat.md,by="taxid")
+    
+    # Arrange the figure
+    p <- ggplot(heat.m, aes(x = key.x, y = taxid, fill = value.x))
+    p <- p + geom_tile() 
+    p <- p + scale_fill_gradientn("value.x", name ="Test statistics",
+                                  breaks = seq(from = -2, to = 2, by = 0.5), 
+                                  colours = c("darkblue", "blue", "white", "red", "darkred"), 
+                                  limits = c(-2,2)) 
+    
+    # Polish texts
+    p <- p + theme(axis.text.x=element_text(angle = 90, hjust=1, face = "italic"),
+                   axis.text.y=element_text(size = 8))
+    p <- p + xlab("") + ylab("Taxonomy ID")
+    
+    # Mark the most significant cells with stars
+    if (length(unique(heat.m$taxid))>100){
+      p <- p + geom_text(data = subset(heat.m, value.y == "TRUE"), 
+                         aes(x = key.x, y = taxid, label = "+"), col = "white", size = 2.5)
+    } else {
+      p <- p + geom_text(data = subset(heat.m, value.y == "TRUE"), 
+                         aes(x = key.x, y = taxid, label = "+"), col = "white", size = 3)
+    }
+    
+    if (length(unique(heat.m$taxid))>100){
+      ggsave("heatmap_ANCOMBC.pdf",plot=p,
+             limitsize = F,
+             height = 0.1*length(unique(heat.m$taxid)),
+             width = 0.6*length(unique(heat.m$key.x)))
+    } else {
+      ggsave("heatmap_ANCOMBC.pdf",plot=p,height = 0.2*length(unique(heat.m$taxid)))
+    }
+  }
+  setwd("ANCOMBC_results")
+  ANCOMBC_plot(res)
+  
+  ANCOMBC_plot_sp <- function(res1){
+    library(tidyr)
+    heat.mw <- res1[["W"]] %>% 
+      rownames_to_column("name") %>% #preserve rownames
+      gather(key, value, -name)
+    heat.md <- res1[["diff_abn"]] %>% 
+      rownames_to_column("name") %>% #preserve rownames
+      gather(key, value, -name)
+    heat.m<-merge(heat.mw,heat.md,by="name")
+    heat.m$name <- sub(".*s__", "", heat.m$name)
+    heat.m$name <- stringr::str_trunc(heat.m$name, 31) # truncate sp_name
+    # Arrange the figure
+    p <- ggplot(heat.m, aes(x = key.x, y = name, fill = value.x))
+    p <- p + geom_tile() 
+    p <- p + scale_fill_gradientn("value.x", name ="Test statistics",
+                                  breaks = seq(from = -2, to = 2, by = 0.5), 
+                                  colours = c("darkblue", "blue", "white", "red", "darkred"), 
+                                  limits = c(-2,2)) 
+    
+    # Polish texts
+    p <- p + theme(axis.text.x=element_text(angle = 90, hjust=1, face = "italic"),
+                   axis.text.y=element_text(size = 8))
+    p <- p + xlab("") + ylab("Species name")
+    
+    # Mark the most significant cells with stars
+    if (length(unique(heat.m$name))>100){
+      p <- p + geom_text(data = subset(heat.m, value.y == "TRUE"), 
+                         aes(x = key.x, y = name, label = "+"), col = "white", size = 2.5)
+    } else {
+      p <- p + geom_text(data = subset(heat.m, value.y == "TRUE"), 
+                         aes(x = key.x, y = name, label = "+"), col = "white", size = 3)
+    }
+    
+    if (length(unique(heat.m$name))>100){
+      ggsave("heatmap_ANCOMBC.pdf",plot=p,
+             limitsize = F,
+             height = 0.1*length(unique(heat.m$name)),
+             width = 0.8*length(unique(heat.m$key.x)))
+    } else {
+      ggsave("heatmap_ANCOMBC.pdf",plot=p,height = 0.2*length(unique(heat.m$name)))
+    }
+  }
+  
+  setwd("with_species_names")
+  ANCOMBC_plot_sp(res1)
+  setwd("../..")
+  
+  # continue for beta diversity
   data1<-data
   vsd1 <- varianceStabilizingTransformation(dds1)
-  vsd1.df<-vsd1@assays@data@listData[[1]]
+  # normalized reads count with host transcriptome size and with avoiding removing variation associated with the other conditions
+  if (basename(args5)=="metadata.csv"){
+    mm <- model.matrix(funNew(names(coldata)[2:(ncol(coldata)-1)]), colData(vsd))
+  } else {
+    mm <- model.matrix(funNew(names(coldata)[2]), colData(vsd))
+  }
+  vsd1.df <- limma::removeBatchEffect(assay(vsd1), vsd$transcriptome_size, design=mm)
   vsd1.df[vsd1.df < 0.0] <- 0.0 #adjust negative values after vst
   otu_table(data1) <- otu_table(vsd1.df, taxa_are_rows = TRUE)
 
@@ -419,18 +907,7 @@ if (filename %in% c("bracken_species_all",
   #barplot(b[b>0],names.arg =colnames(braycurtis.pcoa.export))
 
   library(forcats)
-  # reorder the group column following the value of order column
-  braycurtis.pcoa.export %>%
-    mutate(group = fct_reorder(group, order)) %>%
-    ggplot(aes(Axis.1, Axis.2,color=group)) +
-    geom_point(size=3) +
-    xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
-    ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
-    geom_text_repel(aes(label=row.names(braycurtis.pcoa.export)),size=3) +
-    coord_fixed() +
-    theme_bw() +
-    ggtitle("Bray-Curtis Distances PCoA")
-  
+  # reorder the group column following the value of order column  
   braycurtis.pcoa.export %>%
     mutate(group = fct_reorder(group, order)) %>%
     ggplot(aes(Axis.1, Axis.2,color=group)) +
@@ -453,29 +930,6 @@ if (filename %in% c("bracken_species_all",
     theme_bw() +
     ggtitle("Bray-Curtis Distances PCoA")
   ggsave("PCoA_color.pdf")
-  
-  braycurtis.pcoa.export %>%
-    mutate(group = fct_reorder(group, order)) %>%
-    ggplot(aes(Axis.1, Axis.2,color=group)) +
-    geom_point(size=3) +
-    xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
-    ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
-    geom_text_repel(aes(label=row.names(braycurtis.pcoa.export)),size=3) +
-    coord_fixed() +
-    theme_bw() +
-    ggtitle("Bray-Curtis Distances PCoA")
-  ggsave("PCoA_label.pdf")
-  
-  braycurtis.pcoa.export %>%
-    mutate(group = fct_reorder(group, order)) %>%
-    ggplot(aes(Axis.1, Axis.2,color=group)) +
-    geom_point(size=3) +
-    xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
-    ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
-    coord_fixed() +
-    theme_bw() +
-    ggtitle("Bray-Curtis Distances PCoA")
-  ggsave("PCoA.pdf")
 
   # anosim test
   data2<-t(as.matrix(data1@otu_table))
@@ -512,8 +966,8 @@ if (filename %in% c("bracken_species_all",
   ggsave("Heatmap_all.pdf")
 
   # Add sample data
-  tax  = tax_table(data)
-  otu  = otu_table(data)
+  tax  = tax_table(data.adj)
+  otu  = otu_table(data.adj)
   data_sam <- phyloseq(otu,tax, sam)
 
   # change color scale for plot_bar
@@ -814,10 +1268,11 @@ for ( i in 1:nrow(gph.tree)){
     gph.sp1<-gsub("_","-",gph.sp) # To match the bracken style
     for ( n in 1:length(sp.name)){
       sp.name1<-tail(strsplit(sp.name," ")[[n]],1) #extract the last word of the species name from bracken file
-      if (gph.sp1==sp.name1){
+      if (gph.sp1==sp.name1 || gph.sp==sp.name1){
         gph.sp2<-head(tail(strsplit(gph.tree[i,1],"\\.")[[1]],2),1) #extract the second last word of the species name from graphlan tree
+        gph.sp6<-strsplit(gph.tree[i,1],"\\.")[[1]][6] #extract the sixth word of the species name from graphlan tree
         sp.name2<-head(strsplit(sp.name," ")[[n]],1) #extract the first word of the species name from bracken file
-        if (grepl(sp.name2,gph.sp2)){
+        if (grepl(sp.name2,gph.sp2) || grepl(sp.name2,gph.sp6)){
           sp.replace<-sp.name[n]
           sp.replace<-gsub(" ","_",sp.replace)
           #gph.tree[i,1]<-sub(paste0(gph.sp,"([^",gph.sp,"]*)$"),paste0(sp.replace,"\\1"), gph.tree[i,1])
@@ -986,6 +1441,11 @@ write.table(gph.anno1,paste0(dirname(args[1]),"/graphlan/annot.txt"),
 
 # adjust covariance effect
 normtrans_adj <- limma::removeBatchEffect(normtrans, vsd$group)
+if (basename(args[5])=="metadata.csv"){
+  coldata.n<-coldata
+  coldata.n[]<-lapply(coldata.n, as.numeric)
+  normtrans_adj <- limma::removeBatchEffect(normtrans, covariates=coldata.n[,2:ncol(coldata.n)])
+}
 # make a folder for outputs
 dir.create("../halla",recursive = T)
 setwd("../halla")
@@ -1007,19 +1467,3 @@ if (filename == "host_counts.txt"){
 }
 setwd("../")
 
-
-
-# for (i in nrow(coldata_vs)){
-#   group1<-coldata_vs$group1[i]
-#   group2<-coldata_vs$group2[i]
-#   colnames_pvalue<-paste0("pvalue",".",group1,"_vs_",group2)
-#   colnames_FC<-paste0("log2FoldChange",".",group1,"_vs_",group2)
-#   flt_all <- DEG[abs(DEG[,colnames_FC]) > 0.5 & DEG[,colnames_pvalue]<0.05,]
-#   flt_all <- DEG[abs(DEG[,colnames_FC]) > 0.5 & DEG[,colnames_pvalue]<0.05,]
-#   flt_up <- DEG[DEG[,colnames_FC] > 0.5 & DEG[,colnames_pvalue]<0.05,]
-#   flt_down <- DEG[DEG[,colnames_FC] < 0.5 & DEG[,colnames_pvalue]<0.05,]
-#   subset_normtrans<-flt_all[,grep("normtrans",names(flt_all))]
-#   setwd(paste0(group1,"_vs_",group2))
-#   write.csv(flt_all,file=paste0(sub(".tsv$|.txt$","",filename),"_DEG_all.csv"),row.names=F)
-#   setwd("../")
-# }

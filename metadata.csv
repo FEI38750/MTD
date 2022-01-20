@@ -1,0 +1,11 @@
+sample_name,group,batch,age
+sample1,Treatment1,1,Old
+sample2,Treatment1,1,Old
+sample3,Treatment1,1,Young
+sample4,Treatment2,1,Young
+sample5,Treatment2,1,Old
+sample6,Treatment2,2,Old
+sample7,Treatment2,2,Young
+sample8,Control,2,Young
+sample9,Control,2,Old
+sample10,Control,2,Old

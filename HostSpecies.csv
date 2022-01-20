@@ -1,200 +1,200 @@
-Taxon_ID,MartDatasets,Scientific_name
-80966,apolyacanthus_gene_ensembl,Acanthochromis polyacanthus
-9646,amelanoleuca_gene_ensembl,Ailuropoda melanoleuca
-61819,acitrinellus_gene_ensembl,Amphilophus citrinellus
-80972,aocellaris_gene_ensembl,Amphiprion ocellaris
-161767,apercula_gene_ensembl,Amphiprion percula
-64144,atestudineus_gene_ensembl,Anabas testudineus
-8839,aplatyrhynchos_gene_ensembl,Anas platyrhynchos
-8840,applatyrhynchos_gene_ensembl,Anas platyrhynchos platyrhynchos
-28377,acarolinensis_gene_ensembl,Anolis carolinensis
-132585,abrachyrhynchus_gene_ensembl,Anser brachyrhynchus
-37293,anancymaae_gene_ensembl,Aotus nancymaae
-223781,acchrysaetos_gene_ensembl,Aquila chrysaetos chrysaetos
-8154,acalliptera_gene_ensembl,Astatotilapia calliptera
-7994,amexicanus_gene_ensembl,Astyanax mexicanus
-9771,bmusculus_gene_ensembl,Balaenoptera musculus
-158456,bsplendens_gene_ensembl,Betta splendens
-43346,bbbison_gene_ensembl,Bison bison bison
-30521,bgrunniens_gene_ensembl,Bos grunniens
-30522,bihybrid_gene_ensembl,Bos indicus x Bos taurus
-72004,bmutus_gene_ensembl,Bos mutus
-9913,btaurus_gene_ensembl,Bos taurus
-6239,celegans_gene_ensembl,Caenorhabditis elegans
-9483,cjacchus_gene_ensembl,Callithrix jacchus
-7868,cmilii_gene_ensembl,Callorhinchus milii
-9838,cdromedarius_gene_ensembl,Camelus dromedarius
-286419,cldingo_gene_ensembl,Canis lupus dingo
-9615,clfamiliaris_gene_ensembl,Canis lupus familiaris
-9925,chircus_gene_ensembl,Capra hircus
-7957,cauratus_gene_ensembl,Carassius auratus
-1868482,csyrichta_gene_ensembl,Carlito syrichta
-51154,cwagneri_gene_ensembl,Catagonus wagneri
-10141,cporcellus_gene_ensembl,Cavia porcellus
-2715852,ccapucinus_gene_ensembl,Cebus capucinus imitator
-9531,catys_gene_ensembl,Cercocebus atys
-84702,chyarkandensis_gene_ensembl,Cervus hanglu yarkandensis
-106734,cabingdonii_gene_ensembl,Chelonoidis abingdonii
-34839,clanigera_gene_ensembl,Chinchilla lanigera
-60711,csabaeus_gene_ensembl,Chlorocebus sabaeus
-9358,choffmanni_gene_ensembl,Choloepus hoffmanni
-8478,cpbellii_gene_ensembl,Chrysemys picta bellii
-7719,cintestinalis_gene_ensembl,Ciona intestinalis
-51511,csavignyi_gene_ensembl,Ciona savignyi
-7950,charengus_gene_ensembl,Clupea harengus
-56716,cgobio_gene_ensembl,Cottoperca gobio
-93934,cjaponica_gene_ensembl,Coturnix japonica
-8502,cporosus_gene_ensembl,Crocodylus porosus
-8103,clumpus_gene_ensembl,Cyclopterus lumpus
-244447,csemilaevis_gene_ensembl,Cynoglossus semilaevis
-28743,cvariegatus_gene_ensembl,Cyprinodon variegatus
-7962,ccarpio_gene_ensembl,Cyprinus carpio
-7955,drerio_gene_ensembl,Danio rerio
-9361,dnovemcinctus_gene_ensembl,Dasypus novemcinctus
-9749,dleucas_gene_ensembl,Delphinapterus leucas
-299321,dclupeoides_gene_ensembl,Denticeps clupeoides
-13489,dlabrax_gene_ensembl,Dicentrarchus labrax
-10020,dordii_gene_ensembl,Dipodomys ordii
-7227,dmelanogaster_gene_ensembl,Drosophila melanogaster
-9371,etelfairi_gene_ensembl,Echinops telfairi
-8005,eelectricus_gene_ensembl,Electrophorus electricus
-7764,eburgeri_gene_ensembl,Eptatretus burgeri
-83772,eaasinus_gene_ensembl,Equus asinus asinus
-9796,ecaballus_gene_ensembl,Equus caballus
-9365,eeuropaeus_gene_ensembl,Erinaceus europaeus
-27687,ecalabaricus_gene_ensembl,Erpetoichthys calabaricus
-8010,elucius_gene_ensembl,Esox lucius
-9685,fcatus_gene_ensembl,Felis catus
-59894,falbicollis_gene_ensembl,Ficedula albicollis
-8078,fheteroclitus_gene_ensembl,Fundulus heteroclitus
-8049,gmorhua_gene_ensembl,Gadus morhua
-9031,ggallus_gene_ensembl,Gallus gallus
-69293,gaculeatus_gene_ensembl,Gasterosteus aculeatus
-48883,gfortis_gene_ensembl,Geospiza fortis
-1825980,gevgoodei_gene_ensembl,Gopherus evgoodei
-9595,ggorilla_gene_ensembl,Gorilla gorilla gorilla
-8153,hburtoni_gene_ensembl,Haplochromis burtoni
-10181,hgfemale_gene_ensembl,Heterocephalus glaber
-109280,hcomes_gene_ensembl,Hippocampus comes
-9606,hsapiens_gene_ensembl,Homo sapiens
-62062,hhucho_gene_ensembl,Hucho hucho
-7998,ipunctatus_gene_ensembl,Ictalurus punctatus
-43179,itridecemlineatus_gene_ensembl,Ictidomys tridecemlineatus
-51337,jjaculus_gene_ensembl,Jaculus jaculus
-37003,kmarmoratus_gene_ensembl,Kryptolebias marmoratus
-56723,lbergylta_gene_ensembl,Labrus bergylta
-215358,lcrocea_gene_ensembl,Larimichthys crocea
-8187,lcalcarifer_gene_ensembl,Lates calcarifer
-8630,llaticaudata_gene_ensembl,Laticauda laticaudata
-7897,lchalumnae_gene_ensembl,Latimeria chalumnae
-7918,loculatus_gene_ensembl,Lepisosteus oculatus
-445787,lleishanense_gene_ensembl,Leptobrachium leishanense
-9785,lafricana_gene_ensembl,Loxodonta africana
-9541,mfascicularis_gene_ensembl,Macaca fascicularis
-9544,mmulatta_gene_ensembl,Macaca mulatta
-9545,mnemestrina_gene_ensembl,Macaca nemestrina
-9568,mleucophaeus_gene_ensembl,Mandrillus leucophaeus
-9994,mmmarmota_gene_ensembl,Marmota marmota marmota
-205130,marmatus_gene_ensembl,Mastacembelus armatus
-106582,mzebra_gene_ensembl,Maylandia zebra
-9103,mgallopavo_gene_ensembl,Meleagris gallopavo
-10036,mauratus_gene_ensembl,Mesocricetus auratus
-30608,mmurinus_gene_ensembl,Microcebus murinus
-79684,mochrogaster_gene_ensembl,Microtus ochrogaster
-13616,mdomestica_gene_ensembl,Monodelphis domestica
-40151,mmonoceros_gene_ensembl,Monodon monoceros
-68415,mmoschiferus_gene_ensembl,Moschus moschiferus
-10089,mcaroli_gene_ensembl,Mus caroli
-10090,mmusculus_gene_ensembl,Mus musculus
-10093,mpahari_gene_ensembl,Mus pahari
-10103,mspicilegus_gene_ensembl,Mus spicilegus
-10096,mspretus_gene_ensembl,Mus spretus
-9669,mpfuro_gene_ensembl,Mustela putorius furo
-59463,mlucifugus_gene_ensembl,Myotis lucifugus
-586833,mmurdjan_gene_ensembl,Myripristis murdjan
-35670,nnaja_gene_ensembl,Naja naja
-1026970,ngalili_gene_ensembl,Nannospalax galili
-32507,nbrichardi_gene_ensembl,Neolamprologus brichardi
-452646,nvison_gene_ensembl,Neovison vison
-61853,nleucogenys_gene_ensembl,Nomascus leucogenys
-9315,neugenii_gene_ensembl,Notamacropus eugenii
-8663,nscutatus_gene_ensembl,Notechis scutatus
-105023,nfurzeri_gene_ensembl,Nothobranchius furzeri
-9978,oprinceps_gene_ensembl,Ochotona princeps
-10160,odegus_gene_ensembl,Octodon degus
-8019,okisutch_gene_ensembl,Oncorhynchus kisutch
-8022,omykiss_gene_ensembl,Oncorhynchus mykiss
-74940,otshawytscha_gene_ensembl,Oncorhynchus tshawytscha
-8128,oniloticus_gene_ensembl,Oreochromis niloticus
-9258,oanatinus_gene_ensembl,Ornithorhynchus anatinus
-9986,ocuniculus_gene_ensembl,Oryctolagus cuniculus
-123683,ojavanicus_gene_ensembl,Oryzias javanicus
-8090,olatipes_gene_ensembl,Oryzias latipes
-30732,omelastigma_gene_ensembl,Oryzias melastigma
-183150,osinensis_gene_ensembl,Oryzias sinensis
-30611,ogarnettii_gene_ensembl,Otolemur garnettii
-9940,oaries_gene_ensembl,Ovis aries
-9597,ppaniscus_gene_ensembl,Pan paniscus
-9598,ptroglodytes_gene_ensembl,Pan troglodytes
-9689,pleo_gene_ensembl,Panthera leo
-9691,ppardus_gene_ensembl,Panthera pardus
-74533,ptaltaica_gene_ensembl,Panthera tigris altaica
-9555,panubis_gene_ensembl,Papio anubis
-1676925,pkingsleyae_gene_ensembl,Paramormyrops kingsleyae
-9157,pmajor_gene_ensembl,Parus major
-13735,psinensis_gene_ensembl,Pelodiscus sinensis
-230844,pmbairdii_gene_ensembl,Peromyscus maniculatus bairdii
-7757,pmarinus_gene_ensembl,Petromyzon marinus
-38626,pcinereus_gene_ensembl,Phascolarctos cinereus
-42100,psinus_gene_ensembl,Phocoena sinus
-9755,pcatodon_gene_ensembl,Physeter catodon
-64176,pmuralis_gene_ensembl,Podarcis muralis
-48698,pformosa_gene_ensembl,Poecilia formosa
-48699,platipinna_gene_ensembl,Poecilia latipinna
-8081,preticulata_gene_ensembl,Poecilia reticulata
-9601,pabelii_gene_ensembl,Pongo abelii
-9813,pcapensis_gene_ensembl,Procavia capensis
-1328070,psimus_gene_ensembl,Prolemur simus
-379532,pcoquereli_gene_ensembl,Propithecus coquereli
-8673,ptextilis_gene_ensembl,Pseudonaja textilis
-132908,pvampyrus_gene_ensembl,Pteropus vampyrus
-303518,pnyererei_gene_ensembl,Pundamilia nyererei
-42514,pnattereri_gene_ensembl,Pygocentrus nattereri
-10116,rnorvegicus_gene_ensembl,Rattus norvegicus
-59479,rferrumequinum_gene_ensembl,Rhinolophus ferrumequinum
-61621,rbieti_gene_ensembl,Rhinopithecus bieti
-61622,rroxellana_gene_ensembl,Rhinopithecus roxellana
-559292,scerevisiae_gene_ensembl,Saccharomyces cerevisiae
-39432,sbboliviensis_gene_ensembl,Saimiri boliviensis boliviensis
-8030,ssalar_gene_ensembl,Salmo salar
-8032,strutta_gene_ensembl,Salmo trutta
-96440,smerianae_gene_ensembl,Salvator merianae
-283035,slucioperca_gene_ensembl,Sander lucioperca
-9305,sharrisii_gene_ensembl,Sarcophilus harrisii
-55149,svulgaris_gene_ensembl,Sciurus vulgaris
-113540,sformosus_gene_ensembl,Scleropages formosus
-52904,smaximus_gene_ensembl,Scophthalmus maximus
-9135,scanaria_gene_ensembl,Serinus canaria
-41447,sdumerili_gene_ensembl,Seriola dumerili
-1841481,sldorsalis_gene_ensembl,Seriola lalandi dorsalis
-75366,sgrahami_gene_ensembl,Sinocyclocheilus grahami
-42254,saraneus_gene_ensembl,Sorex araneus
-8175,saurata_gene_ensembl,Sparus aurata
-8508,spunctatus_gene_ensembl,Sphenodon punctatus
-144197,spartitus_gene_ensembl,Stegastes partitus
-2489341,shabroptila_gene_ensembl,Strigops habroptila
-441894,scaustralis_gene_ensembl,Struthio camelus australis
-9823,sscrofa_gene_ensembl,Sus scrofa
-59729,tguttata_gene_ensembl,Taeniopygia guttata
-2587831,trubripes_gene_ensembl,Terrapene carolina triunguis
-99883,tnigroviridis_gene_ensembl,Tetraodon nigroviridis
-37347,tbelangeri_gene_ensembl,Tupaia belangeri
-9739,ttruncatus_gene_ensembl,Tursiops truncatus
-9999,uparryii_gene_ensembl,Urocitellus parryii
-9643,uamericanus_gene_ensembl,Ursus americanus
-29073,umaritimus_gene_ensembl,Ursus maritimus
-30538,vpacos_gene_ensembl,Vicugna pacos
-29139,vursinus_gene_ensembl,Vombatus ursinus
-9627,vvulpes_gene_ensembl,Vulpes vulpes
-8364,xtropicalis_gene_ensembl,Xenopus tropicalis
-8083,xmaculatus_gene_ensembl,Xiphophorus maculatus
+Taxon_ID,MartDatasets,Scientific_name,OrgDb,Common_name,kegg
+80966,apolyacanthus_gene_ensembl,Acanthochromis polyacanthus,,,
+9646,amelanoleuca_gene_ensembl,Ailuropoda melanoleuca,,,
+61819,acitrinellus_gene_ensembl,Amphilophus citrinellus,,,
+80972,aocellaris_gene_ensembl,Amphiprion ocellaris,,,
+161767,apercula_gene_ensembl,Amphiprion percula,,,
+64144,atestudineus_gene_ensembl,Anabas testudineus,,,
+8839,aplatyrhynchos_gene_ensembl,Anas platyrhynchos,,,
+8840,applatyrhynchos_gene_ensembl,Anas platyrhynchos platyrhynchos,,,
+28377,acarolinensis_gene_ensembl,Anolis carolinensis,,,
+132585,abrachyrhynchus_gene_ensembl,Anser brachyrhynchus,,,
+37293,anancymaae_gene_ensembl,Aotus nancymaae,,,
+223781,acchrysaetos_gene_ensembl,Aquila chrysaetos chrysaetos,,,
+8154,acalliptera_gene_ensembl,Astatotilapia calliptera,,,
+7994,amexicanus_gene_ensembl,Astyanax mexicanus,,,
+9771,bmusculus_gene_ensembl,Balaenoptera musculus,,,
+158456,bsplendens_gene_ensembl,Betta splendens,,,
+43346,bbbison_gene_ensembl,Bison bison bison,,,
+30521,bgrunniens_gene_ensembl,Bos grunniens,,,
+30522,bihybrid_gene_ensembl,Bos indicus x Bos taurus,,,
+72004,bmutus_gene_ensembl,Bos mutus,,,
+9913,btaurus_gene_ensembl,Bos taurus,org.Bt.eg.db,Bovine,bta
+6239,celegans_gene_ensembl,Caenorhabditis elegans,org.Ce.eg.db,Worm,cel
+9483,cjacchus_gene_ensembl,Callithrix jacchus,,,
+7868,cmilii_gene_ensembl,Callorhinchus milii,,,
+9838,cdromedarius_gene_ensembl,Camelus dromedarius,,,
+286419,cldingo_gene_ensembl,Canis lupus dingo,,,
+9615,clfamiliaris_gene_ensembl,Canis lupus familiaris,org.Cf.eg.db,Canine,cfa
+9925,chircus_gene_ensembl,Capra hircus,,,
+7957,cauratus_gene_ensembl,Carassius auratus,,,
+1868482,csyrichta_gene_ensembl,Carlito syrichta,,,
+51154,cwagneri_gene_ensembl,Catagonus wagneri,,,
+10141,cporcellus_gene_ensembl,Cavia porcellus,,,
+2715852,ccapucinus_gene_ensembl,Cebus capucinus imitator,,,
+9531,catys_gene_ensembl,Cercocebus atys,,,
+84702,chyarkandensis_gene_ensembl,Cervus hanglu yarkandensis,,,
+106734,cabingdonii_gene_ensembl,Chelonoidis abingdonii,,,
+34839,clanigera_gene_ensembl,Chinchilla lanigera,,,
+60711,csabaeus_gene_ensembl,Chlorocebus sabaeus,,,
+9358,choffmanni_gene_ensembl,Choloepus hoffmanni,,,
+8478,cpbellii_gene_ensembl,Chrysemys picta bellii,,,
+7719,cintestinalis_gene_ensembl,Ciona intestinalis,,,
+51511,csavignyi_gene_ensembl,Ciona savignyi,,,
+7950,charengus_gene_ensembl,Clupea harengus,,,
+56716,cgobio_gene_ensembl,Cottoperca gobio,,,
+93934,cjaponica_gene_ensembl,Coturnix japonica,,,
+8502,cporosus_gene_ensembl,Crocodylus porosus,,,
+8103,clumpus_gene_ensembl,Cyclopterus lumpus,,,
+244447,csemilaevis_gene_ensembl,Cynoglossus semilaevis,,,
+28743,cvariegatus_gene_ensembl,Cyprinodon variegatus,,,
+7962,ccarpio_gene_ensembl,Cyprinus carpio,,,
+7955,drerio_gene_ensembl,Danio rerio,org.Dr.eg.db,Zebrafish,dre
+9361,dnovemcinctus_gene_ensembl,Dasypus novemcinctus,,,
+9749,dleucas_gene_ensembl,Delphinapterus leucas,,,
+299321,dclupeoides_gene_ensembl,Denticeps clupeoides,,,
+13489,dlabrax_gene_ensembl,Dicentrarchus labrax,,,
+10020,dordii_gene_ensembl,Dipodomys ordii,,,
+7227,dmelanogaster_gene_ensembl,Drosophila melanogaster,org.Dm.eg.db,Fly,dme
+9371,etelfairi_gene_ensembl,Echinops telfairi,,,
+8005,eelectricus_gene_ensembl,Electrophorus electricus,,,
+7764,eburgeri_gene_ensembl,Eptatretus burgeri,,,
+83772,eaasinus_gene_ensembl,Equus asinus asinus,,,
+9796,ecaballus_gene_ensembl,Equus caballus,,,
+9365,eeuropaeus_gene_ensembl,Erinaceus europaeus,,,
+27687,ecalabaricus_gene_ensembl,Erpetoichthys calabaricus,,,
+8010,elucius_gene_ensembl,Esox lucius,,,
+9685,fcatus_gene_ensembl,Felis catus,,,
+59894,falbicollis_gene_ensembl,Ficedula albicollis,,,
+8078,fheteroclitus_gene_ensembl,Fundulus heteroclitus,,,
+8049,gmorhua_gene_ensembl,Gadus morhua,,,
+9031,ggallus_gene_ensembl,Gallus gallus,org.Gg.eg.db,Chicken,gga
+69293,gaculeatus_gene_ensembl,Gasterosteus aculeatus,,,
+48883,gfortis_gene_ensembl,Geospiza fortis,,,
+1825980,gevgoodei_gene_ensembl,Gopherus evgoodei,,,
+9595,ggorilla_gene_ensembl,Gorilla gorilla gorilla,,,
+8153,hburtoni_gene_ensembl,Haplochromis burtoni,,,
+10181,hgfemale_gene_ensembl,Heterocephalus glaber,,,
+109280,hcomes_gene_ensembl,Hippocampus comes,,,
+9606,hsapiens_gene_ensembl,Homo sapiens,org.Hs.eg.db,Human,hsa
+62062,hhucho_gene_ensembl,Hucho hucho,,,
+7998,ipunctatus_gene_ensembl,Ictalurus punctatus,,,
+43179,itridecemlineatus_gene_ensembl,Ictidomys tridecemlineatus,,,
+51337,jjaculus_gene_ensembl,Jaculus jaculus,,,
+37003,kmarmoratus_gene_ensembl,Kryptolebias marmoratus,,,
+56723,lbergylta_gene_ensembl,Labrus bergylta,,,
+215358,lcrocea_gene_ensembl,Larimichthys crocea,,,
+8187,lcalcarifer_gene_ensembl,Lates calcarifer,,,
+8630,llaticaudata_gene_ensembl,Laticauda laticaudata,,,
+7897,lchalumnae_gene_ensembl,Latimeria chalumnae,,,
+7918,loculatus_gene_ensembl,Lepisosteus oculatus,,,
+445787,lleishanense_gene_ensembl,Leptobrachium leishanense,,,
+9785,lafricana_gene_ensembl,Loxodonta africana,,,
+9541,mfascicularis_gene_ensembl,Macaca fascicularis,,,
+9544,mmulatta_gene_ensembl,Macaca mulatta,org.Mmu.eg.db,Rhesus,mcc
+9545,mnemestrina_gene_ensembl,Macaca nemestrina,,,
+9568,mleucophaeus_gene_ensembl,Mandrillus leucophaeus,,,
+9994,mmmarmota_gene_ensembl,Marmota marmota marmota,,,
+205130,marmatus_gene_ensembl,Mastacembelus armatus,,,
+106582,mzebra_gene_ensembl,Maylandia zebra,,,
+9103,mgallopavo_gene_ensembl,Meleagris gallopavo,,,
+10036,mauratus_gene_ensembl,Mesocricetus auratus,,,
+30608,mmurinus_gene_ensembl,Microcebus murinus,,,
+79684,mochrogaster_gene_ensembl,Microtus ochrogaster,,,
+13616,mdomestica_gene_ensembl,Monodelphis domestica,,,
+40151,mmonoceros_gene_ensembl,Monodon monoceros,,,
+68415,mmoschiferus_gene_ensembl,Moschus moschiferus,,,
+10089,mcaroli_gene_ensembl,Mus caroli,,,
+10090,mmusculus_gene_ensembl,Mus musculus,org.Mm.eg.db,Mouse,mmu
+10093,mpahari_gene_ensembl,Mus pahari,,,
+10103,mspicilegus_gene_ensembl,Mus spicilegus,,,
+10096,mspretus_gene_ensembl,Mus spretus,,,
+9669,mpfuro_gene_ensembl,Mustela putorius furo,,,
+59463,mlucifugus_gene_ensembl,Myotis lucifugus,,,
+586833,mmurdjan_gene_ensembl,Myripristis murdjan,,,
+35670,nnaja_gene_ensembl,Naja naja,,,
+1026970,ngalili_gene_ensembl,Nannospalax galili,,,
+32507,nbrichardi_gene_ensembl,Neolamprologus brichardi,,,
+452646,nvison_gene_ensembl,Neovison vison,,,
+61853,nleucogenys_gene_ensembl,Nomascus leucogenys,,,
+9315,neugenii_gene_ensembl,Notamacropus eugenii,,,
+8663,nscutatus_gene_ensembl,Notechis scutatus,,,
+105023,nfurzeri_gene_ensembl,Nothobranchius furzeri,,,
+9978,oprinceps_gene_ensembl,Ochotona princeps,,,
+10160,odegus_gene_ensembl,Octodon degus,,,
+8019,okisutch_gene_ensembl,Oncorhynchus kisutch,,,
+8022,omykiss_gene_ensembl,Oncorhynchus mykiss,,,
+74940,otshawytscha_gene_ensembl,Oncorhynchus tshawytscha,,,
+8128,oniloticus_gene_ensembl,Oreochromis niloticus,,,
+9258,oanatinus_gene_ensembl,Ornithorhynchus anatinus,,,
+9986,ocuniculus_gene_ensembl,Oryctolagus cuniculus,,,
+123683,ojavanicus_gene_ensembl,Oryzias javanicus,,,
+8090,olatipes_gene_ensembl,Oryzias latipes,,,
+30732,omelastigma_gene_ensembl,Oryzias melastigma,,,
+183150,osinensis_gene_ensembl,Oryzias sinensis,,,
+30611,ogarnettii_gene_ensembl,Otolemur garnettii,,,
+9940,oaries_gene_ensembl,Ovis aries,,,
+9597,ppaniscus_gene_ensembl,Pan paniscus,,,
+9598,ptroglodytes_gene_ensembl,Pan troglodytes,org.Pt.eg.db,Chimp,ptr
+9689,pleo_gene_ensembl,Panthera leo,,,
+9691,ppardus_gene_ensembl,Panthera pardus,,,
+74533,ptaltaica_gene_ensembl,Panthera tigris altaica,,,
+9555,panubis_gene_ensembl,Papio anubis,,,
+1676925,pkingsleyae_gene_ensembl,Paramormyrops kingsleyae,,,
+9157,pmajor_gene_ensembl,Parus major,,,
+13735,psinensis_gene_ensembl,Pelodiscus sinensis,,,
+230844,pmbairdii_gene_ensembl,Peromyscus maniculatus bairdii,,,
+7757,pmarinus_gene_ensembl,Petromyzon marinus,,,
+38626,pcinereus_gene_ensembl,Phascolarctos cinereus,,,
+42100,psinus_gene_ensembl,Phocoena sinus,,,
+9755,pcatodon_gene_ensembl,Physeter catodon,,,
+64176,pmuralis_gene_ensembl,Podarcis muralis,,,
+48698,pformosa_gene_ensembl,Poecilia formosa,,,
+48699,platipinna_gene_ensembl,Poecilia latipinna,,,
+8081,preticulata_gene_ensembl,Poecilia reticulata,,,
+9601,pabelii_gene_ensembl,Pongo abelii,,,
+9813,pcapensis_gene_ensembl,Procavia capensis,,,
+1328070,psimus_gene_ensembl,Prolemur simus,,,
+379532,pcoquereli_gene_ensembl,Propithecus coquereli,,,
+8673,ptextilis_gene_ensembl,Pseudonaja textilis,,,
+132908,pvampyrus_gene_ensembl,Pteropus vampyrus,,,
+303518,pnyererei_gene_ensembl,Pundamilia nyererei,,,
+42514,pnattereri_gene_ensembl,Pygocentrus nattereri,,,
+10116,rnorvegicus_gene_ensembl,Rattus norvegicus,org.Rn.eg.db,Rat,rno
+59479,rferrumequinum_gene_ensembl,Rhinolophus ferrumequinum,,,
+61621,rbieti_gene_ensembl,Rhinopithecus bieti,,,
+61622,rroxellana_gene_ensembl,Rhinopithecus roxellana,,,
+559292,scerevisiae_gene_ensembl,Saccharomyces cerevisiae,org.Sc.sgd.db,Yeast,sce
+39432,sbboliviensis_gene_ensembl,Saimiri boliviensis boliviensis,,,
+8030,ssalar_gene_ensembl,Salmo salar,,,
+8032,strutta_gene_ensembl,Salmo trutta,,,
+96440,smerianae_gene_ensembl,Salvator merianae,,,
+283035,slucioperca_gene_ensembl,Sander lucioperca,,,
+9305,sharrisii_gene_ensembl,Sarcophilus harrisii,,,
+55149,svulgaris_gene_ensembl,Sciurus vulgaris,,,
+113540,sformosus_gene_ensembl,Scleropages formosus,,,
+52904,smaximus_gene_ensembl,Scophthalmus maximus,,,
+9135,scanaria_gene_ensembl,Serinus canaria,,,
+41447,sdumerili_gene_ensembl,Seriola dumerili,,,
+1841481,sldorsalis_gene_ensembl,Seriola lalandi dorsalis,,,
+75366,sgrahami_gene_ensembl,Sinocyclocheilus grahami,,,
+42254,saraneus_gene_ensembl,Sorex araneus,,,
+8175,saurata_gene_ensembl,Sparus aurata,,,
+8508,spunctatus_gene_ensembl,Sphenodon punctatus,,,
+144197,spartitus_gene_ensembl,Stegastes partitus,,,
+2489341,shabroptila_gene_ensembl,Strigops habroptila,,,
+441894,scaustralis_gene_ensembl,Struthio camelus australis,,,
+9823,sscrofa_gene_ensembl,Sus scrofa,org.Ss.eg.db,Pig,ssc
+59729,tguttata_gene_ensembl,Taeniopygia guttata,,,
+2587831,trubripes_gene_ensembl,Terrapene carolina triunguis,,,
+99883,tnigroviridis_gene_ensembl,Tetraodon nigroviridis,,,
+37347,tbelangeri_gene_ensembl,Tupaia belangeri,,,
+9739,ttruncatus_gene_ensembl,Tursiops truncatus,,,
+9999,uparryii_gene_ensembl,Urocitellus parryii,,,
+9643,uamericanus_gene_ensembl,Ursus americanus,,,
+29073,umaritimus_gene_ensembl,Ursus maritimus,,,
+30538,vpacos_gene_ensembl,Vicugna pacos,,,
+29139,vursinus_gene_ensembl,Vombatus ursinus,,,
+9627,vvulpes_gene_ensembl,Vulpes vulpes,,,
+8364,xtropicalis_gene_ensembl,Xenopus tropicalis,org.Xl.eg.db,Xenopus,xtr
+8083,xmaculatus_gene_ensembl,Xiphophorus maculatus,,,

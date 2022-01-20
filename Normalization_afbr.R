@@ -23,7 +23,13 @@ coldata_vs<- coldata0[c("group1","group2")]
 coldata_vs<-coldata_vs[rowSums(is.na(coldata_vs)) == 0,] #remove the NA rows
 # read samplesheet as factors (as.is = F) for Deseq2 statistical analysis
 coldata_factor <- read.csv(args[2], header = T, as.is = F)
+coldata_factor[]<-lapply(coldata_factor, factor)
 coldata<-coldata_factor[,1:2]
+# update the coldata if metadata is provided
+if (basename(args[4])=="metadata.csv"){
+  coldata <- read.csv(args[4], header = T, as.is = F)
+  coldata[]<-lapply(coldata, factor)
+}
 
 if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_all")){
   files_h <- list.files(path=paste0(dirname(args[1]),"/temp"), pattern="^Report_host_.*\\.txt$", full.names=TRUE, recursive=FALSE)
@@ -36,7 +42,10 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
     transcriptome_size<-c(transcriptome_size,setNames(total_reads,fn)) #add sample name with value to the list lh
   }
   transcriptome_size <- log2(transcriptome_size)-mean(log2(transcriptome_size))
+  coldata$order<-1:nrow(coldata)
   coldata<-merge(coldata,as.data.frame(transcriptome_size), by.x="sample_name",by.y="row.names")
+  coldata<-coldata[order(coldata$order), ]
+  coldata<-subset(coldata, select = -c(order))
   # make cts(count matrix) has consistent order with samplesheet
   cts<-cts[coldata$sample_name]
   # load the datastructure to DESeq
@@ -44,12 +53,39 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
                                 colData = coldata,
                                 design= ~ group + transcriptome_size)
 }
+# adjust the design if metadata is provided
+if (basename(args[4])=="metadata.csv"){
+  funNew <- function(x){
+    as.formula(paste("~", paste(x, collapse = " + ")))
+  }
+  design(dds)<-funNew(names(coldata)[2:ncol(coldata)])
+}
 
 # perform the DESeq analysis
 dds <- DESeq(dds)
 
-# normalized reads count
-norm<-counts(dds,normalized=T)
+# normalized and transfored reads count
+if (dim(results(dds))[1]  < 1000 || min(colSums(cts !=0)) < 1000){
+  vsd<-varianceStabilizingTransformation(dds,blind=F) # vatiance stabilizing transformation
+} else {
+  vsd<-vst(dds,blind=F)
+}
+normtrans<-assay(vsd)
+
+# norm<-counts(dds,normalized=T)
+
+# normalized reads count with host transcriptome size and with avoiding removing variation associated with the other conditions
+if (basename(args[4])=="metadata.csv"){
+  mm <- model.matrix(funNew(names(coldata)[2:(ncol(coldata)-1)]), colData(vsd))
+} else {
+  mm <- model.matrix(funNew(names(coldata)[2]), colData(vsd))
+}
+norm <- limma::removeBatchEffect(normtrans, vsd$transcriptome_size, design=mm)
+# if (basename(args[4])=="metadata.csv"){
+#   coldata.n<-coldata
+#   coldata.n[]<-lapply(coldata.n, as.numeric)
+#   norm <- limma::removeBatchEffect(normtrans, covariates=coldata.n[,2:ncol(coldata.n)])
+# }
 
 # read the un-normalized bracken files (tree like)
 files<-list.files(path=args[3],full.names=TRUE, recursive=FALSE)

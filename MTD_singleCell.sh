@@ -3,8 +3,9 @@
 # default settings
 PD=""
 scn=""
+length=40 # read length trimming by fastp
 
-while getopts i:o:h:t:p:d:l:r:m: option
+while getopts i:o:h:t:p:d:l:r:m:f: option
 do
     case "${option}" in
         i) samplesheet=${OPTARG};;
@@ -16,6 +17,7 @@ do
         l) low_RNA=${OPTARG};;
         r) high_RNA=${OPTARG};;
         m) mt_percent=${OPTARG};;
+        f) length=${OPTARG};;
     esac
 done
 echo "input samlesheet_SC.csv: $samplesheet"
@@ -54,19 +56,22 @@ condapath=$(head -n 1 $MTDIR/condaPath)
 source $condapath/etc/profile.d/conda.sh
 conda activate MTD
 
-# Single cell fastq pre-processing: arrangement and whilelist making
+echo 'Single cell fastq pre-processing: arrangement and whilelist making...'
 Rscript $MTDIR/SingleCell_Prep.R $samplesheet $outputdr $platform
+
+echo 'MTD running  progress:'
+echo '>>                  [10%]'
 
 inputdr=$outputdr/fastq
 
 # Step 0: Host database auto selection
-if [ $hostid == 9606 ]; then
+if [[ $hostid == 9606 ]]; then
     DB_host=$MTDIR/kraken2DB_human # for kraken2
-elif [ $hostid == 9544 ]; then
+elif [[ $hostid == 9544 ]]; then
     DB_host=$MTDIR/kraken2DB_rhesus # for kraken2
-elif [ $hostid == 10090 ]; then
+elif [[ $hostid == 10090 ]]; then
     DB_host=$MTDIR/kraken2DB_mice # for kraken2
-elif [ -d "$MTDIR/kraken2DB_${hostid}" ]; then # test if customized host species exist
+elif [[ -d "$MTDIR/kraken2DB_${hostid}" ]]; then # test if customized host species exist
     DB_host=$MTDIR/kraken2DB_${hostid}
 else
     echo "Host species is not supported. Please use bash Customized_host.sh to build one."
@@ -96,7 +101,7 @@ for i in $files1; do
     lsn+=( $sn )
 done
 
-# Step 1: Extract barcdoes and UMIs and add to read names
+echo 'Step 1: Extract barcdoes and UMIs and add to read names...'
 for i in "${lsn[@]}"
 do
     fq1=$(find $inputdr -type f \( -name "${i}_1.fq.gz" -or -name "${i}_1.fastq.gz" -or -name "${i}_1.fq" -or -name "${i}_1.fastq" \))
@@ -113,19 +118,25 @@ do
                     --whitelist=$CB
 done
 
-# Step 2: Raw reads trimming
+echo 'MTD running  progress:'
+echo '>>>>                [20%]'
+
+echo 'Step 2: Raw reads trimming and quality control...'
 for i in "${lsn[@]}" # store input sample name in i; eg. SRR7819592
 do
     #fastp with polyA/T trimming
         fastp --trim_poly_x \
-            --length_required 40 \
+            --length_required $length \
             --thread $threads \
             -i ${i}_2.extracted.fastq.gz \
             -o ${i}_2.extracted.trimmed.fastq.gz
 done
 
-# Step 3: Classify reads by kraken2
-# Reads classification by kraken2; 1st step for host
+echo 'MTD running  progress:'
+echo '>>>>>>              [30%]'
+
+echo 'Step 3: Classify reads by kraken2...'
+echo 'Reads classification by kraken2; 1st step for host classification...'
 for i in "${lsn[@]}"; do
     kraken2 --db $DB_host --use-names \
         --report Report_host_$i.txt \
@@ -137,7 +148,10 @@ for i in "${lsn[@]}"; do
         > Report_host_$i.kraken
 done
 
-# Reads classification by kraken2; 2nd step for non-host reads
+echo 'MTD running  progress:'
+echo '>>>>>>>>            [40%]'
+
+echo 'Reads classification by kraken2; 2nd step for non-host reads classification...'
 for i in "${lsn[@]}"; do
     kraken2 --db $DB_micro --use-names \
         --report Report_non-host.raw_$i.txt \
@@ -148,7 +162,10 @@ for i in "${lsn[@]}"; do
         > Report_non-host_raw_$i.kraken
 done
 
-# Step 4: Decontamination
+echo 'MTD running  progress:'
+echo '>>>>>>>>>>          [50%]'
+
+echo 'Step 4: Decontamination...'
 conta_file=$MTDIR/conta_ls.txt
 if test -f "$conta_file"; then
     tls=$(awk -F '\t' '{print $2}' $conta_file)
@@ -162,7 +179,10 @@ if test -f "$conta_file"; then
             --taxid $conta_ls --exclude --include-children
     done
 
-    # Reads classification by kraken2; 3rd step for decontaminated non-host reads to get reports
+    echo 'MTD running  progress:'
+    echo '>>>>>>>>>>>>        [60%]'
+
+    echo 'Reads classification by kraken2; 3rd step for decontaminated non-host reads to get reports...'
     for i in "${lsn[@]}"; do
         kraken2 --db $DB_micro --use-names \
             --report Report_non-host_$i.txt \
@@ -174,14 +194,20 @@ if test -f "$conta_file"; then
     done
 fi
 
-# Step 5: Count UMIs per gene per cell for microbiome
+echo 'MTD running  progress:'
+echo '>>>>>>>>>>>>>>      [70%]'
+
+echo 'Step 5: Count UMIs per gene per cell for microbiome...'
 for file in Report_non-host_*.kraken
 do
     awk -F "_" 'gsub("\t","_") {print $2"_"$4"_"$3"\t"$5}' $file | sort -t $'\t' -k2 | \
     umi_tools count_tab --per-cell -S $file.c.tsv
 done
 
-# Step 6: Make the count matrix
+echo 'MTD running  progress:'
+echo '>>>>>>>>>>>>>>>>    [80%]'
+
+echo 'Step 6: Make the count matrix of microbiome...'
 Rscript $MTDIR/Singelcell4kraken2_umitools_batch.R $outputdr/temp
 
 for i in "${lsn[@]}"; do
@@ -190,8 +216,13 @@ done
 
 echo "Count matrix for microbiome is done"
 
-# Ex-step: Find out the microbiome and host gene with high correlation
+echo 'MTD running  progress:'
+echo '>>>>>>>>>>>>>>>>>>  [90%]'
+
+echo 'Ex-step: Find out the microbiome and host gene with high correlation...'
 Rscript $MTDIR/SC_corr.R $samplesheet $outputdr $platform $threads $low_RNA $high_RNA $mt_percent
 
+echo 'MTD running  progress:'
+echo '>>>>>>>>>>>>>>>>>>>>[100%]'
 echo "Count matrix for microbiome is in the output folder with name end with _count_matrix.txt"
 echo "MTD running is finished"

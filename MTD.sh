@@ -1,12 +1,22 @@
 #!/bin/bash
 
-while getopts i:o:h:t:c: option
+# default settings
+
+pdm="spearman" # method in HALLA
+length=40 # read length trimming by fastp
+read_len=75 # the read length in bracken
+
+while getopts i:o:h:t:m:p:l:r: option
 do
     case "${option}" in
         i) inputdr=${OPTARG};;
         o) outputdr=${OPTARG};;
         h) hostid=${OPTARG};;
         t) threads=${OPTARG};;
+        m) metadata=${OPTARG};;
+        p) pdm=${OPTARG};;
+        l) length=${OPTARG};;
+        r) read_len=${OPTARG};;
     esac
 done
 
@@ -14,6 +24,7 @@ done
 # outputdr=~/MTD_Results/test1 # select outputdr directory
 # hostid=9544 # Enter host species taxonomy ID; initally supporting 9544 (rhesus monkey), 9606 (human), and 10090 (mouse).
 # threads=20 # CPU threads; suggest >=16, eg. 20
+# pdm= spearman or pearson or mi or nmi or xicor or dcor # pairwise distance metrics refer to HALLA mannual
 
 # get MTD.sh script file path (in the MTD folder)
 MTDIR=$(dirname $(readlink -f $0))
@@ -105,7 +116,7 @@ for i in $lsn; do # store input sample name in i; eg. DJ01
     fq2=$(find $inputdr -type f \( -name "${i}_2.fq.gz" -or -name "${i}_2.fastq.gz" -or -name "${i}_2.fq" -or -name "${i}_2.fastq" \))
 	    #fastp with polyA/T trimming
         fastp --trim_poly_x \
-            --length_required 40 \
+            --length_required $length \
             --thread 16 \
             -i $fq1 -I $fq2 \
             -o Trimmed_${i}_1.fq.gz -O Trimmed_${i}_2.fq.gz 
@@ -180,9 +191,9 @@ echo '>>>>>>>>            [40%]'
 
 # Bracken analysis
 for i in $lsn; do # store input sample name in i; eg. DJ01
-    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.phylum.bracken -r 75 -l P -t $threads
-    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.genus.bracken -r 75 -l G -t $threads
-    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.species.bracken -r 75 -l S -t $threads
+    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.phylum.bracken -r $read_len -l P -t $threads
+    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.genus.bracken -r $read_len -l G -t $threads
+    bracken -d $DB_micro -i Report_non-host_${i}.txt -o Report_$i.species.bracken -r $read_len -l S -t $threads
 done
 
 echo 'MTD running  progress:'
@@ -203,13 +214,16 @@ for i in $lsn; do
     mv *${i}* $i
 done
 
+#Converted original _bracken report files (tree like) into .biom file for ANCOMBC and diversity analysis in phyloseq (R) etc. in DEG_Anno_Plot.R
+kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
+
 # Adjust bracken file (tree like) by normalizated reads counts; for additional visualization (.biom, .mpa, .krona)
-Rscript $MTDIR/Normalization_afbr.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $outputdr/temp/Report_non-host_bracken_species_normalized
+Rscript $MTDIR/Normalization_afbr.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $outputdr/temp/Report_non-host_bracken_species_normalized $metadata
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>          [50%]'
 
-#Converted _bracken report files (tree like) into .biom file for diversity analysis in phyloseq (R)
+#Converted adjusted _bracken report files (tree like) into .biom file for graph visualization: graphlan, MPA, krona
 kraken-biom * -o $outputdr/bracken_species_all.biom --fmt json
 #kraken-biom *_bracken_phylum -o bracken_phylum_all.biom --fmt json
 #kraken-biom *_bracken_genus -o bracken_genus_all.biom --fmt json
@@ -239,8 +253,8 @@ conda activate MTD
 
 cd ../temp
 
-# DEG & Annotation & Plots & Diversity & Preprocess
-Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $hostid
+# DEG & Annotation & Plots & Diversity & Preprocess for Microbiome
+Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
 
 cd $outputdr/temp
 mkdir -p bracken_raw_results # save the raw output from bracken (table like)
@@ -403,7 +417,7 @@ cd $outputdr
 sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
 
 # DEG & Annotation & Plots & preprocess for host
-Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv
+Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>     [75%]'
@@ -414,7 +428,7 @@ Rscript $MTDIR/gct_making.R $outputdr/Host_DEG/host_counts_TPM.csv $inputdr/samp
 Rscript $MTDIR/Tools/ssGSEA2.0/ssgsea-cli.R \
     -i $outputdr/ssGSEA/host.gct \
     -o $outputdr/ssGSEA/ssgsea-results \
-    -d $MTDIR/Tools/ssGSEA2.0/db/msigdb/c2.all.v7.0.symbols.gmt \
+    -d $MTDIR/Tools/ssGSEA2.0/db/msigdb/c2.all.v7.5.symbols.gmt \
     -y $MTDIR/Tools/ssGSEA2.0/config.yaml \
     -u $threads
 
@@ -435,12 +449,26 @@ halla -x $outputdr/halla/Microbiomes.txt \
     -o $outputdr/halla/host_gene \
     --x_dataset_label Microbiomes \
     --y_dataset_label Host_gene \
-    --diagnostic_plot -m spearman
+    --diagnostic_plot -m ${pdm}
 
     # show all clusters
+    if [[ $pdm == "spearman" ]]; then
+        pdm_name='Pairwise Spearman'
+    elif [[ $pdm == "pearson" ]]; then
+        pdm_name='Pairwise Pearson'
+    elif [[ $pdm == "mi" ]]; then
+        pdm_name='mi'
+    elif [[ $pdm == "nmi" ]]; then
+        pdm_name='nmi'
+    elif [[ $pdm == "xicor" ]]; then
+        pdm_name='xicor'
+    elif [[ $pdm == "dcor" ]]; then
+        pdm_name='dcor'
+    fi
+
     hallagram \
         -i $outputdr/halla/host_gene \
-        --cbar_label 'Pairwise Spearman' \
+        --cbar_label ${pdm_name} \
         --x_dataset_label Microbiomes \
         --y_dataset_label Host_gene \
         --output $outputdr/halla/host_gene/hallagram_all.png \
@@ -457,12 +485,12 @@ halla -x $outputdr/halla/Microbiomes.txt \
     -o $outputdr/halla/pathway \
     --x_dataset_label Microbiomes \
     --y_dataset_label Host_pathway \
-    --diagnostic_plot -m spearman
+    --diagnostic_plot -m ${pdm}
 
     # show all clusters
     hallagram \
         -i $outputdr/halla/pathway \
-        --cbar_label 'Pairwise Spearman' \
+        --cbar_label ${pdm_name} \
         --x_dataset_label Microbiomes \
         --y_dataset_label Host_pathway \
         --output $outputdr/halla/pathway_hallagram_all.png \
