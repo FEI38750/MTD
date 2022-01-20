@@ -110,7 +110,7 @@ host pathways and microbiome species
   - Users can modify the contaminant list (conta_ls.txt) in the MTD folder by adding the taxonomy ID of the microbe in the second column of the list and its name in the first column (optional).
 ## Advanced options
   - Users can provide additional metadata information of the samples (metadata.csv) for more complex experimental designs and analysis. In addition to sample_name and group, users can add the additional columns that represent covariants for the analysis. So the covariants, such as batch, group, age, sex, etc., can be adjusted during the read count abundance analysis through DESeq2, ANCOM-BC, and MaAsLin2 in MTD.\
-Further information about a proper experimental and formula design, please refer to DESeq2 manual:
+Further information about a proper experimental design for analysis, please refer to:
 https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html \
 Prepare the metadata.csv. You can copy and modify the one in MTD folder.\
         <img src="https://github.com/FEI38750/MTD/blob/main/Img/metadata.jpg" width=60% height=60%>
