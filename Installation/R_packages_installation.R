@@ -1,6 +1,6 @@
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager",repos = "http://cran.us.r-project.org")
-BiocManager::install(version = "3.12")
+BiocManager::install(version = "3.14")
 
 BiocManager::install(c("biomaRt","DESeq2","tximeta","limma","phyloseq","glmGamPoi","cmapR","MAST",
                         "microbiome","ANCOMBC","Maaslin2","DO.db","clusterProfiler","enrichplot","pathview"))
