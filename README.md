@@ -83,7 +83,7 @@ The individual group comparison results are saved in the corresponding subfolder
   The count matrix (bracken_normalized_species_all_DEG.csv) contains the name and taxonomy ID of microbiome species, DEG results for each group comparison, raw read counts, normalized reads count, normalized and transformed reads counts.\
 Diversity analysis, unclassified reads comparison, abundance&DEG heatmaps, phylogenetic trees.\
 Venn Diagram, heatmap, PCoA, barplot, and volcano plots for the results of species abundance and group comparisons.\
-  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Nonhost_DEG.jpg" width=70% height=70%>
+  <img src="https://github.com/FEI38750/MTD/blob/main/Img/Nonhost_output_folder.jpg" width=70% height=70%>
 * **Microbiome metabolic molecules**: hmn_genefamily_abundance_files contain microbiome metabolic molecules and group comparison results. Results are translated to kegg and go terms to facilitate reading and demonstrated via Venn Diagram, heatmap, PCA, barplot, and volcano plots and count matrix.\
 hmn_pathway_abundance_files contain pathway results of those molecules (e.g. humann_pathabundance_relab_stratified.tsv contains normalized relative abundance of pathways).
 * **Association analysis**: halla folder contains the results of association between:\
