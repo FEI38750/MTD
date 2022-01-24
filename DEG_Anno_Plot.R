@@ -71,7 +71,7 @@ coldata_factor <- read.csv(args[2], header = T, as.is = F)
 coldata_factor[]<-lapply(coldata_factor, factor)
 coldata<-coldata_factor[,1:2]
 # update the coldata if metadata is provided
-if (basename(args[5])=="metadata.csv"){
+if (length(args) == 5){
   coldata <- read.csv(args[5], header = T, as.is = F)
   coldata[]<-lapply(coldata, factor)
 }
@@ -116,7 +116,7 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
 }
 
 # adjust the design if metadata is provided
-if (basename(args[5])=="metadata.csv"){
+if (length(args) == 5){
   funNew <- function(x){
     as.formula(paste("~", paste(x, collapse = " + ")))
   }
@@ -146,30 +146,32 @@ write.csv(norm,file=paste0(sub(".tsv$|.txt$","",filename),"_normalized.csv"))
 # merge and add suffixes; normalized and normalized&transformed
 merge.nt<-merge(norm,normtrans,by="row.names", suffixes=c(".norm",".normtrans"))
 if (filename == "host_counts.txt"){
+  library("biomaRt")
+  host_sp<-read.csv(args[4]) # read a list of supported host species
   # add annotations; try up to 120 times/20 mins if biomaRt server not response
-  counter<-0
-  while (exists("gene_ID")==F & counter<=120){
-    library("biomaRt")
-    host_sp<-read.csv(args[4]) # read a list of supported host species
-    ensembl=useMart("ensembl",dataset=host_sp[host_sp$Taxon_ID==args[3],2]) # match host taxID with biomart ensembl database
-    names(merge.nt)[1]<-"GeneID"
-    genes <- merge.nt$GeneID
-    gene_ID <- getBM(filters="ensembl_gene_id",
-                     attributes=c("external_gene_name","ensembl_gene_id",
-                                  "chromosome_name","start_position","end_position",
-                                  "strand","gene_biotype","description"),
-                     values=genes,mart=ensembl)
-    names(gene_ID)[names(gene_ID)=="external_gene_name"]<-"gene_name" #rename the first column
-    counter<-counter+1
-    # delay 10 seconds for each try
-    if (counter>1){
-      print(paste0("Retry to get gene annotations from ensembl: ",counter," times")) 
+  ensembl <- NULL
+  attempt <- 0
+  while ( is.null(ensembl) && attempt <= 120){
+    try(
+      ensembl <- useMart("ensembl",dataset=host_sp[host_sp$Taxon_ID==args[3],2])
+    )
+    attempt<-attempt+1
+    if (attempt > 1){
+      print(paste0("Retry to get gene annotations from ensembl: ",attempt," times")) 
     }
     Sys.sleep(10)
   }
-  if (exists("gene_ID")==F){
+  if (is.null(ensembl)){
     stop("Failed to get gene annotations from ensembl server, please try again later")
   }
+  names(merge.nt)[1]<-"GeneID"
+  genes <- merge.nt$GeneID
+  gene_ID <- getBM(filters="ensembl_gene_id",
+                   attributes=c("external_gene_name","ensembl_gene_id",
+                                "chromosome_name","start_position","end_position",
+                                "strand","gene_biotype","description"),
+                   values=genes,mart=ensembl)
+  names(gene_ID)[names(gene_ID)=="external_gene_name"]<-"gene_name" #rename the first column
   gene_len<-read.table(args[1], row.names=1, sep="\t",header=T, quote="")
   gene_len<-gene_len["Length"]
   colnames(gene_len)<-"gene_length"
@@ -516,23 +518,27 @@ if (filename == "host_counts.txt"){
     ## run biological theme comparison ##
     genelist.ct <- BTC(coldata_vs,do.db)
     # GO enrichment comparison
-    cgo <- compareCluster(genelist.ct, fun = enrichGO, OrgDb=do.db)
-    cgo <- setReadable(cgo, OrgDb = do.db, keyType="ENTREZID")
-    dotplot(cgo, showCategory = nrow(cgo@compareClusterResult)) +
-      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-    ggsave("biological_theme_comparison_GO.pdf",height = 0.54*nrow(cgo@compareClusterResult), width = 3*length(unique(cgo@compareClusterResult$Cluster)))
-    ggsave("biological_theme_comparison_GO_net.pdf",
-           plot = cnetplot(cgo,cex_label_gene = 0.6, showCatdatary = round(nrow(cgo@compareClusterResult)/6)),
-           limitsize=F)
+    try(cgo <- compareCluster(genelist.ct, fun = enrichGO, OrgDb=do.db))
+    try(cgo <- setReadable(cgo, OrgDb = do.db, keyType="ENTREZID"))
+    if (exists("cgo")==T){
+      dotplot(cgo, showCategory = nrow(cgo@compareClusterResult)) +
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+      ggsave("biological_theme_comparison_GO.pdf",height = 0.54*nrow(cgo@compareClusterResult), width = 3*length(unique(cgo@compareClusterResult$Cluster)))
+      ggsave("biological_theme_comparison_GO_net.pdf",
+             plot = cnetplot(cgo,cex_label_gene = 0.6, showCatdatary = round(nrow(cgo@compareClusterResult)/6)),
+             limitsize=F)
+    }
     # KEGG enrichment comparison
-    ck <- compareCluster(genelist.ct, fun = enrichKEGG)
-    ck <- setReadable(ck, OrgDb = do.db, keyType="ENTREZID")
-    dotplot(ck, showCategory = nrow(ck@compareClusterResult)) +
-      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-    ggsave("biological_theme_comparison_KEGG.pdf",height = 0.54*nrow(ck@compareClusterResult), width = 3*length(unique(ck@compareClusterResult$Cluster)))
-    ggsave("biological_theme_comparison_KEGG_net.pdf",
-           plot = cnetplot(ck,cex_label_gene = 0.6, showCatdatary = round(nrow(ck@compareClusterResult)/6)),
-           limitsize=F)
+    try(ck <- compareCluster(genelist.ct, fun = enrichKEGG))
+    try(ck <- setReadable(ck, OrgDb = do.db, keyType="ENTREZID"))
+    if (exists("ck")==T){
+      dotplot(ck, showCategory = nrow(ck@compareClusterResult)) +
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+      ggsave("biological_theme_comparison_KEGG.pdf",height = 0.54*nrow(ck@compareClusterResult), width = 3*length(unique(ck@compareClusterResult$Cluster)))
+      ggsave("biological_theme_comparison_KEGG_net.pdf",
+             plot = cnetplot(ck,cex_label_gene = 0.6, showCatdatary = round(nrow(ck@compareClusterResult)/6)),
+             limitsize=F)
+    }
   }
 }
 
@@ -721,7 +727,7 @@ if (filename %in% c("bracken_species_all",
   ggsave("Alpha_diversity_sample.pdf")
   #Estimated and exported beta diversity (Bray-Curtis)
   #to transformation data by vst before beta diversity analysis
-  if (basename(args[5])=="metadata.csv"){
+  if (length(args) == 5){
     samples4phyloseq<-as.data.frame(coldata[2:ncol(coldata)], row.names = as.character(coldata$sample_name))
     sampledata<-sample_data(samples4phyloseq)
     data<-merge_phyloseq(data,sampledata)
@@ -734,6 +740,7 @@ if (filename %in% c("bracken_species_all",
     dds1 <- phyloseq_to_deseq2(data, ~ group)
   }
   ## ANCOMBC ##
+  library("ANCOMBC")
   pseq <- phyloseq::tax_glom(data, taxrank = "Species") # species taxid
   pseq1 <- microbiome::aggregate_taxa(data,"Species") # species name
   
@@ -755,9 +762,9 @@ if (filename %in% c("bracken_species_all",
     )
   } 
   
-  if (basename(args[5])=="metadata.csv"){
-    out <- ancombc_out(pseq,paste(names(coldata)[2:ncol(coldata)], collapse = " + "))
-    out1 <- ancombc_out(pseq1,paste(names(coldata)[2:ncol(coldata)], collapse = " + "))
+  if (length(args) == 5){
+    out <- ancombc_out(pseq,paste(names(coldata)[2:(ncol(coldata)-1)], collapse = " + "))
+    out1 <- ancombc_out(pseq1,paste(names(coldata)[2:(ncol(coldata)-1)], collapse = " + "))
   } else {
     out <- ancombc_out(pseq,"group") # taxid
     out1 <- ancombc_out(pseq1,"group") # species name
@@ -878,7 +885,7 @@ if (filename %in% c("bracken_species_all",
   data1<-data
   vsd1 <- varianceStabilizingTransformation(dds1)
   # normalized reads count with host transcriptome size and with avoiding removing variation associated with the other conditions
-  if (basename(args5)=="metadata.csv"){
+  if (length(args) == 5){
     mm <- model.matrix(funNew(names(coldata)[2:(ncol(coldata)-1)]), colData(vsd))
   } else {
     mm <- model.matrix(funNew(names(coldata)[2]), colData(vsd))
@@ -1441,7 +1448,7 @@ write.table(gph.anno1,paste0(dirname(args[1]),"/graphlan/annot.txt"),
 
 # adjust covariance effect
 normtrans_adj <- limma::removeBatchEffect(normtrans, vsd$group)
-if (basename(args[5])=="metadata.csv"){
+if (length(args) == 5){
   coldata.n<-coldata
   coldata.n[]<-lapply(coldata.n, as.numeric)
   normtrans_adj <- limma::removeBatchEffect(normtrans, covariates=coldata.n[,2:ncol(coldata.n)])

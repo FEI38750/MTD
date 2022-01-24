@@ -26,7 +26,7 @@ coldata_factor <- read.csv(args[2], header = T, as.is = F)
 coldata_factor[]<-lapply(coldata_factor, factor)
 coldata<-coldata_factor[,1:2]
 # update the coldata if metadata is provided
-if (basename(args[4])=="metadata.csv"){
+if (length(args) == 4){
   coldata <- read.csv(args[4], header = T, as.is = F)
   coldata[]<-lapply(coldata, factor)
 }
@@ -54,7 +54,7 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
                                 design= ~ group + transcriptome_size)
 }
 # adjust the design if metadata is provided
-if (basename(args[4])=="metadata.csv"){
+if (length(args) == 4){
   funNew <- function(x){
     as.formula(paste("~", paste(x, collapse = " + ")))
   }
@@ -75,13 +75,13 @@ normtrans<-assay(vsd)
 # norm<-counts(dds,normalized=T)
 
 # normalized reads count with host transcriptome size and with avoiding removing variation associated with the other conditions
-if (basename(args[4])=="metadata.csv"){
+if (length(args) == 4){
   mm <- model.matrix(funNew(names(coldata)[2:(ncol(coldata)-1)]), colData(vsd))
 } else {
   mm <- model.matrix(funNew(names(coldata)[2]), colData(vsd))
 }
 norm <- limma::removeBatchEffect(normtrans, vsd$transcriptome_size, design=mm)
-# if (basename(args[4])=="metadata.csv"){
+# if (length(args) == 4){
 #   coldata.n<-coldata
 #   coldata.n[]<-lapply(coldata.n, as.numeric)
 #   norm <- limma::removeBatchEffect(normtrans, covariates=coldata.n[,2:ncol(coldata.n)])

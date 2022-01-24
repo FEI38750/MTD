@@ -6,7 +6,7 @@ pdm="spearman" # method in HALLA
 length=40 # read length trimming by fastp
 read_len=75 # the read length in bracken
 
-while getopts i:o:h:t:m:p:l:r: option
+while getopts i:o:h:t:m:p:l:r:b: option
 do
     case "${option}" in
         i) inputdr=${OPTARG};;
@@ -17,6 +17,7 @@ do
         p) pdm=${OPTARG};;
         l) length=${OPTARG};;
         r) read_len=${OPTARG};;
+        b) blast=${OPTARG};;
     esac
 done
 
@@ -46,21 +47,25 @@ cd $outputdr/temp
 if [[ $hostid == 9606 ]]; then
     DB_host=$MTDIR/kraken2DB_human # for kraken2
     DB_hisat2=$MTDIR/hisat2_index_human/genome_tran #for hisat2
+    DB_blast=$MTDIR/human_blastdb/human_blastdb # for blast
     gtf=$MTDIR/ref_human/Homo_sapiens.GRCh38.104.gtf.gz # for featureCounts
 
 elif [[ $hostid == 9544 ]]; then
     DB_host=$MTDIR/kraken2DB_rhesus # for kraken2
     DB_hisat2=$MTDIR/hisat2_index_rhesus/genome_tran #for hisat2
+    DB_blast=$MTDIR/rhesus_blastdb/rhesus_blastdb # for blast
     gtf=$MTDIR/ref_rhesus/Macaca_mulatta.Mmul_10.104.gtf.gz # for featureCounts
 
 elif [[ $hostid == 10090 ]]; then
     DB_host=$MTDIR/kraken2DB_mice
     DB_hisat2=$MTDIR/hisat2_index_mouse/genome_tran
+    DB_blast=$MTDIR/mouse_blastdb/mouse_blastdb # for blast
     gtf=$MTDIR/ref_mouse/Mus_musculus.GRCm39.104.gtf.gz # for featureCounts
 
 elif [[ -d "$MTDIR/kraken2DB_${hostid}" ]]; then # test if customized host species exist
     DB_host=$MTDIR/kraken2DB_${hostid}
     DB_hisat2=$MTDIR/hisat2_index_${hostid}/genome_tran
+    DB_blast=$MTDIR/blastdb_${hostid}/blastdb_${hostid} # for blast
     gtf=$MTDIR/ref_${hostid}/ref_${hostid}.gtf.gz
 
 else
@@ -114,7 +119,7 @@ for i in $lsn; do # store input sample name in i; eg. DJ01
     # To get the corresponding fastq file as input (support .fq.gz, .fastq.gz, .fq, or .fastq)
     fq1=$(find $inputdr -type f \( -name "${i}_1.fq.gz" -or -name "${i}_1.fastq.gz" -or -name "${i}_1.fq" -or -name "${i}_1.fastq" \))
     fq2=$(find $inputdr -type f \( -name "${i}_2.fq.gz" -or -name "${i}_2.fastq.gz" -or -name "${i}_2.fq" -or -name "${i}_2.fastq" \))
-	    #fastp with polyA/T trimming
+	    # fastp with polyA/T trimming
         fastp --trim_poly_x \
             --length_required $length \
             --thread 16 \
@@ -218,13 +223,17 @@ done
 kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
 
 # Adjust bracken file (tree like) by normalizated reads counts; for additional visualization (.biom, .mpa, .krona)
+conda activate R412
 Rscript $MTDIR/Normalization_afbr.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $outputdr/temp/Report_non-host_bracken_species_normalized $metadata
+conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>          [50%]'
 
 #Converted adjusted _bracken report files (tree like) into .biom file for graph visualization: graphlan, MPA, krona
 kraken-biom * -o $outputdr/bracken_species_all.biom --fmt json
+#Converted original _bracken report files (tree like) into .biom file
+kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
 #kraken-biom *_bracken_phylum -o bracken_phylum_all.biom --fmt json
 #kraken-biom *_bracken_genus -o bracken_genus_all.biom --fmt json
 
@@ -254,7 +263,9 @@ conda activate MTD
 cd ../temp
 
 # DEG & Annotation & Plots & Diversity & Preprocess for Microbiome
+conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
+conda activate MTD
 
 cd $outputdr/temp
 mkdir -p bracken_raw_results # save the raw output from bracken (table like)
@@ -346,6 +357,7 @@ humann_regroup_table --input humann_genefamilies_relab_stratified.tsv --groups u
         --output humann_genefamilies_Abundance_go.tsv
 
 # Translate KEGG and GO ID to human readable terms
+conda activate R412
 Rscript $MTDIR/humann_ID_translation.R \
     $outputdr/temp/HUMAnN_output/humann_genefamilies_relAbundance_kegg.tsv \
     $outputdr/temp/HUMAnN_output/humann_genefamilies_relAbundance_go.tsv \
@@ -355,6 +367,7 @@ Rscript $MTDIR/humann_ID_translation.R \
         $outputdr/temp/HUMAnN_output/humann_genefamilies_Abundance_kegg.tsv \
         $outputdr/temp/HUMAnN_output/humann_genefamilies_Abundance_go.tsv \
         $MTDIR
+conda activate MTD
 
 #Cleaning up file structure
 mkdir $outputdr/hmn_pathway_abundance_files
@@ -368,8 +381,10 @@ mv *genefamilies* $outputdr/hmn_genefamily_abundance_files/
 
 # DEG & Annotation & Plots & Diversity & Preprocess
 cd $outputdr/hmn_genefamily_abundance_files
+conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_Abundance_kegg_translated.tsv $inputdr/samplesheet.csv
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_Abundance_go_translated.tsv $inputdr/samplesheet.csv
+conda activate MTD
 
 #humann_barplot
 # humann_barplot --input $outputdr/hmn_pathway_abundance_files/humann_pathabundance_cpm_stratified.tsv \
@@ -385,15 +400,28 @@ echo '>>>>>>>>>>>>>       [65%]'
 echo 'Starting to process the host reads...'
 ## continue to process the host reads
 cd $outputdr/temp
-# hisat2 alignment
-for i in $lsn; do # store input sample name in i; eg. DJ01
-    hisat2 -p $threads -q \
-        -x $DB_hisat2 \
-        --summary-file ${i}_hisat2_summary.txt \
-        -1 ${i}_host_1.fq \
-        -2 ${i}_host_2.fq \
-        -S $i.sam
-done
+if [[ $blast == blast ]]; then
+    # Magic-BLAST
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        magicblast -query ${i}_host_1.fq \
+        -query_mate ${i}_host_2.fq \
+        -db $DB_blast \
+        -infmt fastq \
+        -out $i.sam \
+        -num_threads $threads
+    done
+else
+    # HISAT2 alignment
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        hisat2 -p $threads -q \
+            -x $DB_hisat2 \
+            --summary-file ${i}_hisat2_summary.txt \
+            -1 ${i}_host_1.fq \
+            -2 ${i}_host_2.fq \
+            -S $i.sam
+    done
+fi
+
 
 # featureCounts
 featureCounts -T $threads \
@@ -417,12 +445,15 @@ cd $outputdr
 sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
 
 # DEG & Annotation & Plots & preprocess for host
+conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
+conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>     [75%]'
 
 # ssGSEA
+conda activate R412
 Rscript $MTDIR/gct_making.R $outputdr/Host_DEG/host_counts_TPM.csv $inputdr/samplesheet.csv
 
 Rscript $MTDIR/Tools/ssGSEA2.0/ssgsea-cli.R \
@@ -432,7 +463,8 @@ Rscript $MTDIR/Tools/ssGSEA2.0/ssgsea-cli.R \
     -y $MTDIR/Tools/ssGSEA2.0/config.yaml \
     -u $threads
 
-Rscript $MTDIR/for_halla.R $outputdr/ssGSEA/ssgsea-results-scores.gct $inputdr/samplesheet.csv
+Rscript $MTDIR/for_halla.R $outputdr/ssGSEA/ssgsea-results-scores.gct $inputdr/samplesheet.csv $metadata
+conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>>    [80%]'
