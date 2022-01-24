@@ -107,8 +107,10 @@ dependencies:
   - lz4-c=1.9.3=h9c3ff4c_0
   - lzo=2.10=h516909a_1000
   - mafft=7.475=h516909a_0
+  - magicblast=1.5.0=h2d02072_0
   - make=4.3=hd18ef5c_1
   - mash=2.2.2=ha61e061_2
+  - matplotlib-base=3.3.4=py38h0efea84_0
   - metaphlan=3.0.7=pyh7b7c402_0
   - muscle=3.8.1551=hc9558a2_5
   - ncbi-ngs-sdk=2.10.9=h3e72335_0
@@ -116,7 +118,7 @@ dependencies:
   - nextflow=20.10.0=hecda079_0
   - olefile=0.46=pyh9f0ad1d_1
   - openjdk=11.0.8=hacce0ff_0
-  - openssl=1.1.1l=h7f8727e_0
+  - openssl=1.1.1k=h7f98852_0
   - ossuuid=1.6.2=hf484d3e_1000
   - pango=1.42.4=h69149e4_5
   - parallel=20210222=ha770c72_0
@@ -230,12 +232,14 @@ dependencies:
   - rsync=3.2.3=h7593e3f_1
   - samtools=1.11=h6270b1f_0
   - screen=4.8.0=he28a2e2_0
+  - seaborn-base=0.11.2=pyhd8ed1ab_0
   - sed=4.8=he412f7d_0
   - setuptools=49.6.0=py38h578d9bd_3
   - six=1.15.0=pyh9f0ad1d_0
   - sqlite=3.34.0=h74cdb3f_0
   - sra-tools=2.10.9=pl526haddd2b5_0
   - star=2.7.7a=0
+  - statsmodels=0.12.1=py38h5c078b8_2
   - subread=2.0.1=hed695b0_0
   - sysroot_linux-64=2.12=h77966d4_13
   - tar=1.33=ha1f6473_1
@@ -314,7 +318,6 @@ dependencies:
     - seaborn==0.10.1
     - shellescape==3.4.1
     - sklearn==0.0
-    - statsmodels==0.12.1
     - threadpoolctl==2.1.0
     - tqdm==4.50.2
     - typing-extensions==3.7.4.3
