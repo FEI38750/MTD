@@ -49,7 +49,7 @@ For example:
         <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20</code></pre>
 ### Notes
 * Test run: For user who does not have the bulk RNA-seq raw data on hand could have a test run by command:
-  <pre><code>bash [path/to/MTD]/MTD.sh -i [path/to/MTD]/test/Bulk_RNAseq/samplesheet.csv -o [path/to/MTD]/test/Bulk_RNAseq/output -h 9606 -t [threads]</code></pre>
+  <pre><code>bash [path/to/MTD]/MTD.sh -i [path/to/MTD]/test/samplesheet.csv -o [path/to/MTD]/test/output -h 9606 -t [threads]</code></pre>
 * Users who prefer using Magic-BLAST instead of HISAT2 for host reads mapping can add <code>-b blast</code> flag. For example:
   <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20 -b blast</code></pre>
   
