@@ -116,10 +116,10 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
 }
 
 # adjust the design if metadata is provided
-if (length(args) == 5){
-  funNew <- function(x){
+funNew <- function(x){
     as.formula(paste("~", paste(x, collapse = " + ")))
   }
+if (length(args) == 5){
   design(dds)<-funNew(names(coldata)[2:ncol(coldata)])
 }
 

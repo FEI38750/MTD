@@ -54,10 +54,10 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
                                 design= ~ group + transcriptome_size)
 }
 # adjust the design if metadata is provided
-if (length(args) == 4){
-  funNew <- function(x){
+funNew <- function(x){
     as.formula(paste("~", paste(x, collapse = " + ")))
   }
+if (length(args) == 4){
   design(dds)<-funNew(names(coldata)[2:ncol(coldata)])
 }
 
