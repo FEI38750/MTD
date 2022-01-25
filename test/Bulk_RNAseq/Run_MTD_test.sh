@@ -1,0 +1,1 @@
+bash ~/MTD/MTD.sh -i ~/MTD/test/Bulk_RNAseq/samplesheet.csv -o ~/MTD/test/Bulk_RNAseq/output -h 9606 -t 20
