@@ -31,6 +31,7 @@ echo 'installing conda environments...'
 conda env create -f Installation/MTD.yml
 conda env create -f Installation/py2.yml
 conda env create -f Installation/halla0818.yml
+conda env create -f Installation/r412.yml
 
 echo 'MTD installation progress:'
 echo '>>                  [10%]'
@@ -215,10 +216,16 @@ cd ..
 #     pigz -dc grch38_tran.tar.gz | tar xf -
 #     cd ..
 
+# Create a BLAST database for Magic-BLAST
+makeblastdb -in $dir/hisat2_index_human/genome.fa -dbtype nucl -parse_seqids -out $dir/human_blastdb/human_blastdb
+makeblastdb -in $dir/hisat2_index_mouse/genome.fa -dbtype nucl -parse_seqids -out $dir/mouse_blastdb/mouse_blastdb
+makeblastdb -in $dir/hisat2_index_rhesus/genome.fa -dbtype nucl -parse_seqids -out $dir/rhesus_blastdb/rhesus_blastdb
+
 echo 'MTD installation progress:'
 echo '>>>>>>>>>>>>>>>>>>  [90%]'
 echo 'installing R packages...'
 # install R packages
+conda activate R412
 Rscript $dir/Installation/R_packages_installation.R
 
 chmod +x MTD.sh
