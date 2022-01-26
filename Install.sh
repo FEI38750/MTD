@@ -31,7 +31,7 @@ echo 'installing conda environments...'
 conda env create -f Installation/MTD.yml
 conda env create -f Installation/py2.yml
 conda env create -f Installation/halla0818.yml
-conda env create -f Installation/r412.yml
+conda env create -f Installation/R412.yml
 
 echo 'MTD installation progress:'
 echo '>>                  [10%]'
