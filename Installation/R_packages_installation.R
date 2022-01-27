@@ -9,8 +9,8 @@ if (!require("pacman")) install.packages("pacman",repos = "http://cran.us.r-proj
 pacman::p_load(tidyverse,ggrepel,colorspace,RColorBrewer,
                 pheatmap,VennDiagram,doParallel,foreach,
                 stringi,vegan,ggpubr,reshape2,sctransform,hdf5r,
-                ggridges,ggnewscale,ggupset)
+                ggridges,ggnewscale,ggupset,Seurat)
 
-install.packages('Seurat',repos = "http://cran.us.r-project.org")
+if (!require("Seurat")) install.packages("Seurat",repos = "http://cran.us.r-project.org")
 
 #included in tidyverse: ggplot2,tidyr,dplyr,stringr,tibble,
