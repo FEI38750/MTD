@@ -5,6 +5,8 @@ BiocManager::install(version = "3.14")
 BiocManager::install(c("biomaRt","DESeq2","tximeta","limma","phyloseq","glmGamPoi","cmapR","MAST",
                         "microbiome","ANCOMBC","Maaslin2","DO.db","clusterProfiler","enrichplot","pathview"))
 
+if (!require("nloptr")) install.packages("nloptr",repos = "http://cran.us.r-project.org")
+
 if (!require("pacman")) install.packages("pacman",repos = "http://cran.us.r-project.org")
 pacman::p_load(tidyverse,ggrepel,colorspace,RColorBrewer,
                 pheatmap,VennDiagram,doParallel,foreach,
