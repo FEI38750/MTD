@@ -54,11 +54,13 @@ echo "MTD directory is $MTDIR"
 condapath=$(head -n 1 $MTDIR/condaPath)
 # activate MTD conda environment
 source $condapath/etc/profile.d/conda.sh
-conda activate MTD
 
+conda activate R412
 echo 'Single cell fastq pre-processing: arrangement and whilelist making...'
 Rscript $MTDIR/SingleCell_Prep.R $samplesheet $outputdr $platform
+conda deactivate
 
+conda activate MTD
 echo 'MTD running  progress:'
 echo '>>                  [10%]'
 
@@ -207,6 +209,8 @@ done
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>>    [80%]'
 
+conda deactivate
+conda activate R412
 echo 'Step 6: Make the count matrix of microbiome...'
 Rscript $MTDIR/Singelcell4kraken2_umitools_batch.R $outputdr/temp
 
