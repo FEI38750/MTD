@@ -54,8 +54,7 @@ For example:
   <pre><code>bash ~/MTD/MTD.sh -i ~/raw_data/samplesheet.csv -o ~/MTD_output -h 9544 -t 20 -b blast</code></pre>
   
 ## Single-cell RNA-seq
-1. Put the count matrix of host genes in a folder named with the sample name. In this folder, 10x should be a matrix.mtx, a genes.tsv, and a bar
-        s.tsv; or a single .h5 file. Dropseq should be a .dge.txt file.
+1. Put the count matrix of host genes in a folder named with the sample name. In this folder, 10x should be a matrix.mtx, a genes.tsv, and a barcodes.tsv; or a single .h5 file. Dropseq should be a .dge.txt file.
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/input_folder_SC1.jpg" width=70%>
 2. Type the path of the host matrix folder and the corresponding fastq files into the columns of the samplesheet_SC.csv accordingly. For example:
 &nbsp;&nbsp;<img src="https://github.com/FEI38750/MTD/blob/main/Img/samplesheet_SC1.jpg">
