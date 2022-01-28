@@ -223,8 +223,10 @@ done
 kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
 
 # Adjust bracken file (tree like) by normalizated reads counts; for additional visualization (.biom, .mpa, .krona)
+conda deactivate
 conda activate R412
 Rscript $MTDIR/Normalization_afbr.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $outputdr/temp/Report_non-host_bracken_species_normalized $metadata
+conda deactivate
 conda activate MTD
 
 echo 'MTD running  progress:'
@@ -263,6 +265,7 @@ conda activate MTD
 cd ../temp
 
 # DEG & Annotation & Plots & Diversity & Preprocess for Microbiome
+conda deactivate
 conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
 conda deactivate
@@ -358,6 +361,7 @@ humann_regroup_table --input humann_genefamilies_relab_stratified.tsv --groups u
         --output humann_genefamilies_Abundance_go.tsv
 
 # Translate KEGG and GO ID to human readable terms
+conda deactivate
 conda activate R412
 Rscript $MTDIR/humann_ID_translation.R \
     $outputdr/temp/HUMAnN_output/humann_genefamilies_relAbundance_kegg.tsv \
@@ -383,9 +387,11 @@ mv *genefamilies* $outputdr/hmn_genefamily_abundance_files/
 
 # DEG & Annotation & Plots & Diversity & Preprocess
 cd $outputdr/hmn_genefamily_abundance_files
+conda deactivate
 conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_Abundance_kegg_translated.tsv $inputdr/samplesheet.csv
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_Abundance_go_translated.tsv $inputdr/samplesheet.csv
+conda deactivate
 conda activate MTD
 
 #humann_barplot
@@ -447,14 +453,17 @@ cd $outputdr
 sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
 
 # DEG & Annotation & Plots & preprocess for host
+conda deactivate
 conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
+conda deactivate
 conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>     [75%]'
 
 # ssGSEA
+conda deactivate
 conda activate R412
 Rscript $MTDIR/gct_making.R $outputdr/Host_DEG/host_counts_TPM.csv $inputdr/samplesheet.csv
 
@@ -466,6 +475,7 @@ Rscript $MTDIR/Tools/ssGSEA2.0/ssgsea-cli.R \
     -u $threads
 
 Rscript $MTDIR/for_halla.R $outputdr/ssGSEA/ssgsea-results-scores.gct $inputdr/samplesheet.csv $metadata
+conda deactivate
 conda activate MTD
 
 echo 'MTD running  progress:'
