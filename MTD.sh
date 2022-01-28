@@ -265,6 +265,7 @@ cd ../temp
 # DEG & Annotation & Plots & Diversity & Preprocess for Microbiome
 conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/bracken_species_all $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
+conda deactivate
 conda activate MTD
 
 cd $outputdr/temp
@@ -367,6 +368,7 @@ Rscript $MTDIR/humann_ID_translation.R \
         $outputdr/temp/HUMAnN_output/humann_genefamilies_Abundance_kegg.tsv \
         $outputdr/temp/HUMAnN_output/humann_genefamilies_Abundance_go.tsv \
         $MTDIR
+conda deactivate
 conda activate MTD
 
 #Cleaning up file structure
@@ -500,7 +502,7 @@ halla -x $outputdr/halla/Microbiomes.txt \
 
     hallagram \
         -i $outputdr/halla/host_gene \
-        --cbar_label ${pdm_name} \
+        --cbar_label "${pdm_name[@]}" \
         --x_dataset_label Microbiomes \
         --y_dataset_label Host_gene \
         --output $outputdr/halla/host_gene/hallagram_all.png \
@@ -522,7 +524,7 @@ halla -x $outputdr/halla/Microbiomes.txt \
     # show all clusters
     hallagram \
         -i $outputdr/halla/pathway \
-        --cbar_label ${pdm_name} \
+        --cbar_label "${pdm_name[@]}" \
         --x_dataset_label Microbiomes \
         --y_dataset_label Host_pathway \
         --output $outputdr/halla/pathway_hallagram_all.png \
