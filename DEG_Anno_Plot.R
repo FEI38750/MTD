@@ -254,7 +254,7 @@ system("mkdir -p MaAsLin2_results")
 features <- t(cts)
 metadata <- coldata
 rownames(metadata)<-metadata[,1]
-metadata<-metadata[,-1]
+metadata<-subset(metadata,select=-1)
 covar<-toString(shQuote(names(coldata)[2:ncol(coldata)]))
 for (r in 1:length(unique(coldata_vs[,2]))){
   fit_data <- Maaslin2(features, metadata, paste0('MaAsLin2_results/ref_',unique(coldata_vs[,2])[r]),
