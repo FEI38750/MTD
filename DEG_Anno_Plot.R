@@ -279,268 +279,6 @@ if (filename == "host_counts.txt"){ #prepare for gene symbol
   write("The number of genes may be less due to the duplicated gene symbols being removed.","MaAsLin2_results/gene_symbol/Readme.txt")
 }
 
-### Pathway enrichment for host genes ###
-if (filename == "host_counts.txt"){
-  do.db <- host_sp[host_sp$Taxon_ID==args[3],4] # match host taxID with DO.db database
-  # check if variable is NULL
-  if(is.null(do.db)){
-    print("host species is not supported for pathway enrichment yet")
-  } else {
-    # if package is not installed, install it
-    if (!requireNamespace(do.db, quietly = TRUE))
-      BiocManager::install(do.db)
-    
-    library(clusterProfiler)
-    library(enrichplot)
-    library(ggnewscale)
-    library(do.db, character.only = TRUE)
-    library(ggplot2)
-    
-    # function to make plots for GSEA results
-    plots4gsea<-function(edb, data, datax, edb0, genelist, group1, group2){
-      # save the top10 GSEA results
-      if (nrow(data@result)==0){
-        write("No enrichment result was found.",paste0(edb,"/No_enrichment_result_found.txt"))
-      } else {
-        if (nrow(data@result) >= 10){
-          gseaplot2(data, geneSetID = 1:10,rel_heights = c(2, 0.5, 1))
-          ggsave(paste0(edb,"/Top10_GSEA_GO.pdf"),height = 10.5, width = 8)
-        } else {
-          gseaplot2(data, geneSetID = 1:length(data@result))
-          ggsave(paste0(edb,"/GSEA_GO.pdf"),height = (6+0.5*nrow(data@result)))
-        }
-        # save all plots of the GSEA GO results
-        dir.create(paste0(edb,"/GSEA_all"))
-        for (g in 1:nrow(data@result)){
-          gseaplot2(data, geneSetID = g, title = data$Description[g])
-          ggsave(paste0(edb,"/GSEA_all/",data$Description[g],"_GSEA_",edb0,".pdf"))
-        }
-        # ridgeline plot for expression distribution of GSEA GO result
-        ridgeplot(data)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"),height = 0.48*nrow(data@result))
-        # dot plot
-        dotplot(data) + ggtitle("dotplot for GSEA")
-        ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 0.48*nrow(data@result), width = 6)
-        #networks
-        cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"),scale=nrow(data@result)/12,limitsize=F)
-        # tree plot
-        datax2 <- pairwise_termsim(datax)
-        treeplot(datax2)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=0.48*nrow(data@result))
-        # enrichment map
-        emapplot(datax2,layout="kk")
-        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"),scale=nrow(data@result)/12)
-        # Heatmap-like functional classification
-        heatplot(datax2, foldChange=genelist)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=2+0.24*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
-        # upset plot
-        pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
-        p.upset<-upsetplot(data, n=nrow(data@result))
-        print(p.upset) # save pdf inside a function
-        dev.off()
-        # bar plot
-        bar<-data@result
-        bar$c<-with(bar,reorder(Description,-log(pvalue)))
-        p.bar<-ggplot(bar,aes(x=-log(pvalue),y=c,fill=enrichmentScore))+
-          geom_bar(stat="identity") +
-          scale_fill_gradient2(low="blue",high="red") +
-          labs(x="-log(p-value)",y="Description", fill="enrichmentScore") +
-          ggtitle(paste0(group1,"_vs_",group2)) +
-          #geom_text(aes(x=-log(pvalue)+0.6),label=round(bar$enrichmentScore,2),size= 3) + # could add value on bar
-          theme_bw() +
-          theme(text = element_text(size = 18))+
-          scale_y_discrete(breaks=bar$Description,labels=stringr::str_trunc(bar$Description,40))
-        ggsave(paste0(edb,"/GSEA_",edb0,"_barplots.pdf"),plot =p.bar,width=10,height=nrow(data@result)/12*5,limitsize=F)
-        
-        # to save plots for all results
-        if (nrow(data@result)>30){
-          ridgeplot(data,showCatdatary = nrow(data@result))
-          ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots_all.pdf"),height = 0.48*nrow(data@result),limitsize=F)
-          dotplot(data, showCatdatary=nrow(data@result)) + ggtitle("dotplot for GSEA")
-          ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot_all.pdf"),height = 0.48*nrow(data@result), width = 6,limitsize=F)
-          cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6, showCatdatary = round(nrow(data@result)/6))
-          ggsave(paste0(edb,"/GSEA_",edb0,"_net_all.pdf"),limitsize=F)
-          treeplot(datax2,showCatdatary =nrow(data@result),nCluster = round(nrow(data@result)/6))
-          ggsave(paste0(edb,"/GSEA_",edb0,"_tree_all.pdf"),height=0.48*nrow(data@result),limitsize=F)
-          emapplot(datax2,layout="kk",showCatdatary = nrow(data@result))
-          ggsave(paste0(edb,"/GSEA_",edb0,"_map_all.pdf"),scale=nrow(data@result)/12,limitsize=F)
-          heatplot(datax2, foldChange=genelist, howCatdatary = nrow(data@result))
-          ggsave(paste0(edb,"/GSEA_",edb0,"_heat_all.pdf"),height=1+0.3*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
-        }
-      }
-    }
-    
-    # function for KEGG Pathview plots
-    pathview.p<-function(kk,ko.db,kegg_gene_list,dir){
-      if (nrow(kk@result)==0){
-        write("No enrichment result was found on KEGG.","No_KEGG_enrichment_result.txt")
-      } else {
-        library("pathview")
-        for (g in 1:nrow(kk@result)){
-          pathview(gene.data  = kegg_gene_list,
-                   pathway.id = kk@result[g,1],
-                   species    = ko.db,
-                   limit      = list(gene=max(abs(kegg_gene_list)), cpd=1))
-        }
-      }
-    }
-    
-    # function for pathway enrichment by using comparison results between groups
-    enrichment <- function(coldata_vs,args1,do.db){
-      for (i in 1:nrow(coldata_vs)){
-        group1<-coldata_vs$group1[i]
-        group2<-coldata_vs$group2[i]
-        setwd(paste0(group1,"_vs_",group2)) # go into each comparison folder
-        dir.create("GO")
-        dir.create("KEGG")
-        dir.create("KEGG/Modules")
-        # prepare genelist for GSEA
-        df.compare<-read.csv(paste0("host_counts_",group1,"_vs_",group2,".csv"),header = T)
-        df.compare<-df.compare[df.compare$pvalue<0.05,]
-        # feature 1: numeric vector
-        genelist<-df.compare$log2FoldChange
-        # feature 2: named vector
-        names(genelist) = as.character(df.compare$X)
-        # feature 3: decreasing order
-        genelist = sort(genelist, decreasing = TRUE)
-        
-        ## GSEA for GO ##
-        ego <- gseGO(geneList     = genelist,
-                     OrgDb        = do.db,
-                     keyType      = 'ENSEMBL',
-                     ont          = "ALL",
-                     minGSSize    = 10,
-                     maxGSSize    = 500,
-                     pvalueCutoff = 0.05,
-                     verbose      = FALSE)
-        
-        # save the full table of GSEA GO results
-        write.csv(ego@result,"GO/GSEA_GO_results.csv")
-        egox <- setReadable(ego, do.db)
-        write.csv(egox@result,"GO/GSEA_GO_results_symbol.csv")
-        # draw plots for GO GSEA results
-        plots4gsea("GO",ego,egox,"GO", genelist, group1, group2)
-        
-        ## GSEA for KEGG ##
-        # KEGG pathway gene set enrichment analysis
-        ko.db <- host_sp[host_sp$Taxon_ID==args[3],6] # match host taxID with KEGG database
-        
-        # Convert gene IDs for gseKEGG function
-        # Some genes will be lost here because not all IDs will be converted
-        ENS2ENT.ids<-bitr(names(genelist), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
-        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
-        dedup_ENS2ENT.ids = ENS2ENT.ids[!duplicated(ENS2ENT.ids[c("ENSEMBL")]),]
-        # Create a new dataframe df4kegg which has only the genes which were successfully ID converted
-        df4kegg = df.compare[df.compare$X %in% dedup_ENS2ENT.ids$ENSEMBL,]
-        # Create a new column in df4kegg with the corresponding ENTREZ IDs
-        df4kegg$Y = dedup_ENS2ENT.ids$ENTREZID
-        # Create a vector of the gene log2FoldChange
-        kegg_gene_list <- df4kegg$log2FoldChange
-        # Name vector with ENTREZ ids
-        names(kegg_gene_list) <- df4kegg$Y
-        # omit any NA values 
-        kegg_gene_list<-na.omit(kegg_gene_list)
-        # sort the list in decreasing order (required for clusterProfiler)
-        kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
-        
-        # KEGG pathway gene set enrichment analysis
-        kk.p <- gseKEGG(geneList     = kegg_gene_list,
-                        organism     = ko.db,
-                        keyType      = 'ncbi-geneid',
-                        minGSSize    = 8,
-                        pvalueCutoff = 0.05,
-                        verbose      = FALSE)
-        # KEGG (Modules) functional enrichment analysis
-        kk.f <- gseMKEGG(geneList = kegg_gene_list,
-                         organism = ko.db,
-                         keyType  = 'ncbi-geneid',
-                         minGSSize = 8,
-                         pvalueCutoff = 0.05)
-        
-        # save the full table of GSEA KEGG results
-        write.csv(kk.p@result,"KEGG/GSEA_KEGG_results.csv")
-        kkx.p <- setReadable(kk.p, do.db, 'ENTREZID')
-        write.csv(kkx.p@result,"KEGG/GSEA_KEGG_results_symbol.csv")
-        write.csv(kk.f@result,"KEGG/Modules/GSEA_KEGG_results.csv")
-        kkx.f <- setReadable(kk.f, do.db, 'ENTREZID')
-        write.csv(kkx.f@result,"KEGG/Modules/GSEA_KEGG_results_symbol.csv")
-        
-        # draw plots for KEGG GSEA results
-        plots4gsea("KEGG",kk.p,kkx.p,"KEGG",kegg_gene_list)
-        plots4gsea("KEGG/Modules",kk.f,kkx.f,"KEGG",kegg_gene_list)
-        
-        # KEGG pathview plots
-        dir.create("KEGG/Pathview") ; setwd("KEGG/Pathview")
-        pathview.p(kk.p,ko.db,kegg_gene_list)
-        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
-        dir.create("KEGG/Modules/Pathview") ; setwd("KEGG/Modules/Pathview")
-        pathview.p(kk.f,ko.db,kegg_gene_list)
-        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
-        
-        setwd("../") # go back to the Host_DEG folder
-      }
-    }
-    
-    ## run GSEA enrichment analysis ##
-    enrichment(coldata_vs,args[1],do.db)
-    
-    # function for preparing genelist for biological theme comparison - compareCluster
-    BTC <- function(coldata_vs,do.db){
-      genelist.ct<-list()
-      for (i in 1:nrow(coldata_vs)){
-        group1<-coldata_vs$group1[i]
-        group2<-coldata_vs$group2[i]
-        # prepare genelist for enrichment
-        df.btc<-read.csv(paste0(getwd(),"/",group1,"_vs_",group2,"/","host_counts_",group1,"_vs_",group2,".csv"),header = T)
-        # filter DEG
-        flt_up <- df.btc[df.btc$log2FoldChange > 0.5 & df.btc$pvalue < 0.05,]
-        flt_down <- df.btc[df.btc$log2FoldChange < 0.5 & df.btc$pvalue < 0.05,]
-        # up-regulated gene name
-        genelist.u<-flt_up$X
-        # down-regulated gene name
-        genelist.d<-flt_down$X
-        # Some genes will be lost here because not all IDs will be converted
-        ENS2ENT.u<-bitr(genelist.u, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
-        ENS2ENT.d<-bitr(genelist.d, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
-        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
-        dedup_ENS2ENT.u = ENS2ENT.u[!duplicated(ENS2ENT.u[c("ENSEMBL")]),]
-        dedup_ENS2ENT.u = dedup_ENS2ENT.u$ENTREZID
-        dedup_ENS2ENT.d = ENS2ENT.d[!duplicated(ENS2ENT.d[c("ENSEMBL")]),]
-        dedup_ENS2ENT.d = dedup_ENS2ENT.d$ENTREZID
-        # make a list
-        genelist.c<-list(dedup_ENS2ENT.u,dedup_ENS2ENT.d)
-        names(genelist.c) <- c(paste0(group1,"_vs_",group2,"_UP"), paste0(group1,"_vs_",group2,"_DOWN"))
-        genelist.ct<-c(genelist.ct,genelist.c)
-      }
-      return(genelist.ct)
-    }
-    ## run biological theme comparison ##
-    genelist.ct <- BTC(coldata_vs,do.db)
-    # GO enrichment comparison
-    try(cgo <- compareCluster(genelist.ct, fun = enrichGO, OrgDb=do.db))
-    try(cgo <- setReadable(cgo, OrgDb = do.db, keyType="ENTREZID"))
-    if (exists("cgo")==T){
-      dotplot(cgo, showCategory = nrow(cgo@compareClusterResult)) +
-        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-      ggsave("biological_theme_comparison_GO.pdf",height = 0.54*nrow(cgo@compareClusterResult), width = 3*length(unique(cgo@compareClusterResult$Cluster)))
-      ggsave("biological_theme_comparison_GO_net.pdf",
-             plot = cnetplot(cgo,cex_label_gene = 0.6, showCatdatary = round(nrow(cgo@compareClusterResult)/6)),
-             limitsize=F)
-    }
-    # KEGG enrichment comparison
-    try(ck <- compareCluster(genelist.ct, fun = enrichKEGG))
-    try(ck <- setReadable(ck, OrgDb = do.db, keyType="ENTREZID"))
-    if (exists("ck")==T){
-      dotplot(ck, showCategory = nrow(ck@compareClusterResult)) +
-        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-      ggsave("biological_theme_comparison_KEGG.pdf",height = 0.54*nrow(ck@compareClusterResult), width = 3*length(unique(ck@compareClusterResult$Cluster)))
-      ggsave("biological_theme_comparison_KEGG_net.pdf",
-             plot = cnetplot(ck,cex_label_gene = 0.6, showCatdatary = round(nrow(ck@compareClusterResult)/6)),
-             limitsize=F)
-    }
-  }
-}
 
 if (filename == "host_counts.txt"){
   setwd(paste0(dirname(args[1]),"/Host_DEG")) # go back to the Host_DEG folder
@@ -1474,3 +1212,267 @@ if (filename == "host_counts.txt"){
 }
 setwd("../")
 
+
+### Pathway enrichment for host genes ###
+if (filename == "host_counts.txt"){
+  setwd("Host_DEG")
+  do.db <- host_sp[host_sp$Taxon_ID==args[3],4] # match host taxID with DO.db database
+  # check if variable is NULL
+  if(is.null(do.db)){
+    print("host species is not supported for pathway enrichment yet")
+  } else {
+    # if package is not installed, install it
+    if (!requireNamespace(do.db, quietly = TRUE))
+      BiocManager::install(do.db)
+    
+    library(clusterProfiler)
+    library(enrichplot)
+    library(ggnewscale)
+    library(do.db, character.only = TRUE)
+    library(ggplot2)
+    
+    # function to make plots for GSEA results
+    plots4gsea<-function(edb, data, datax, edb0, genelist, group1, group2){
+      # save the top10 GSEA results
+      if (nrow(data@result)==0){
+        write("No enrichment result was found.",paste0(edb,"/No_enrichment_result_found.txt"))
+      } else {
+        if (nrow(data@result) >= 10){
+          gseaplot2(data, geneSetID = 1:10,rel_heights = c(2, 0.5, 1))
+          ggsave(paste0(edb,"/Top10_GSEA_GO.pdf"),height = 10.5, width = 8)
+        } else {
+          gseaplot2(data, geneSetID = 1:length(data@result))
+          ggsave(paste0(edb,"/GSEA_GO.pdf"),height = (6+0.5*nrow(data@result)))
+        }
+        # save all plots of the GSEA GO results
+        dir.create(paste0(edb,"/GSEA_all"))
+        for (g in 1:nrow(data@result)){
+          gseaplot2(data, geneSetID = g, title = data$Description[g])
+          ggsave(paste0(edb,"/GSEA_all/",data$Description[g],"_GSEA_",edb0,".pdf"))
+        }
+        # ridgeline plot for expression distribution of GSEA GO result
+        ridgeplot(data)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"),height = 0.48*nrow(data@result))
+        # dot plot
+        dotplot(data) + ggtitle("dotplot for GSEA")
+        ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 0.48*nrow(data@result), width = 6)
+        #networks
+        cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"),scale=nrow(data@result)/12,limitsize=F)
+        # tree plot
+        datax2 <- pairwise_termsim(datax)
+        treeplot(datax2)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=0.48*nrow(data@result))
+        # enrichment map
+        emapplot(datax2,layout="kk")
+        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"),scale=nrow(data@result)/12)
+        # Heatmap-like functional classification
+        heatplot(datax2, foldChange=genelist)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=2+0.24*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        # upset plot
+        pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
+        p.upset<-upsetplot(data, n=nrow(data@result))
+        print(p.upset) # save pdf inside a function
+        dev.off()
+        # bar plot
+        bar<-data@result
+        bar$c<-with(bar,reorder(Description,-log(pvalue)))
+        p.bar<-ggplot(bar,aes(x=-log(pvalue),y=c,fill=enrichmentScore))+
+          geom_bar(stat="identity") +
+          scale_fill_gradient2(low="blue",high="red") +
+          labs(x="-log(p-value)",y="Description", fill="enrichmentScore") +
+          ggtitle(paste0(group1,"_vs_",group2)) +
+          #geom_text(aes(x=-log(pvalue)+0.6),label=round(bar$enrichmentScore,2),size= 3) + # could add value on bar
+          theme_bw() +
+          theme(text = element_text(size = 18))+
+          scale_y_discrete(breaks=bar$Description,labels=stringr::str_trunc(bar$Description,40))
+        ggsave(paste0(edb,"/GSEA_",edb0,"_barplots.pdf"),plot =p.bar,width=10,height=nrow(data@result)/12*5,limitsize=F)
+        
+        # to save plots for all results
+        if (nrow(data@result)>30){
+          ridgeplot(data,showCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots_all.pdf"),height = 0.48*nrow(data@result),limitsize=F)
+          dotplot(data, showCatdatary=nrow(data@result)) + ggtitle("dotplot for GSEA")
+          ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot_all.pdf"),height = 0.48*nrow(data@result), width = 6,limitsize=F)
+          cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6, showCatdatary = round(nrow(data@result)/6))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_net_all.pdf"),limitsize=F)
+          treeplot(datax2,showCatdatary =nrow(data@result),nCluster = round(nrow(data@result)/6))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_tree_all.pdf"),height=0.48*nrow(data@result),limitsize=F)
+          emapplot(datax2,layout="kk",showCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_map_all.pdf"),scale=nrow(data@result)/12,limitsize=F)
+          heatplot(datax2, foldChange=genelist, howCatdatary = nrow(data@result))
+          ggsave(paste0(edb,"/GSEA_",edb0,"_heat_all.pdf"),height=1+0.3*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        }
+      }
+    }
+    
+    # function for KEGG Pathview plots
+    pathview.p<-function(kk,ko.db,kegg_gene_list,dir){
+      if (nrow(kk@result)==0){
+        write("No enrichment result was found on KEGG.","No_KEGG_enrichment_result.txt")
+      } else {
+        library("pathview")
+        for (g in 1:nrow(kk@result)){
+          pathview(gene.data  = kegg_gene_list,
+                   pathway.id = kk@result[g,1],
+                   species    = ko.db,
+                   limit      = list(gene=max(abs(kegg_gene_list)), cpd=1))
+        }
+      }
+    }
+    
+    # function for pathway enrichment by using comparison results between groups
+    enrichment <- function(coldata_vs,args1,do.db){
+      for (i in 1:nrow(coldata_vs)){
+        group1<-coldata_vs$group1[i]
+        group2<-coldata_vs$group2[i]
+        setwd(paste0(group1,"_vs_",group2)) # go into each comparison folder
+        dir.create("GO")
+        dir.create("KEGG")
+        dir.create("KEGG/Modules")
+        # prepare genelist for GSEA
+        df.compare<-read.csv(paste0("host_counts_",group1,"_vs_",group2,".csv"),header = T)
+        df.compare<-df.compare[df.compare$pvalue<0.05,]
+        # feature 1: numeric vector
+        genelist<-df.compare$log2FoldChange
+        # feature 2: named vector
+        names(genelist) = as.character(df.compare$X)
+        # feature 3: decreasing order
+        genelist = sort(genelist, decreasing = TRUE)
+        
+        ## GSEA for GO ##
+        ego <- gseGO(geneList     = genelist,
+                     OrgDb        = do.db,
+                     keyType      = 'ENSEMBL',
+                     ont          = "ALL",
+                     minGSSize    = 10,
+                     maxGSSize    = 500,
+                     pvalueCutoff = 0.05,
+                     verbose      = FALSE)
+        
+        # save the full table of GSEA GO results
+        write.csv(ego@result,"GO/GSEA_GO_results.csv")
+        egox <- setReadable(ego, do.db)
+        write.csv(egox@result,"GO/GSEA_GO_results_symbol.csv")
+        # draw plots for GO GSEA results
+        plots4gsea("GO",ego,egox,"GO", genelist, group1, group2)
+        
+        ## GSEA for KEGG ##
+        # KEGG pathway gene set enrichment analysis
+        ko.db <- host_sp[host_sp$Taxon_ID==args[3],6] # match host taxID with KEGG database
+        
+        # Convert gene IDs for gseKEGG function
+        # Some genes will be lost here because not all IDs will be converted
+        ENS2ENT.ids<-bitr(names(genelist), fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
+        dedup_ENS2ENT.ids = ENS2ENT.ids[!duplicated(ENS2ENT.ids[c("ENSEMBL")]),]
+        # Create a new dataframe df4kegg which has only the genes which were successfully ID converted
+        df4kegg = df.compare[df.compare$X %in% dedup_ENS2ENT.ids$ENSEMBL,]
+        # Create a new column in df4kegg with the corresponding ENTREZ IDs
+        df4kegg$Y = dedup_ENS2ENT.ids$ENTREZID
+        # Create a vector of the gene log2FoldChange
+        kegg_gene_list <- df4kegg$log2FoldChange
+        # Name vector with ENTREZ ids
+        names(kegg_gene_list) <- df4kegg$Y
+        # omit any NA values 
+        kegg_gene_list<-na.omit(kegg_gene_list)
+        # sort the list in decreasing order (required for clusterProfiler)
+        kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
+        
+        # KEGG pathway gene set enrichment analysis
+        kk.p <- gseKEGG(geneList     = kegg_gene_list,
+                        organism     = ko.db,
+                        keyType      = 'ncbi-geneid',
+                        minGSSize    = 8,
+                        pvalueCutoff = 0.05,
+                        verbose      = FALSE)
+        # KEGG (Modules) functional enrichment analysis
+        kk.f <- gseMKEGG(geneList = kegg_gene_list,
+                         organism = ko.db,
+                         keyType  = 'ncbi-geneid',
+                         minGSSize = 8,
+                         pvalueCutoff = 0.05)
+        
+        # save the full table of GSEA KEGG results
+        write.csv(kk.p@result,"KEGG/GSEA_KEGG_results.csv")
+        kkx.p <- setReadable(kk.p, do.db, 'ENTREZID')
+        write.csv(kkx.p@result,"KEGG/GSEA_KEGG_results_symbol.csv")
+        write.csv(kk.f@result,"KEGG/Modules/GSEA_KEGG_results.csv")
+        kkx.f <- setReadable(kk.f, do.db, 'ENTREZID')
+        write.csv(kkx.f@result,"KEGG/Modules/GSEA_KEGG_results_symbol.csv")
+        
+        # draw plots for KEGG GSEA results
+        plots4gsea("KEGG",kk.p,kkx.p,"KEGG",kegg_gene_list)
+        plots4gsea("KEGG/Modules",kk.f,kkx.f,"KEGG",kegg_gene_list)
+        
+        # KEGG pathview plots
+        dir.create("KEGG/Pathview") ; setwd("KEGG/Pathview")
+        pathview.p(kk.p,ko.db,kegg_gene_list)
+        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
+        dir.create("KEGG/Modules/Pathview") ; setwd("KEGG/Modules/Pathview")
+        pathview.p(kk.f,ko.db,kegg_gene_list)
+        setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
+        
+        setwd("../") # go back to the Host_DEG folder
+      }
+    }
+    
+    ## run GSEA enrichment analysis ##
+    enrichment(coldata_vs,args[1],do.db)
+    
+    # function for preparing genelist for biological theme comparison - compareCluster
+    BTC <- function(coldata_vs,do.db){
+      genelist.ct<-list()
+      for (i in 1:nrow(coldata_vs)){
+        group1<-coldata_vs$group1[i]
+        group2<-coldata_vs$group2[i]
+        # prepare genelist for enrichment
+        df.btc<-read.csv(paste0(getwd(),"/",group1,"_vs_",group2,"/","host_counts_",group1,"_vs_",group2,".csv"),header = T)
+        # filter DEG
+        flt_up <- df.btc[df.btc$log2FoldChange > 0.5 & df.btc$pvalue < 0.05,]
+        flt_down <- df.btc[df.btc$log2FoldChange < 0.5 & df.btc$pvalue < 0.05,]
+        # up-regulated gene name
+        genelist.u<-flt_up$X
+        # down-regulated gene name
+        genelist.d<-flt_down$X
+        # Some genes will be lost here because not all IDs will be converted
+        ENS2ENT.u<-bitr(genelist.u, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        ENS2ENT.d<-bitr(genelist.d, fromType = "ENSEMBL", toType = "ENTREZID", OrgDb=do.db)
+        # remove duplicate IDS (e.g. one ENSEMBL match with two ENTREZID)
+        dedup_ENS2ENT.u = ENS2ENT.u[!duplicated(ENS2ENT.u[c("ENSEMBL")]),]
+        dedup_ENS2ENT.u = dedup_ENS2ENT.u$ENTREZID
+        dedup_ENS2ENT.d = ENS2ENT.d[!duplicated(ENS2ENT.d[c("ENSEMBL")]),]
+        dedup_ENS2ENT.d = dedup_ENS2ENT.d$ENTREZID
+        # make a list
+        genelist.c<-list(dedup_ENS2ENT.u,dedup_ENS2ENT.d)
+        names(genelist.c) <- c(paste0(group1,"_vs_",group2,"_UP"), paste0(group1,"_vs_",group2,"_DOWN"))
+        genelist.ct<-c(genelist.ct,genelist.c)
+      }
+      return(genelist.ct)
+    }
+    ## run biological theme comparison ##
+    genelist.ct <- BTC(coldata_vs,do.db)
+    # GO enrichment comparison
+    try(cgo <- compareCluster(genelist.ct, fun = enrichGO, OrgDb=do.db))
+    try(cgo <- setReadable(cgo, OrgDb = do.db, keyType="ENTREZID"))
+    if (exists("cgo")==T){
+      dotplot(cgo, showCategory = nrow(cgo@compareClusterResult)) +
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+      ggsave("biological_theme_comparison_GO.pdf",height = 0.54*nrow(cgo@compareClusterResult), width = 3*length(unique(cgo@compareClusterResult$Cluster)))
+      ggsave("biological_theme_comparison_GO_net.pdf",
+             plot = cnetplot(cgo,cex_label_gene = 0.6, showCatdatary = round(nrow(cgo@compareClusterResult)/6)),
+             limitsize=F)
+    }
+    # KEGG enrichment comparison
+    try(ck <- compareCluster(genelist.ct, fun = enrichKEGG))
+    try(ck <- setReadable(ck, OrgDb = do.db, keyType="ENTREZID"))
+    if (exists("ck")==T){
+      dotplot(ck, showCategory = nrow(ck@compareClusterResult)) +
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+      ggsave("biological_theme_comparison_KEGG.pdf",height = 0.54*nrow(ck@compareClusterResult), width = 3*length(unique(ck@compareClusterResult$Cluster)))
+      ggsave("biological_theme_comparison_KEGG_net.pdf",
+             plot = cnetplot(ck,cex_label_gene = 0.6, showCatdatary = round(nrow(ck@compareClusterResult)/6)),
+             limitsize=F)
+    }
+  }
+}
