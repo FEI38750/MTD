@@ -1241,7 +1241,7 @@ if (filename == "host_counts.txt"){
           gseaplot2(data, geneSetID = 1:10,rel_heights = c(2, 0.5, 1))
           ggsave(paste0(edb,"/Top10_GSEA_GO.pdf"),height = 10.5, width = 8)
         } else {
-          gseaplot2(data, geneSetID = 1:length(data@result))
+          gseaplot2(data, geneSetID = 1:nrow(data@result))
           ggsave(paste0(edb,"/GSEA_GO.pdf"),height = (6+0.5*nrow(data@result)))
         }
         # save all plots of the GSEA GO results
