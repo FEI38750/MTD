@@ -1407,10 +1407,10 @@ if (filename == "host_counts.txt"){
         
         # KEGG pathview plots
         dir.create("KEGG/Pathview") ; setwd("KEGG/Pathview")
-        pathview.p(kk.p,ko.db,kegg_gene_list)
+        try(pathview.p(kk.p,ko.db,kegg_gene_list))
         setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
         dir.create("KEGG/Modules/Pathview") ; setwd("KEGG/Modules/Pathview")
-        pathview.p(kk.f,ko.db,kegg_gene_list)
+        try(pathview.p(kk.f,ko.db,kegg_gene_list))
         setwd(paste0(dirname(args[1]),"/Host_DEG/",group1,"_vs_",group2)) # go back to each comparison folder from Pathview
         
         setwd("../") # go back to the Host_DEG folder
