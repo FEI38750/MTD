@@ -1355,7 +1355,7 @@ if (filename == "host_counts.txt"){
         egox <- setReadable(ego, do.db)
         write.csv(egox@result,"GO/GSEA_GO_results_symbol.csv")
         # draw plots for GO GSEA results
-        plots4gsea("GO",ego,egox,"GO", genelist, group1, group2)
+        try(plots4gsea("GO",ego,egox,"GO", genelist, group1, group2))
         
         ## GSEA for KEGG ##
         # KEGG pathway gene set enrichment analysis
@@ -1402,8 +1402,8 @@ if (filename == "host_counts.txt"){
         write.csv(kkx.f@result,"KEGG/Modules/GSEA_KEGG_results_symbol.csv")
         
         # draw plots for KEGG GSEA results
-        plots4gsea("KEGG",kk.p,kkx.p,"KEGG",kegg_gene_list)
-        plots4gsea("KEGG/Modules",kk.f,kkx.f,"KEGG",kegg_gene_list)
+        try(plots4gsea("KEGG",kk.p,kkx.p,"KEGG",kegg_gene_list))
+        try(plots4gsea("KEGG/Modules",kk.f,kkx.f,"KEGG",kegg_gene_list))
         
         # KEGG pathview plots
         dir.create("KEGG/Pathview") ; setwd("KEGG/Pathview")
