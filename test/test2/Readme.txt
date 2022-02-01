@@ -1,2 +1,2 @@
 Trimmed version of test1. For a quicker run.
-Minium sample size; 3 for each group; two groups. 
+Minimized sample size; 3 for each group; two groups. 
