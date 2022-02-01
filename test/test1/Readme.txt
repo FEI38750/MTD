@@ -1,1 +1,0 @@
-Minium sample size; 3 for each group; two groups. For a quicker run.
