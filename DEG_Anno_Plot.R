@@ -652,30 +652,33 @@ if (filename %in% c("bracken_species_all",
   #barplot(b[b>0],names.arg =colnames(braycurtis.pcoa.export))
 
   library(forcats)
-  # reorder the group column following the value of order column  
-  braycurtis.pcoa.export %>%
-    mutate(group = fct_reorder(group, order)) %>%
-    ggplot(aes(Axis.1, Axis.2,color=group)) +
-    geom_point(size=3) +
-    xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
-    ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
-    geom_text_repel(aes(label=row.names(braycurtis.pcoa.export)),size=3) +
-    coord_fixed() +
-    theme_bw() +
-    ggtitle("Bray-Curtis Distances PCoA")
-  ggsave("PCoA_label_color.pdf")
-  
-  braycurtis.pcoa.export %>%
-    mutate(group = fct_reorder(group, order)) %>%
-    ggplot(aes(Axis.1, Axis.2,color=group)) +
-    geom_point(size=3) +
-    xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
-    ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
-    coord_fixed() +
-    theme_bw() +
-    ggtitle("Bray-Curtis Distances PCoA")
-  ggsave("PCoA_color.pdf")
-
+  if (names(braycurtis.pcoa.export)[2]=="Axis.2"){
+    # reorder the group column following the value of order column  
+    braycurtis.pcoa.export %>%
+      mutate(group = fct_reorder(group, order)) %>%
+      ggplot(aes(Axis.1, Axis.2,color=group)) +
+      geom_point(size=3) +
+      xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
+      ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
+      geom_text_repel(aes(label=row.names(braycurtis.pcoa.export)),size=3) +
+      coord_fixed() +
+      theme_bw() +
+      ggtitle("Bray-Curtis Distances PCoA")
+    ggsave("PCoA_label_color.pdf")
+    
+    braycurtis.pcoa.export %>%
+      mutate(group = fct_reorder(group, order)) %>%
+      ggplot(aes(Axis.1, Axis.2,color=group)) +
+      geom_point(size=3) +
+      xlab(paste0("PCoA1: ",round(100*b[1]),"% variance")) +
+      ylab(paste0("PCoA2: ",round(100*b[2]),"% variance")) +
+      coord_fixed() +
+      theme_bw() +
+      ggtitle("Bray-Curtis Distances PCoA")
+    ggsave("PCoA_color.pdf")
+  } else {
+    write("No Axis.2 was found on PCoA","No_Axis2_on_PCoA.txt")
+  }
   # anosim test
   data2<-t(as.matrix(data1@otu_table))
   pathotype.anosim <- anosim(data2, braycurtis.pcoa.export$group)
