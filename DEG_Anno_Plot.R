@@ -609,7 +609,7 @@ if (filename %in% c("bracken_species_all",
       ggsave("heatmap_ANCOMBC.pdf",plot=p,
              limitsize = F,
              height = 0.1*length(unique(heat.m$name)),
-             width = 0.8*length(unique(heat.m$key.x)))
+             width = 2.5+0.8*length(unique(heat.m$key.x)))
     } else {
       ggsave("heatmap_ANCOMBC.pdf",plot=p,height = 0.2*length(unique(heat.m$name)))
     }
