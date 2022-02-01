@@ -225,6 +225,7 @@ echo 'MTD installation progress:'
 echo '>>>>>>>>>>>>>>>>>>  [90%]'
 echo 'installing R packages...'
 # install R packages
+conda deactivate
 conda activate R412
 Rscript $dir/Installation/R_packages_installation.R
 
