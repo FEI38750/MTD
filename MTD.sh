@@ -456,27 +456,21 @@ sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
 conda deactivate
 conda activate R412
 Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
-conda deactivate
-conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>     [75%]'
 
 # ssGSEA
-conda deactivate
-conda activate R412
 Rscript $MTDIR/gct_making.R $outputdr/Host_DEG/host_counts_TPM.csv $inputdr/samplesheet.csv
 
 Rscript $MTDIR/Tools/ssGSEA2.0/ssgsea-cli.R \
     -i $outputdr/ssGSEA/host.gct \
     -o $outputdr/ssGSEA/ssgsea-results \
-    -d $MTDIR/Tools/ssGSEA2.0/db/msigdb/c2.all.v7.5.symbols.gmt \
+    -d $MTDIR/Tools/ssGSEA2.0/db/msigdb/c2.all.v7.5.1.symbols.gmt \
     -y $MTDIR/Tools/ssGSEA2.0/config.yaml \
     -u $threads
 
 Rscript $MTDIR/for_halla.R $outputdr/ssGSEA/ssgsea-results-scores.gct $inputdr/samplesheet.csv $metadata
-conda deactivate
-conda activate MTD
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>>    [80%]'
