@@ -1293,10 +1293,11 @@ if (filename == "host_counts.txt"){
           ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=6.5,width=0.64*round(max(nchar((data@result$core_enrichment[1:30])))/19),limitsize=F)
         }
         # upset plot
-        pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
         if (nrow(data@result)<30){
+          pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
           p.upset<-upsetplot(data, n=nrow(data@result))
         } else {
+          pdf(file= paste0(edb,"/GSEA_",edb0,"_upset_top30.pdf"),height=12,width=16)
           p.upset<-upsetplot(data, n=30)
         }
         print(p.upset) # save pdf inside a function
