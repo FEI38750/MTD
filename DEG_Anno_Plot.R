@@ -1265,7 +1265,11 @@ if (filename == "host_counts.txt"){
         ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 4.8, width = 6)
         #networks
         cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"))
+        if (nrow(data@result)<25){
+          ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"))
+        } else {
+          ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"),scale= 2)
+        }
         # tree plot
         datax2 <- pairwise_termsim(datax)
         treeplot(datax2)
@@ -1276,7 +1280,11 @@ if (filename == "host_counts.txt"){
         }
         # enrichment map
         emapplot(datax2,layout="kk")
-        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"))
+        if (nrow(data@result)<25){
+          ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"))
+        } else {
+          ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"),scale= 2)
+        }
         # Heatmap-like functional classification
         heatplot(datax2, foldChange=genelist)
         if (nrow(data@result)<30){
