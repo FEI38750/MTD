@@ -1251,27 +1251,39 @@ if (filename == "host_counts.txt"){
         dir.create(paste0(edb,"/GSEA_all"))
         for (g in 1:nrow(data@result)){
           gseaplot2(data, geneSetID = g, title = data$Description[g])
-          ggsave(paste0(edb,"/GSEA_all/",data$Description[g],"_GSEA_",edb0,".pdf"))
+          ggsave(paste0(edb,"/GSEA_all/",gsub("/","_",data$Description[g]),"_GSEA_",edb0,".pdf"))
         }
         # ridgeline plot for expression distribution of GSEA GO result
         ridgeplot(data)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"),height = 0.48*nrow(data@result))
+        if (nrow(data@result)<30){
+          ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"),height = 2+0.48*nrow(data@result))
+        } else {
+          ggsave(paste0(edb,"/GSEA_",edb0,"_ridgeplots.pdf"), height = 12)
+        }
         # dot plot
         dotplot(data) + ggtitle("dotplot for GSEA")
-        ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 0.48*nrow(data@result), width = 6)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_dotplot.pdf"),height = 4.8, width = 6)
         #networks
         cnetplot(datax, foldChange=genelist,cex_label_gene = 0.6)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"),scale=nrow(data@result)/12,limitsize=F)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_net.pdf"))
         # tree plot
         datax2 <- pairwise_termsim(datax)
         treeplot(datax2)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=0.48*nrow(data@result))
+        if (nrow(data@result)<30){
+          ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=2+0.48*nrow(data@result),limitsize=F)
+        } else {
+          ggsave(paste0(edb,"/GSEA_",edb0,"_tree.pdf"),height=6)
+        }
         # enrichment map
         emapplot(datax2,layout="kk")
-        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"),scale=nrow(data@result)/12)
+        ggsave(paste0(edb,"/GSEA_",edb0,"_map.pdf"))
         # Heatmap-like functional classification
         heatplot(datax2, foldChange=genelist)
-        ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=2+0.24*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        if (nrow(data@result)<30){
+          ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=2+0.24*nrow(data@result),width=0.2*round(max(nchar((data@result$core_enrichment)))/19),limitsize=F)
+        } else {
+          ggsave(paste0(edb,"/GSEA_",edb0,"_heat.pdf"),height=6.5,width=0.64*round(max(nchar((data@result$core_enrichment[1:30])))/19),limitsize=F)
+        }
         # upset plot
         pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
         p.upset<-upsetplot(data, n=nrow(data@result))
