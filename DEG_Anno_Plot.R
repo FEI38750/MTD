@@ -1294,7 +1294,11 @@ if (filename == "host_counts.txt"){
         }
         # upset plot
         pdf(file= paste0(edb,"/GSEA_",edb0,"_upset.pdf"),height=0.4*nrow(data@result),width=12)
-        p.upset<-upsetplot(data, n=nrow(data@result))
+        if (nrow(data@result)<30){
+          p.upset<-upsetplot(data, n=nrow(data@result))
+        } else {
+          p.upset<-upsetplot(data, n=30)
+        }
         print(p.upset) # save pdf inside a function
         dev.off()
         # bar plot
