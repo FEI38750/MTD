@@ -24,4 +24,20 @@ dependencies:
   - tk=8.6.10=h21135ba_1
   - wheel=0.36.2=pyhd3deb0d_0
   - zlib=1.2.11=h516909a_1010
-
+  - pip:
+    - backports-functools-lru-cache==1.6.1
+    - biom-format==2.0.1
+    - cycler==0.10.0
+    - h5py==2.10.0
+    - hclust2==1.0.0
+    - kiwisolver==1.1.0
+    - matplotlib==2.2.5
+    - numpy==1.16.6
+    - pandas==0.24.2
+    - pyparsing==2.4.7
+    - pyqi==0.3.2
+    - python-dateutil==2.8.1
+    - pytz==2021.1
+    - scipy==1.2.3
+    - six==1.15.0
+    - subprocess32==3.5.4
