@@ -7,8 +7,8 @@ MTD is a software that has two sub-pipelines to jointly analyze of host transcri
 * Installation and use MTD is as easy as **one command line** without the requirement of administrator/root privilege.
 * **Decontamination function** is enabled to eliminate the common contaminant microbes in the laboratory environment.
 # Requirements
-* 160 Gb RAM
-* 560 Gb storage space
+* 160 GB RAM
+* 560 GB storage space
 * Conda was installed
 * GNU/Linux system with Bash
 # Installation
