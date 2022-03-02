@@ -99,8 +99,8 @@ host pathways and microbiome species
   
 ## Notes
   - For reference, the MTD running time would be:
-    - Bulk RNA-seq: for 10 samples, 20 fastq files (total 47 Gb) by using 20 threads CPU is ~8 hours (except correlation analysis). In addition, the correlation analysis may need a further ~26-30hours (results in halla folder). So the total running time would be ~34-38 hours.
-    - Single-cell RNA-seq: for fastq files contain ~7500 cells (1.3Tb), by using 20 threads CPU is ~1-2 days.
+    - Bulk RNA-seq: for 10 samples, 20 fastq files (total 47 GB) by using 20 threads CPU is ~8 hours (except correlation analysis). In addition, the correlation analysis may need a further ~26-30hours (results in halla folder). So the total running time would be ~34-38 hours.
+    - Single-cell RNA-seq: for fastq files contain ~7500 cells (1.3TB), by using 20 threads CPU is ~1-2 days.
   - In addition to initially supported human, mouse, and rhesus monkey, users can easily add any other host species by one command line:\
     **bash Customized_host.sh -t [threads] -d [host_genome_Ensembl_address] -c [host_taxid] -g [host_gtf_Ensembl_address]**\
       For example:\
