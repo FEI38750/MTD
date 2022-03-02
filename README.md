@@ -12,7 +12,7 @@ MTD is a software that has two sub-pipelines to jointly analyze of host transcri
 * Conda was installed
 * GNU/Linux system with Bash
 # Installation
-1. Download directly or git clone MTD (git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (~530Gb) will be installed in this MTD folder.
+1. Download directly or git clone MTD (git clone https://github.com/FEI38750/MTD.git) to the place you want to install. The full version of software (~530GB) will be installed in this MTD folder.
 2. In termial, type\
 **bash [path/to/MTD]/Install.sh -t [threads] -p [path/to/conda]**\
 For example:
@@ -25,7 +25,7 @@ For example:
 curl $URL > miniconda-installer.sh
 bash miniconda-installer.sh -b</code></pre>
 Conda then will be installed in your home directory, such as path: ~/miniconda3
-* MTD conda environments occupies ~24Gb in your conda folder.
+* MTD conda environments occupies ~24GB in your conda folder.
 * Tips: file management software such as FileZilla (https://filezilla-project.org/download.php?show_all=1) can help you to manage your files on HPC/server.
 # Run MTD
 ## Bulk RNA-seq
