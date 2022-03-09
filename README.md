@@ -125,8 +125,8 @@ Then just to add the flag <code>-m [path/to/metadata.csv]</code> in the MTD bulk
     To close your screen session use: <code>screen -X -S [session # you want to kill] quit</code>
   
 # Overview of MTD
-        <img src="https://github.com/FEI38750/MTD/blob/main/Img/Workflow.jpg" width=100% height=100%>
-        (A): A workflow for bulk mRNA-seq analysis. (B): A workflow for single-cell mRNA-seq analysis. \
+<img src="https://github.com/FEI38750/MTD/blob/main/Img/Workflow.jpg" width=100% height=100%> \
+        (A): The workflow for bulk mRNA-seq analysis. (B): The workflow for single-cell mRNA-seq analysis. \
         White boxes represent the reads in FASTQ format and the count matrix. Blue boxes show the bioinformatics software used. Green boxes are the additional tools for data processing. The white boxes with curved edges show the reference genome and databases. In the single-cell mRNA-seq workflow (B), the left side exemplifies the host reads process protocols, and the right side in yellow shadow shows the MTD automatic pipeline to calculate the count matrix for the microbiome reads and the correlation test between microbiome and host genes.
         
 # Citation
