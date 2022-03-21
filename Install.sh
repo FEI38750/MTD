@@ -27,6 +27,8 @@ echo "$condapath" > $dir/condaPath
 
 source $condapath/etc/profile.d/conda.sh
 
+conda deactivate
+
 echo 'installing conda environments...'
 conda env create -f Installation/MTD.yml
 conda env create -f Installation/py2.yml
