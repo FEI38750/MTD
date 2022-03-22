@@ -60,6 +60,8 @@ cat Installation/M33262_SIVMM239.fa virushostdb.genomic.fna > viruses4kraken.fa
 # debug rsync error of kraken2-build
 cp -f $dir/Installation/rsync_from_ncbi.pl $condapath/pkgs/kraken2-2.1.2-pl5262h7d875b9_0/libexec/rsync_from_ncbi.pl
 cp -f $dir/Installation/rsync_from_ncbi.pl $condapath/envs/MTD/libexec/rsync_from_ncbi.pl
+cp -f $dir/Installation/download_genomic_library.sh $condapath/pkgs/kraken2-2.1.2-pl5262h7d875b9_0/libexec/download_genomic_library.sh
+cp -f $dir/Installation/download_genomic_library.sh $condapath/envs/MTD/libexec/download_genomic_library.sh
 
 echo 'MTD installation progress:'
 echo '>>>>                [20%]'
