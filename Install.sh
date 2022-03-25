@@ -233,8 +233,13 @@ echo 'installing R packages...'
 conda deactivate
 conda activate R412
 # debug in case libcurl cannot be located in the conda R environment
-locate_lib=$(dirname $(locate libcurl | grep '\.pc'))
 wget https://cloud.r-project.org/src/contrib/curl_4.3.2.tar.gz
+# if /usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc exists, use it
+if [ -f /usr/lib/x86_64-linux-gnu/pkgconfig/libcurl.pc ]; then
+    locate_lib=/usr/lib/x86_64-linux-gnu/pkgconfig
+    else 
+    locate_lib=$(dirname $(locate libcurl | grep '\.pc'))
+fi
 R CMD INSTALL --configure-vars='LIB_DIR='"$locate_lib" curl_4.3.2.tar.gz
 
 Rscript $dir/Installation/R_packages_installation.R
