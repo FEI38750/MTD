@@ -36,6 +36,7 @@ echo "MTD directory is $MTDIR"
 condapath=$(head -n 1 $MTDIR/condaPath)
 # activate MTD conda environment
 source $condapath/etc/profile.d/conda.sh
+conda deactivate # aviod multiple conda environment
 conda activate MTD
 
 inputdr=$(dirname $inputdr)
