@@ -480,9 +480,9 @@ echo "MTD DEG analyses are done. Starting microbiome x host association analyses
 # halla: association analysis
 #mkdir -p $outputdr/Associations
 conda deactivate
-conda activate halla0818
+conda activate halla0820
 echo 'Analyzing microbiome x host_genes associations...'
-mkdir -p $outputdr/halla/host_gene # need to create a new directory for output to avoid "exists; deleting..." issue by halla
+#mkdir -p $outputdr/halla/host_gene # need to create a new directory for output to avoid "exists; deleting..." issue by halla
 halla -x $outputdr/halla/Microbiomes.txt \
     -y $outputdr/halla/Host_gene.txt \
     -o $outputdr/halla/host_gene \
@@ -518,7 +518,7 @@ echo '>>>>>>>>>>>>>>>>>>  [90%]'
 
 echo 'Analyzing microbiome x host_pathways associations...'
 # for microbiome x host_pathways(ssGSEA)
-mkdir -p $outputdr/halla/pathway
+#mkdir -p $outputdr/halla/pathway
 halla -x $outputdr/halla/Microbiomes.txt \
     -y $outputdr/halla/Host_score.txt \
     -o $outputdr/halla/pathway \

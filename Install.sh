@@ -32,7 +32,7 @@ conda deactivate
 echo 'installing conda environments...'
 conda env create -f Installation/MTD.yml
 conda env create -f Installation/py2.yml
-conda env create -f Installation/halla0818.yml
+conda env create -f Installation/halla0820.yml
 conda env create -f Installation/R412.yml
 
 echo 'MTD installation progress:'
@@ -42,7 +42,7 @@ echo '>>                  [10%]'
 # pip install backports-functools-lru-cache==1.6.1 biom-format==2.0.1 cycler==0.10.0 h5py==2.10.0 hclust2==1.0.0 kiwisolver==1.1.0 matplotlib==2.2.5 numpy==1.16.6 pandas==0.24.2 pyparsing==2.4.7 pyqi==0.3.2 python-dateutil==2.8.1 pytz==2021.1 scipy==1.2.3 six==1.15.0 subprocess32==3.5.4
 # conda deactivate
 
-conda activate halla0818 # install dependencies of halla
+conda activate halla0820 # install dependencies of halla
 R -e 'install.packages(c("XICOR","mclust","BiocManager"), repos="http://cran.us.r-project.org")'
 R -e 'BiocManager::install("preprocessCore", ask = FALSE)'
 R -e 'install.packages("eva", INSTALL_opts = "--no-lock", repos="http://cran.us.r-project.org")'
