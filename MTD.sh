@@ -513,6 +513,17 @@ halla -x $outputdr/halla/Microbiomes.txt \
         --output $outputdr/halla/host_gene/hallagram_all.png \
         --block_num -1
 
+        # if hallagram_all.png not exist, show top 300 blocks
+        if [[ ! -f $outputdr/halla/host_gene/hallagram_all.png ]]; then
+            hallagram \
+                -i $outputdr/halla/host_gene \
+                --cbar_label "${pdm_name[@]}" \
+                --x_dataset_label Microbiomes \
+                --y_dataset_label Host_gene \
+                --output $outputdr/halla/host_gene/hallagram_Top300.png \
+                --block_num 300
+        fi
+
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>>>>  [90%]'
 
