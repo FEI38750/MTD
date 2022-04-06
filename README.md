@@ -130,7 +130,7 @@ Then just to add the flag <code>-m [path/to/metadata.csv]</code> in the MTD bulk
         White boxes represent the reads in FASTQ format and the count matrix. Blue boxes show the bioinformatics software used. Green boxes are the additional tools for data processing. The white boxes with curved edges show the reference genome and databases. In the single-cell mRNA-seq workflow (B), the left side exemplifies the host reads process protocols, and the right side in yellow shadow shows the MTD automatic pipeline to calculate the count matrix for the microbiome reads and the correlation test between microbiome and host genes.
         
 # Citation
-Fei Wu, Yao-Zhong Liu, Binhua Ling. (2021). MTD: a unique pipeline for host and meta-transcriptome joint and integrative analyses of RNA-seq data. bioRxiv 2021.11.16.468881; doi: https://doi.org/10.1101/2021.11.16.468881
+Fei Wu, Yao-Zhong Liu, Binhua Ling. (2022). MTD: a unique pipeline for host and meta-transcriptome joint and integrative analyses of RNA-seq data. Brief Bioinform. https://doi.org/10.1093/bib/bbac111
   
 # Licence
 This software is freely available for academic users. Usage for commercial purposes is not allowed. Please refer to the LICENCE page.
