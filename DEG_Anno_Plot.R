@@ -247,6 +247,8 @@ if (filename == "host_counts.txt"){
   comparison(dds, coldata_vs, filename,gene_ID,cts,merge.nt)
 } else {comparison_nonhost(dds, coldata_vs, filename,cts,merge.nt)}
 
+#to match with sample name from DESeq2, which is not allow "-" in the name
+coldata[,1] <-gsub("-",".",coldata[,1])
 
 ## MaAsLin2 ##
 library("Maaslin2")
