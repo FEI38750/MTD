@@ -217,7 +217,7 @@ cd Report_non-host_bracken_species_normalized
 
 #trim the name of _bracken report files (tree like) to the sample name (eg. DJ01)
 for i in $lsn; do
-    mv *${i}* $i
+    mv *${i}_* $i
 done
 
 #Converted original _bracken report files (tree like) into .biom file for ANCOMBC and diversity analysis in phyloseq (R) etc. in DEG_Anno_Plot.R
