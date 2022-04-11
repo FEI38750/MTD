@@ -18,6 +18,8 @@ gct<-read.csv(args[1],header = T)
 gct1<-select(gct,"gene_name","hybrid_name",coldata[,1]) # select and reoder the columes
 names(gct1)[1:2]<-c("NAME","Description")
 gct1<-gct1[gct1["NAME"]!="-",]
+# upcase the gene names
+gct1$NAME<-toupper(gct1$NAME)
 
 row1<-"#1.2"
 row2<- c(nrow(gct1),length(coldata[,1]))
