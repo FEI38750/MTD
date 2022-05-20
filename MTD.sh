@@ -98,7 +98,7 @@ files1=$(find $inputdr -name "*_1.fq.gz" -or -name "*_1.fastq.gz" -or -name "*_1
 #b=$(basename -a $inputdr) # store basenames of input directories into variable b to make a list of input sample names (eg. DJ01 EM77...)
 for i in $files1; do
     fn=$(basename $i) #Extract file name, eg. DJ01_1.fq.gz
-    sn=$(echo $fn | awk -F '_1' '{print $(NF-1)}') #Extract sample name, eg. DJ01
+    sn=$(echo $fn | awk -F '_1.f' '{print $(NF-1)}') #Extract sample name, eg. DJ01
     lsn=$lsn" "$sn #Make a list of sample names; store basenames of input directories into variable lsn to make a list of input sample names (eg. DJ01 EM77...)
 done
 
