@@ -87,6 +87,8 @@ if [[ $platform == 1 ]]; then
     BCpattern=CCCCCCCCCCCCCCCCNNNNNNNNNN
 elif [[ $platform == 2 ]]; then
     BCpattern=CCCCCCCCCCCCNNNNNNNN
+elif [[ $platform == 3 ]]; then
+    BCpattern=CCCCCCCCCCCCCCCCNNNNNNNNNNNN
 else
     echo "Single cell sequencing platform is not supported"
     exit
@@ -100,11 +102,11 @@ lsn=()
 for i in $files1; do
     fn=$(basename $i)
     sn=$(echo $fn | awk -F '_1' '{print $(NF-1)}')
-    lsn+=( $sn )
+    lsn=$lsn" "$sn
 done
 
 echo 'Step 1: Extract barcdoes and UMIs and add to read names...'
-for i in "${lsn[@]}"
+for i in $lsn
 do
     fq1=$(find $inputdr -type f \( -name "${i}_1.fq.gz" -or -name "${i}_1.fastq.gz" -or -name "${i}_1.fq" -or -name "${i}_1.fastq" \))
     fq2=$(find $inputdr -type f \( -name "${i}_2.fq.gz" -or -name "${i}_2.fastq.gz" -or -name "${i}_2.fq" -or -name "${i}_2.fastq" \))
@@ -124,7 +126,7 @@ echo 'MTD running  progress:'
 echo '>>>>                [20%]'
 
 echo 'Step 2: Raw reads trimming and quality control...'
-for i in "${lsn[@]}" # store input sample name in i; eg. SRR7819592
+for i in $lsn # store input sample name in i; eg. SRR7819592
 do
     #fastp with polyA/T trimming
         fastp --trim_poly_x \
@@ -139,7 +141,7 @@ echo '>>>>>>              [30%]'
 
 echo 'Step 3: Classify reads by kraken2...'
 echo 'Reads classification by kraken2; 1st step for host classification...'
-for i in "${lsn[@]}"; do
+for i in $lsn; do
     kraken2 --db $DB_host --use-names \
         --report Report_host_$i.txt \
         --threads $threads \
@@ -154,7 +156,7 @@ echo 'MTD running  progress:'
 echo '>>>>>>>>            [40%]'
 
 echo 'Reads classification by kraken2; 2nd step for non-host reads classification...'
-for i in "${lsn[@]}"; do
+for i in $lsn; do
     kraken2 --db $DB_micro --use-names \
         --report Report_non-host.raw_$i.txt \
         --threads $threads \
@@ -172,7 +174,7 @@ conta_file=$MTDIR/conta_ls.txt
 if test -f "$conta_file"; then
     tls=$(awk -F '\t' '{print $2}' $conta_file)
     conta_ls="${tls//$'\r\n'/ }"
-    for i in "${lsn[@]}"; do
+    for i in $lsn; do
         python $MTDIR/Tools/KrakenTools/extract_kraken_reads.py \
             -k Report_non-host_raw_${i}.kraken \
             -s1 ${i}_non-host_raw.fq \
@@ -185,7 +187,7 @@ if test -f "$conta_file"; then
     echo '>>>>>>>>>>>>        [60%]'
 
     echo 'Reads classification by kraken2; 3rd step for decontaminated non-host reads to get reports...'
-    for i in "${lsn[@]}"; do
+    for i in $lsn; do
         kraken2 --db $DB_micro --use-names \
             --report Report_non-host_$i.txt \
             --threads $threads \
@@ -214,7 +216,7 @@ conda activate R412
 echo 'Step 6: Make the count matrix of microbiome...'
 Rscript $MTDIR/Singelcell4kraken2_umitools_batch.R $outputdr/temp
 
-for i in "${lsn[@]}"; do
+for i in $lsn; do
     mv Report_non-host_${i}.kraken.c.tsv_Count.txt $outputdr/${i}_count_matrix.txt
 done
 
