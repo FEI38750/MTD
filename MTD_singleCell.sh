@@ -101,7 +101,7 @@ files2=$(find $inputdr -name "*_2.fq.gz" -or -name "*_2.fastq.gz" -or -name "*_2
 lsn=()
 for i in $files1; do
     fn=$(basename $i)
-    sn=$(echo $fn | awk -F '_1' '{print $(NF-1)}')
+    sn=$(echo $fn | awk -F '_1.f' '{print $(NF-1)}')
     lsn=$lsn" "$sn
 done
 
