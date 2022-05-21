@@ -55,6 +55,7 @@ condapath=$(head -n 1 $MTDIR/condaPath)
 # activate MTD conda environment
 source $condapath/etc/profile.d/conda.sh
 
+conda deactivate
 conda activate R412
 echo 'Single cell fastq pre-processing: arrangement and whilelist making...'
 Rscript $MTDIR/SingleCell_Prep.R $samplesheet $outputdr $platform
@@ -108,6 +109,7 @@ done
 echo 'Step 1: Extract barcdoes and UMIs and add to read names...'
 for i in $lsn
 do
+    echo "start extracting sample $i"
     fq1=$(find $inputdr -type f \( -name "${i}_1.fq.gz" -or -name "${i}_1.fastq.gz" -or -name "${i}_1.fq" -or -name "${i}_1.fastq" \))
     fq2=$(find $inputdr -type f \( -name "${i}_2.fq.gz" -or -name "${i}_2.fastq.gz" -or -name "${i}_2.fq" -or -name "${i}_2.fastq" \))
     # Get the cell barcodes (whitelist)
