@@ -47,7 +47,7 @@ if (filename %in% c("bracken_species_all","bracken_phylum_all","bracken_genus_al
   coldata<-coldata[order(coldata$order), ]
   coldata<-subset(coldata, select = -c(order))
   # make cts(count matrix) has consistent order with samplesheet
-  cts<-cts[coldata$sample_name]
+  cts<-cts[coldata0$sample_name]
   # load the datastructure to DESeq
   dds <- DESeqDataSetFromMatrix(countData = cts,
                                 colData = coldata,
