@@ -78,7 +78,7 @@ if (length(args) == 5){
 
 if (filename == "host_counts.txt"){
   # make cts(count matrix) has consistent order with samplesheet/metadata
-  cts<-cts[coldata$sample_name]
+  cts<-cts[coldata0$sample_name]
   # load the datastructure to DESeq
   dds <- DESeqDataSetFromMatrix(countData = cts,
                                 colData = coldata,
@@ -779,7 +779,7 @@ if (filename %in% c("bracken_species_all",
 for (i in 1:nrow(coldata_vs)){
   group1<-coldata_vs$group1[i]
   group2<-coldata_vs$group2[i]
-  pvalue_name<-paste0("pvalue.",group1,"_vs_",group2)
+  pvalue_name<-paste0("padj.",group1,"_vs_",group2) # get the adjusted p-value
   log2FoldChange_name<-paste0("log2FoldChange.",group1,"_vs_",group2)
   # nt4v<-cbind(DEG[,"gene_name"],DEG[,pvalue_name],
   #          DEG[,log2FoldChange_name])
