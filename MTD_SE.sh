@@ -231,7 +231,7 @@ echo '>>>>>>>>>>          [50%]'
 #Converted adjusted _bracken report files (tree like) into .biom file for graph visualization: graphlan, MPA, krona
 kraken-biom * -o $outputdr/bracken_species_all.biom --fmt json
 #Converted original _bracken report files (tree like) into .biom file
-kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
+#kraken-biom * -o $outputdr/temp/bracken_species_all0.biom --fmt json
 #kraken-biom *_bracken_phylum -o bracken_phylum_all.biom --fmt json
 #kraken-biom *_bracken_genus -o bracken_genus_all.biom --fmt json
 
