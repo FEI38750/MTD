@@ -726,13 +726,13 @@ if (filename %in% c("bracken_species_all",
   PhylaPalette = getPalette(HowManyPhyla)
 
   # phyloseq bar plots
-  plot_bar(data, fill="Phylum") +
-    scale_fill_manual(values =PhylaPalette)
-  ggsave("Bar_phy.pdf")
+  try(plot_bar(data, fill="Phylum") +
+    scale_fill_manual(values =PhylaPalette))
+  try(ggsave("Bar_phy.pdf"))
 
-  plot_bar(data_sam, fill="Phylum",facet_grid = ~Groups) +
-    scale_fill_manual(values =PhylaPalette)
-  ggsave("Bar_group_phy.pdf")
+  try(plot_bar(data_sam, fill="Phylum",facet_grid = ~Groups) +
+    scale_fill_manual(values =PhylaPalette))
+  try(ggsave("Bar_group_phy.pdf"))
 
   # relative abundance bar plot
   data_sam_relabund<-transform_sample_counts(data_sam, function(x) x / sum(x))
