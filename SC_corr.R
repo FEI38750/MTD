@@ -45,7 +45,7 @@ if (length(args)<7){
 if (nrow(host_matrix) > 1){
   SC.list <- list()
   for (h in host_matrix[,1]){
-    if (args[3] == 1){ # 10x platform
+    if (args[3] == 1 || 3){ # 10x platform
       if (file.exists(paste0(h,"/matrix.mtx"))){
         print("Load the 10X datasets (matrix; folder)")
         host.df <- Read10X(h)
@@ -82,7 +82,7 @@ if (nrow(host_matrix) > 1){
   
 } else if (nrow(host_matrix) == 1){
   h <- host_matrix[,1]
-  if (args[3] == 1){ # 10x platform
+  if (args[3] == 1 || 3){ # 10x platform
     if (file.exists(paste0(h,"/matrix.mtx"))){
       print("Load the 10X datasets (matrix; folder)")
       host.df <- Read10X(h)
