@@ -63,12 +63,12 @@ For example:
   Then MTD will read the corresponding file paths from this samplesheet_SC.csv for single-cell analysis.
 3. In termial, type\
   **bash [path/to/MTD]/MTD_singleCell.sh -i [path/to/samplesheet_SC.csv] -o [path/to/Output_folder] -h [Host species taxonomy ID] -t [Threads] -p [Platform] -d [prime Direction] -c [path/to/Cell_barcode_file.whitelist.txt]**\
-  Single cell RNAseq platform(-p): enter 1 for 10x or 2 for Dropseq platform\
+  Single cell RNAseq platform(-p): enter 1 for 10x v2 chemistry, 3 for 10x v3 chemistry, or 2 for Dropseq platform\
   prime_direction(-d): specifying barcode locations: enter 3 or 5 for barcodes are at the 3’ end or 5' end of the read\
   For example:
         <pre><code>bash ~/MTD/MTD_singleCell.sh -i ~/scRNAseq_rawData/samplesheet_SC.csv -o ~/output -h 10090 -t 20 -p 1 -d 3</code></pre>
 ### Notes
-* 10x and Dropseq use paired end sequence. The first fastq file contains barcodes (e.g., 26bp length in SRR4210_R1.fastq). The second fastq file contains transcript's sequences (e.g., 98bp length in SRR4210_R2.fastq).
+* 10x and Dropseq use paired end sequence. The first fastq file contains barcodes (e.g., 26/28bp length in SRR4210_R1.fastq). The second fastq file contains transcript's sequences (e.g., 98bp length in SRR4210_R2.fastq).
 * Default QC is *subset= nFeature_RNA>200 & nFeature_RNA < 2\*median(number_of_Feature_RNA) & percent.mt < 10*\
   In addition, user can customize QC by adding -l [Minimum nFeature_RNA] -r [Maximum nFeature_RNA] -m [percent.mt]
   
