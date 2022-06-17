@@ -20,7 +20,7 @@ for (i in 1:nrow(host_matrix)){
   system(paste0("mv ",u,"_2.fastq ",args[2],"/fastq"))
 }
 
-if (args[3] == 1){ # 10x platform
+if (args[3] == 1 || args[3] == 3){ # 10x platform
   # Make whitelist from host matrix (for h5 format)
   for (h in host_matrix[,1]){
     if (file.exists(paste0(h,"/matrix.mtx"))){
