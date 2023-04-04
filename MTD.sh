@@ -128,6 +128,9 @@ for i in $lsn; do # store input sample name in i; eg. DJ01
             -o Trimmed_${i}_1.fq -O Trimmed_${i}_2.fq 
 done
 
+echo 'MTD running  progress:'
+echo '>>                  [15%]'
+
 echo 'Starting to process the host reads...'
 ## 1st step to process the host reads, and collect the unmapped reads
 cd $outputdr/temp
@@ -470,10 +473,6 @@ conda activate MTD
 #     --output $outputdr/hmn_pathway_abundance_files/humann_pathabundance_barplot.png
 # humann_barplot --input $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_cpm_stratified.tsv \
 #     --output $outputdr/hmn_genefamily_abundance_files/humann_genefamilies_barplot.png
-
-echo 'MTD running  progress:'
-echo '>>>>>>>>>>>>>       [65%]'
-
 
 
 echo 'MTD running  progress:'
