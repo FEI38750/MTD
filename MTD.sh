@@ -125,29 +125,96 @@ for i in $lsn; do # store input sample name in i; eg. DJ01
             --length_required $length \
             --thread 16 \
             -i $fq1 -I $fq2 \
-            -o Trimmed_${i}_1.fq.gz -O Trimmed_${i}_2.fq.gz 
+            -o Trimmed_${i}_1.fq -O Trimmed_${i}_2.fq 
 done
+
+echo 'Starting to process the host reads...'
+## 1st step to process the host reads, and collect the unmapped reads
+cd $outputdr/temp
+if [[ $blast == blast ]]; then
+    # Magic-BLAST
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        magicblast -query Trimmed_${i}_1.fq \
+        -query_mate Trimmed_${i}_2.fq \
+        -db $DB_blast \
+        -infmt fastq \
+        -out $i.sam \
+        -num_threads $threads
+    done
+else
+    # HISAT2 alignment
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        hisat2 -p $threads -q \
+            -x $DB_hisat2 \
+            --summary-file ${i}_hisat2_summary.txt \
+            -1 Trimmed_${i}_1.fq \
+            -2 Trimmed_${i}_2.fq \
+            -S $i.sam \
+            --un-conc ${i}_non-host_raw_%.fq
+    done
+fi
+
+# featureCounts
+featureCounts -T $threads \
+   -p \
+   -a $gtf \
+   -o $outputdr/host_counts.txt \
+   *.sam
+
+for i in $lsn; do
+    samtools view -bS $i.sam > $i.bam -@ $threads
+    samtools sort $i.bam -o $i.sorted.bam -@ $threads
+    samtools index $i.sorted.bam -@ $threads
+done
+
+mkdir -p BAM
+mv *.sorted.bam *.sorted.bam.bai BAM/
+
+cd $outputdr
+# trim the featureCounts output(host_counts.txt) for downstream analysis
+# delete the first line/row of a file then trim the sample name
+sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
+
+# DEG & Annotation & Plots & preprocess for host
+conda deactivate
+conda activate R412
+Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
+
 
 echo 'MTD running  progress:'
 echo '>>>>                [20%]'
 
-# Reads classification by kraken2; 1st step for host
-for i in $lsn; do # store input sample name in i; eg. DJ01
-    kraken2 --db $DB_host --use-names \
-        --report Report_host_$i.txt \
-        --threads $threads \
-        --gzip-compressed \
-        --paired \
-        --classified-out ${i}_host#.fq \
-        --unclassified-out ${i}_non-host_raw#.fq \
-        Trimmed_${i}_1.fq.gz Trimmed_${i}_2.fq.gz \
-        > Report_host_$i.kraken
-done
+# Reads classification by kraken2; for host
+if [[ $blast == blast ]]; then
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        kraken2 --db $DB_host --use-names \
+            --report Report_host_$i.txt \
+            --threads $threads \
+            --gzip-compressed \
+            --paired \
+            --classified-out ${i}_host#.fq \
+            --unclassified-out ${i}_non-host_raw#.fq \
+            Trimmed_${i}_1.fq.gz Trimmed_${i}_2.fq.gz \
+            > Report_host_$i.kraken
+    done
+else
+    for i in $lsn; do # store input sample name in i; eg. DJ01
+        kraken2 --db $DB_host --use-names \
+            --report Report_host_$i.txt \
+            --threads $threads \
+            --gzip-compressed \
+            --paired \
+            # --classified-out ${i}_host#.fq \
+            # --unclassified-out ${i}_non-host_raw#.fq \
+            Trimmed_${i}_1.fq.gz Trimmed_${i}_2.fq.gz \
+            > Report_host_$i.kraken
+    done
+fi
 
 echo 'MTD running  progress:'
 echo '>>>>>               [25%]'
 
-# Reads classification by kraken2; 2nd step for non-host reads
+# 2nd step: Reads classification by kraken2; for non-host reads
 for i in $lsn; do # store input sample name in i; eg. DJ01
     kraken2 --db $DB_micro --use-names \
         --report Report_non-host.raw_$i.txt \
@@ -173,6 +240,7 @@ if test -f "$conta_file"; then
             -s1 ${i}_non-host_raw_1.fq -s2 ${i}_non-host_raw_2.fq \
             -o ${i}_non-host_1.fq -o2 ${i}_non-host_2.fq \
             -r Report_non-host.raw_${i}.txt \
+            --fastq-output \
             --taxid $conta_ls --exclude --include-children
     done
 
@@ -406,57 +474,7 @@ conda activate MTD
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>       [65%]'
 
-echo 'Starting to process the host reads...'
-## continue to process the host reads
-cd $outputdr/temp
-if [[ $blast == blast ]]; then
-    # Magic-BLAST
-    for i in $lsn; do # store input sample name in i; eg. DJ01
-        magicblast -query ${i}_host_1.fq \
-        -query_mate ${i}_host_2.fq \
-        -db $DB_blast \
-        -infmt fastq \
-        -out $i.sam \
-        -num_threads $threads
-    done
-else
-    # HISAT2 alignment
-    for i in $lsn; do # store input sample name in i; eg. DJ01
-        hisat2 -p $threads -q \
-            -x $DB_hisat2 \
-            --summary-file ${i}_hisat2_summary.txt \
-            -1 ${i}_host_1.fq \
-            -2 ${i}_host_2.fq \
-            -S $i.sam
-    done
-fi
 
-
-# featureCounts
-featureCounts -T $threads \
-   -p \
-   -a $gtf \
-   -o $outputdr/host_counts.txt \
-   *.sam
-
-for i in $lsn; do
-    samtools view -bS $i.sam > $i.bam -@ $threads
-    samtools sort $i.bam -o $i.sorted.bam -@ $threads
-    samtools index $i.sorted.bam -@ $threads
-done
-
-mkdir -p BAM
-mv *.sorted.bam *.sorted.bam.bai BAM/
-
-cd $outputdr
-# trim the featureCounts output(host_counts.txt) for downstream analysis
-# delete the first line/row of a file then trim the sample name
-sed '1d; 2 s/\.sam//g' host_counts.txt > tmpfile; mv tmpfile host_counts.txt
-
-# DEG & Annotation & Plots & preprocess for host
-conda deactivate
-conda activate R412
-Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.csv $hostid $MTDIR/HostSpecies.csv $metadata
 
 echo 'MTD running  progress:'
 echo '>>>>>>>>>>>>>>>     [75%]'
