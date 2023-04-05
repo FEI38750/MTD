@@ -187,6 +187,7 @@ Rscript $MTDIR/DEG_Anno_Plot.R $outputdr/host_counts.txt $inputdr/samplesheet.cs
 echo 'MTD running  progress:'
 echo '>>>>                [20%]'
 
+cd $outputdr/temp
 # Reads classification by kraken2; for host
 if [[ $blast == blast ]]; then
     for i in $lsn; do # store input sample name in i; eg. DJ01
