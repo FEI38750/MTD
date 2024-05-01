@@ -18,8 +18,8 @@ do
 done
 
 # get MTD folder place; same as Install.sh script file path (in the MTD folder)
-dir=$(dirname $(readlink -f $0))
-cd $dir # MTD folder place
+MTDIR=$(dirname $(readlink -f $0))
+cd $MTDIR # MTD folder place
 
 # get conda path
 condapath=$(head -n 1 $MTDIR/condaPath)
