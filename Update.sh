@@ -48,9 +48,9 @@ kraken2-build --build --threads $threads --db $DBNAME $kmer $min_l $min_s
 
 # Bracken database update/re-building
 if [[ $kmer == "" ]]; then
-    bracken-build -d $dir/kraken2DB_micro -t $threads -l $read_len
+    bracken-build -d $MTDIR/kraken2DB_micro -t $threads -l $read_len
 else
-    bracken-build -d $dir/kraken2DB_micro -t $threads -l $read_len -k $kmer
+    bracken-build -d $MTDIR/kraken2DB_micro -t $threads -l $read_len -k $kmer
 fi
 
 echo "update done"
