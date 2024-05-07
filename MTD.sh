@@ -103,8 +103,8 @@ for i in $files1; do
 done
 
 # check if input files match the samplesheet.csv
-fastq_files=$(echo $lsn | tr " " "\n" | sort | tr "\n" " ")
-SamplesInSheet=$(cat $inputdr/samplesheet.csv | cut -f 1 -d ',' | tail -n +2 | sort | paste -sd " " -)
+fastq_files=$(echo $lsn | tr " " "\n" | sort | paste -sd " " -)
+SamplesInSheet=$(cat $inputdr/samplesheet.csv | cut -f 1 -d ',' | tail -n +2 | sort | paste -sd " " - | xargs)
 if [[ "$fastq_files" != "$SamplesInSheet" ]]; then
     echo "The samples' fastq files in the input folder do not match with your samplesheet.csv"
     echo "Please double-check with the samplesheet.csv and input files. Please ensure no other fastq files are under the input folder and its subfolders. You can refer to the user guide on https://github.com/FEI38750/MTD."
