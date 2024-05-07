@@ -104,7 +104,7 @@ done
 
 # check if input files match the samplesheet.csv
 fastq_files=$(echo $lsn | tr " " "\n" | sort | tr "\n" " ")
-SamplesInSheet=$(cat $inputdr/samplesheet.csv | cut -f 1 -d ',' | tail -n +2 | sort | tr "\n" " ")
+SamplesInSheet=$(cat $inputdr/samplesheet.csv | cut -f 1 -d ',' | tail -n +2 | sort | paste -sd " " -)
 if [[ "$fastq_files" != "$SamplesInSheet" ]]; then
     echo "The samples' fastq files in the input folder do not match with your samplesheet.csv"
     echo "Please double-check with the samplesheet.csv and input files. Please ensure no other fastq files are under the input folder and its subfolders. You can refer to the user guide on https://github.com/FEI38750/MTD."
@@ -190,7 +190,7 @@ echo '>>>>                [20%]'
 cd $outputdr/temp
 # Reads classification by kraken2; for host
 if [[ $blast == blast ]]; then
-    for i in $lsn; do # store input sample name in i; eg. DJ01
+    for i in $lsn; do # to prepare classification followed by MagicBlast; to get fastq
         kraken2 --db $DB_host --use-names \
             --report Report_host_$i.txt \
             --threads $threads \
@@ -202,7 +202,7 @@ if [[ $blast == blast ]]; then
             > Report_host_$i.kraken
     done
 else
-    for i in $lsn; do # store input sample name in i; eg. DJ01
+    for i in $lsn; do # just for report and reference only; no-fastq output
         kraken2 --db $DB_host --use-names \
             --report Report_host_$i.txt \
             --threads $threads \
