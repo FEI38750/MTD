@@ -18,6 +18,6 @@ score_adj <- limma::removeBatchEffect(score, coldata$group)
 if (length(args) == 3){
   coldata.n<-coldata
   coldata.n[]<-lapply(coldata.n, as.numeric)
-  normtrans_adj <- limma::removeBatchEffect(normtrans, covariates=coldata.n[,2:ncol(coldata.n)])
+  score_adj <- limma::removeBatchEffect(score, covariates=coldata.n[,2:ncol(coldata.n)])
 }
 write.table(score_adj,"Host_score.txt",sep="\t",quote=F,col.names=NA)
