@@ -10,124 +10,80 @@ repo_name: patrick-douglas/MTD
 
 repo_url: https://github.com/patrick-douglas/MTD
 
-edit_uri: edit/main/docs/
+edit_uri: edit/docs/installation-guide/docs/
 
 theme:
-
   name: material
-
   language: en
 
   logo: assets/images/mtd-explorer-mark.svg
-
   favicon: assets/images/favicon.ico
 
   icon:
-
     repo: fontawesome/brands/github
 
   palette:
-
     scheme: default
-
     primary: custom
-
     accent: custom
 
   features:
-
     - navigation.instant
-
     - navigation.tracking
-
     - navigation.tabs
-
     - navigation.sections
-
     - navigation.expand
-
     - navigation.top
-
     - navigation.footer
-
     - search.suggest
-
     - search.highlight
-
     - content.code.copy
-
     - content.code.annotate
 
-palette:
-
-  scheme: default
-
-  primary: custom
-
-  accent: custom
-
 plugins:
-
   - search
 
 markdown_extensions:
-
   - admonition
-
   - attr_list
-
   - md_in_html
-
   - tables
 
   - toc:
-
       permalink: true
 
   - pymdownx.details
-
   - pymdownx.superfences
 
   - pymdownx.tabbed:
-
       alternate_style: true
 
   - pymdownx.highlight:
-
       anchor_linenums: true
 
 extra_css:
-
   - stylesheets/extra.css
-
   - stylesheets/brand.css
+
 copyright: MTD Explorer · Open-source RNA-seq and metatranscriptomics workflow
 
 extra:
-
   generator: false
-nav:
 
+nav:
   - Home: index.md
 
   - Getting started:
-
       - System requirements: getting-started/requirements.md
-
       - Installation: getting-started/installation.md
-
       - Verify installation: getting-started/verify-installation.md
-
       - Quick start: getting-started/quick-start.md
 
   - User guide:
-
       - Overview: user-guide/index.md
 
   - Reference:
-
       - Command-line interface: reference/command-line.md
 
   - Troubleshooting:
-
       - Common problems: troubleshooting/index.md
