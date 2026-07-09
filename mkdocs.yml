@@ -13,15 +13,26 @@ repo_url: https://github.com/patrick-douglas/MTD
 edit_uri: edit/main/docs/
 
 theme:
+
   name: material
+
   language: en
 
   logo: assets/images/mtd-explorer-mark.svg
-  favicon: assets/images/mtd-explorer-mark.svg
+
+  favicon: assets/images/favicon.ico
 
   icon:
 
     repo: fontawesome/brands/github
+
+  palette:
+
+    scheme: default
+
+    primary: custom
+
+    accent: custom
 
   features:
 
@@ -47,27 +58,13 @@ theme:
 
     - content.code.annotate
 
-  palette:
+palette:
 
-    - media: "(prefers-color-scheme: light)"
+  scheme: default
 
-      scheme: default
+  primary: custom
 
-      toggle:
-
-        icon: material/brightness-7
-
-        name: Switch to dark mode
-
-    - media: "(prefers-color-scheme: dark)"
-
-      scheme: slate
-
-      toggle:
-
-        icon: material/brightness-4
-
-        name: Switch to light mode
+  accent: custom
 
 plugins:
 
@@ -103,6 +100,12 @@ extra_css:
 
   - stylesheets/extra.css
 
+  - stylesheets/brand.css
+copyright: MTD Explorer · Open-source RNA-seq and metatranscriptomics workflow
+
+extra:
+
+  generator: false
 nav:
 
   - Home: index.md

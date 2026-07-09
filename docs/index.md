@@ -2,6 +2,7 @@
 hide:
   - navigation
   - toc
+  - footer
 ---
 
 <div class="mtd-home">
