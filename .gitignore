@@ -1,1 +1,25 @@
 /virushostdb.genomic.fna.gz
+
+# MkDocs
+.venv-docs/
+site/
+
+# Python cache
+__pycache__/
+*.py[cod]
+# MTD local installation state
+condaPath
+offlineCachePath
+MTD_R_package_health.tsv
+
+# Locally generated databases and reference files
+kraken2DB_micro/
+viruses4kraken.fa
+virushostdb.genomic.fna
+
+# Installer repair and diagnostic logs
+update_fix/MTD_R_install_logs/
+
+# MkDocs local files
+.venv-docs/
+site/
