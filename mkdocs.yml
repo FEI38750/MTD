@@ -1,74 +1,130 @@
 site_name: MTD Explorer
+
+site_url: https://patrick-douglas.github.io/MTD/
+
 site_description: Joint host transcriptome and microbiome analysis from RNA-seq data
+
 site_author: Patrick Douglas Correa Pereira
 
 repo_name: patrick-douglas/MTD
+
 repo_url: https://github.com/patrick-douglas/MTD
+
 edit_uri: edit/main/docs/
 
 theme:
   name: material
   language: en
 
+  logo: assets/images/mtd-explorer-mark.svg
+  favicon: assets/images/mtd-explorer-mark.svg
+
+  icon:
+
+    repo: fontawesome/brands/github
+
   features:
+
+    - navigation.instant
+
+    - navigation.tracking
+
     - navigation.tabs
+
     - navigation.sections
+
     - navigation.expand
+
     - navigation.top
+
     - navigation.footer
+
     - search.suggest
+
     - search.highlight
+
     - content.code.copy
+
     - content.code.annotate
 
   palette:
+
     - media: "(prefers-color-scheme: light)"
+
       scheme: default
+
       toggle:
+
         icon: material/brightness-7
+
         name: Switch to dark mode
 
     - media: "(prefers-color-scheme: dark)"
+
       scheme: slate
+
       toggle:
+
         icon: material/brightness-4
+
         name: Switch to light mode
 
 plugins:
+
   - search
 
 markdown_extensions:
+
   - admonition
+
   - attr_list
+
   - md_in_html
+
   - tables
 
   - toc:
+
       permalink: true
 
   - pymdownx.details
+
   - pymdownx.superfences
 
   - pymdownx.tabbed:
+
       alternate_style: true
 
   - pymdownx.highlight:
+
       anchor_linenums: true
 
+extra_css:
+
+  - stylesheets/extra.css
+
 nav:
+
   - Home: index.md
 
   - Getting started:
+
       - System requirements: getting-started/requirements.md
+
       - Installation: getting-started/installation.md
+
       - Verify installation: getting-started/verify-installation.md
+
       - Quick start: getting-started/quick-start.md
 
   - User guide:
+
       - Overview: user-guide/index.md
 
   - Reference:
+
       - Command-line interface: reference/command-line.md
 
   - Troubleshooting:
+
       - Common problems: troubleshooting/index.md
