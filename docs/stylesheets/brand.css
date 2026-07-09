@@ -725,3 +725,61 @@ body[data-md-color-scheme="default"] .mtd-pipeline-step {
   background: #ffffff !important;
   background-image: none !important;
 }
+/* =========================================================
+   Horizontal homepage logo
+   ========================================================= */
+
+.mtd-hero {
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+}
+
+.mtd-hero-visual {
+  order: -1;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.mtd-logo-panel {
+  width: 100%;
+  max-width: 72rem;
+  padding: 0;
+  margin: 0 auto;
+
+  overflow: visible;
+
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.mtd-main-logo--horizontal {
+  display: block;
+
+  width: 100%;
+  max-width: 68rem;
+  max-height: 17rem;
+  height: auto;
+
+  margin: 0 auto;
+
+  object-fit: contain;
+}
+
+.mtd-read-decoration {
+  display: none;
+}
+
+@media screen and (max-width: 60rem) {
+  .mtd-main-logo--horizontal {
+    max-height: 13rem;
+  }
+}
+
+@media screen and (max-width: 44rem) {
+  .mtd-main-logo--horizontal {
+    max-height: 9rem;
+  }
+}

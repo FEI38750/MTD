@@ -80,13 +80,13 @@ hide:
 
       <div class="mtd-logo-panel">
 
-        <img
-          src="assets/images/mtd-explorer-logo.svg"
-          alt="MTD Explorer logo"
-          class="mtd-main-logo"
-          loading="eager"
-          decoding="async"
-        >
+       <img
+  src="assets/images/mtd-explorer-horizontal.webp"
+  alt="MTD Explorer"
+  class="mtd-main-logo mtd-main-logo--horizontal"
+  loading="eager"
+  decoding="async"
+>
 
       </div>
 
