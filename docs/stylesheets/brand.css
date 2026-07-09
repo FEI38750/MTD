@@ -783,3 +783,89 @@ body[data-md-color-scheme="default"] .mtd-pipeline-step {
     max-height: 9rem;
   }
 }
+/* =========================================================
+   Smaller horizontal homepage logo
+   ========================================================= */
+
+.mtd-hero {
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+
+  padding: 2.2rem 2.8rem 2.6rem;
+}
+
+.mtd-hero-visual {
+  order: 0;
+
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  padding: 1rem 2rem 1.4rem;
+
+  overflow: visible;
+}
+
+.mtd-logo-panel {
+  width: 100%;
+  max-width: 58rem;
+
+  margin: 0 auto;
+  padding: 0;
+
+  overflow: visible;
+
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.mtd-main-logo--horizontal {
+  display: block;
+
+  width: 100%;
+  max-width: 58rem;
+  height: auto;
+  max-height: none;
+
+  margin: 0 auto;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Medium screens */
+
+@media screen and (max-width: 76rem) {
+
+  .mtd-logo-panel,
+  .mtd-main-logo--horizontal {
+    max-width: 50rem;
+  }
+
+  .mtd-hero-visual {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+}
+
+/* Phones */
+
+@media screen and (max-width: 44rem) {
+
+  .mtd-hero {
+    padding: 1.35rem;
+  }
+
+  .mtd-logo-panel,
+  .mtd-main-logo--horizontal {
+    max-width: 100%;
+  }
+
+  .mtd-hero-visual {
+    padding: 0.7rem 0 1rem;
+  }
+
+}
