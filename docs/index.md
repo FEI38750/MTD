@@ -40,11 +40,64 @@ hide:
       from RNA-seq data.
     </h1>
 
-    <p class="mtd-hero-v2-description">
-      MTD Explorer is a suite of tools for profiling host and microbial
-      transcriptomes, functional activity, and their integration from
-      high-throughput sequencing data.
-    </p>
+<p class="mtd-hero-v2-description">
+  MTD Explorer is an extended and actively developed implementation of the
+  original Meta-Transcriptome Detector (MTD). It preserves the integrated
+  analysis of host and microbial transcriptomes while adding expanded
+  single-end and paired-end support, exploratory and comparison modes,
+  custom host references and functional annotations, reusable installation
+  caches, validation tools, and updated reporting.
+</p>
+
+<div class="mtd-origin-citation">
+
+  <span class="mtd-origin-label">
+    Original MTD:
+  </span>
+
+  <span>
+    Wu, F., Liu, Y.-Z., &amp; Ling, B. (2022).
+  </span>
+
+  <a
+    href="https://doi.org/10.1093/bib/bbac111"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mtd-origin-article"
+  >
+    <em>
+      MTD: a unique pipeline for host and meta-transcriptome joint and
+      integrative analyses of RNA-seq data
+    </em>
+  </a>.
+
+  <span>
+    <em>Briefings in Bioinformatics</em>, 23(3), bbac111.
+  </span>
+
+  <span class="mtd-origin-links">
+
+    <a
+      href="https://doi.org/10.1093/bib/bbac111"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View article
+    </a>
+
+    <span aria-hidden="true">·</span>
+
+    <a
+      href="https://github.com/FEI38750/MTD"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Original repository
+    </a>
+
+  </span>
+
+</div>
 
     <div class="mtd-hero-v2-actions">
 

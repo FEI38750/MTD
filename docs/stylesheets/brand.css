@@ -1716,3 +1716,81 @@ body[data-md-color-scheme="default"] .mtd-pipeline-step {
   }
 
 }
+/* Original MTD attribution */
+
+.mtd-origin-credit {
+  max-width: 42rem;
+  margin: -0.45rem auto 1.2rem;
+
+  color: var(--mtd-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.mtd-origin-credit a {
+  color: var(--mtd-teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mtd-origin-credit a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+/* =========================================================
+   Original MTD citation
+   ========================================================= */
+
+.mtd-origin-citation {
+  max-width: 46rem;
+  margin: 0.9rem auto 1.25rem;
+  padding: 0.75rem 1rem;
+
+  color: var(--mtd-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: center;
+
+  background: rgba(11, 131, 137, 0.045);
+  border: 1px solid rgba(11, 131, 137, 0.16);
+  border-radius: 0.65rem;
+}
+
+.mtd-origin-label {
+  color: var(--mtd-navy);
+  font-weight: 750;
+}
+
+.mtd-origin-citation a {
+  color: var(--mtd-teal);
+  text-decoration: none;
+}
+
+.mtd-origin-citation a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+
+.mtd-origin-links {
+  display: inline-flex;
+  gap: 0.45rem;
+  margin-left: 0.35rem;
+  white-space: nowrap;
+}
+
+.mtd-origin-links a {
+  font-weight: 700;
+}
+
+@media screen and (max-width: 44rem) {
+  .mtd-origin-citation {
+    font-size: 0.74rem;
+  }
+
+  .mtd-origin-links {
+    display: flex;
+    justify-content: center;
+    margin: 0.4rem 0 0;
+  }
+}
