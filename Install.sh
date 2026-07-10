@@ -742,69 +742,27 @@ prepare_installation_cache() {
     log_info "Preparing persistent MTD installation cache:"
     log_info "  $offline_files_folder"
 
-if ! mkdir -p \
-    "$offline_files_folder/Ref_genomes/MTD_virus" \
-    "$offline_files_folder/Ref_genomes/Mus_musculus" \
-    "$offline_files_folder/Ref_genomes/Macaca_mulatta" \
-    "$offline_files_folder/Ref_genomes/Homo_sapiens" \
-    "$offline_files_folder/HUMAnN" \
-    "$offline_files_folder/Kraken2_taxonomy_cache" \
-    "$offline_files_folder/Kraken2DB_micro/library/viral/all" \
-    "$offline_files_folder/Kraken2DB_micro/library/bacteria/all" \
-    "$offline_files_folder/Kraken2DB_micro/library/archaea/all" \
-    "$offline_files_folder/Kraken2DB_micro/library/plasmid" \
-    "$offline_files_folder/eggNOG/emapperdb-5.0.2" \
-    "$offline_files_folder/Customized_hosts"
-then
-    log_error "Could not create the persistent cache structure:"
-    log_error "  $offline_files_folder"
-    exit 1
-fi
-
-   ensure_cached_file \
-    "Virus-Host DB reference" \
-    "https://github.com/patrick-douglas/MTD/releases/download/virushostdb-cache-2026.07.07/virushostdb.genomic.fna.gz" \
-    "$offline_files_folder/Ref_genomes/MTD_virus/virushostdb.genomic.fna.gz"
-    ensure_cached_file \
-        "Mouse NCBI GRCm39 genome for Kraken2" \
-        "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz" \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/GCF_000001635.27_GRCm39_genomic.fna.gz"
+    if ! mkdir -p \
+        "$offline_files_folder/Ref_genomes/MTD_virus" \
+        "$offline_files_folder/HUMAnN" \
+        "$offline_files_folder/Kraken2_taxonomy_cache" \
+        "$offline_files_folder/Kraken2DB_micro/library/viral/all" \
+        "$offline_files_folder/Kraken2DB_micro/library/bacteria/all" \
+        "$offline_files_folder/Kraken2DB_micro/library/archaea/all" \
+        "$offline_files_folder/Kraken2DB_micro/library/plasmid" \
+        "$offline_files_folder/eggNOG/emapperdb-5.0.2" \
+        "$offline_files_folder/Customized_hosts"
+    then
+        log_error "Could not create the persistent cache structure:"
+        log_error "  $offline_files_folder"
+        exit 1
+    fi
 
     ensure_cached_file \
-        "Mouse Ensembl GRCm39 genome for HISAT2" \
-        "https://ftp.ensembl.org/pub/release-116/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz" \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
-
-    ensure_cached_file \
-        "Mouse Ensembl release 104 GTF" \
-        "https://ftp.ensembl.org/pub/release-104/gtf/mus_musculus/Mus_musculus.GRCm39.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/Mus_musculus.GRCm39.104.gtf.gz"
-
-    ensure_cached_file \
-        "Rhesus macaque Ensembl release 104 GTF" \
-        "https://ftp.ensembl.org/pub/release-104/gtf/macaca_mulatta/Macaca_mulatta.Mmul_10.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/Macaca_mulatta.Mmul_10.104.gtf.gz"
-
-    ensure_cached_file \
-        "Rhesus macaque Ensembl Mmul_10 genome for HISAT2" \
-        "https://ftp.ensembl.org/pub/release-104/fasta/macaca_mulatta/dna/Macaca_mulatta.Mmul_10.dna.toplevel.fa.gz" \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/Macaca_mulatta.Mmul_10.dna.toplevel.fa.gz"
-
-    ensure_cached_file \
-        "Rhesus macaque NCBI Mmul_10 genome for Kraken2" \
-        "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/339/765/GCF_003339765.1_Mmul_10/GCF_003339765.1_Mmul_10_genomic.fna.gz" \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/GCF_003339765.1_Mmul_10_genomic.fna.gz"
-
-    ensure_cached_file \
-        "Human Ensembl GRCh38 genome for HISAT2" \
-        "https://ftp.ensembl.org/pub/release-104/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz" \
-        "$offline_files_folder/Ref_genomes/Homo_sapiens/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz"
-
-    ensure_cached_file \
-        "Human Ensembl release 104 GTF" \
-        "https://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz"
-
+        "Virus-Host DB reference" \
+        "https://github.com/patrick-douglas/MTD/releases/download/virushostdb-cache-2026.07.07/virushostdb.genomic.fna.gz" \
+        "$offline_files_folder/Ref_genomes/MTD_virus/virushostdb.genomic.fna.gz"
+    
     ensure_cached_file \
     "HUMAnN utility mapping database" \
     "https://huttenhower.sph.harvard.edu/humann_data/full_mapping_v201901b.tar.gz" \
@@ -1069,19 +1027,6 @@ patch_perl_local_download_dir() {
         exit 1
     fi
 }
-patch_shell_local_download_dir() {
-    local shell_script="$1"
-    local local_directory="$2"
-
-    sed -i \
-        "s|^[[:space:]]*local_download_dir=.*|    local_download_dir=\"$local_directory\"|" \
-        "$shell_script"
-
-    if ! grep -Fq "local_download_dir=\"$local_directory\"" "$shell_script"; then
-        log_error "Could not patch shell local_download_dir in: $shell_script"
-        exit 1
-    fi
-}
 
 copy_manifest_with_offline_folder() {
     local source_script="$1"
@@ -1094,23 +1039,6 @@ copy_manifest_with_offline_folder() {
     run_required_script "$destination_script"
 }
 
-prepare_local_kraken_host_genome() {
-    local database="$1"
-    local source_gz="$2"
-    local compressed_name="$3"
-    local fasta_name="$4"
-
-    mkdir -p "$database"
-
-    if [[ -s "$database/$fasta_name" ]]; then
-        log_info "Using existing host FASTA: $database/$fasta_name"
-        return 0
-    fi
-
-    copy_required_file "$source_gz" "$database/$compressed_name"
-    unpigz -f "$database/$compressed_name"
-    mv -f "$database/${compressed_name%.gz}" "$database/$fasta_name"
-}
 
 # ------------------------------------------------------------------------------
 # Installation stages
@@ -1508,59 +1436,6 @@ build_microbiome_kraken_database() {
     build_kraken2_database "$database"
 }
 
-build_human_kraken_database() {
-    local database="$dir/kraken2DB_human"
-
-    install_shared_kraken2_taxonomy "$database"
-
-    download_kraken2_library_until_success \
-        "$database" \
-        "human" \
-        --use-ftp
-
-    build_kraken2_database "$database"
-}
-
-build_mouse_kraken_database() {
-    local database="$dir/kraken2DB_mice"
-    local fasta_name="GCF_000001635.27_GRCm39_genomic.fa"
-
-    prepare_local_kraken_host_genome \
-        "$database" \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/GCF_000001635.27_GRCm39_genomic.fna.gz" \
-        "GCF_000001635.27_GRCm39_genomic.fna.gz" \
-        "$fasta_name"
-
-    install_shared_kraken2_taxonomy "$database"
-
-    kraken2-build \
-        --add-to-library "$database/$fasta_name" \
-        --threads "$threads" \
-        --db "$database"
-
-    build_kraken2_database "$database"
-}
-
-build_rhesus_kraken_database() {
-    local database="$dir/kraken2DB_rhesus"
-    local fasta_name="GCF_003339765.1_Mmul_10_genomic.fa"
-
-    prepare_local_kraken_host_genome \
-        "$database" \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/GCF_003339765.1_Mmul_10_genomic.fna.gz" \
-        "GCF_003339765.1_Mmul_10_genomic.fna.gz" \
-        "$fasta_name"
-
-    install_shared_kraken2_taxonomy "$database"
-
-    kraken2-build \
-        --add-to-library "$database/$fasta_name" \
-        --threads "$threads" \
-        --db "$database"
-
-    build_kraken2_database "$database"
-}
-
 build_bracken_database() {
     local database="$dir/kraken2DB_micro"
 
@@ -1612,74 +1487,6 @@ install_humann_databases() {
     humann_config --update database_folders nucleotide "$humann_dir/chocophlan"
     humann_config --update database_folders protein "$humann_dir/uniref"
     humann_config --update database_folders utility_mapping "$humann_dir/utility_mapping"
-}
-
-copy_host_reference_gtfs() {
-    mkdir -p "$dir/ref_rhesus"
-    mkdir -p "$dir/ref_human"
-    mkdir -p "$dir/ref_mouse"
-
-    copy_required_file \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/Macaca_mulatta.Mmul_10.104.gtf.gz" \
-        "$dir/ref_rhesus/Macaca_mulatta.Mmul_10.104.gtf.gz"
-
-    copy_required_file \
-        "$offline_files_folder/Ref_genomes/Homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz" \
-        "$dir/ref_human/Homo_sapiens.GRCh38.104.gtf.gz"
-
-    copy_required_file \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/Mus_musculus.GRCm39.104.gtf.gz" \
-        "$dir/ref_mouse/Mus_musculus.GRCm39.104.gtf.gz"
-}
-
-build_hisat2_host_index() {
-    local index_directory="$1"
-    local gtf_gz="$2"
-    local genome_gz="$3"
-
-    mkdir -p "$index_directory"
-
-    gzip -dc "$gtf_gz" > "$index_directory/genome.gtf"
-    python "$dir/Installation/hisat2_extract_splice_sites.py" \
-        "$index_directory/genome.gtf" \
-        > "$index_directory/genome.ss"
-    python "$dir/Installation/hisat2_extract_exons.py" \
-        "$index_directory/genome.gtf" \
-        > "$index_directory/genome.exon"
-
-    gzip -dc "$genome_gz" > "$index_directory/genome.fa"
-
-    hisat2-build \
-        --large-index \
-        -p "$threads" \
-        --exon "$index_directory/genome.exon" \
-        --ss "$index_directory/genome.ss" \
-        "$index_directory/genome.fa" \
-        "$index_directory/genome_tran"
-}
-
-build_magic_blast_databases() {
-    mkdir -p "$dir/human_blastdb"
-    mkdir -p "$dir/mouse_blastdb"
-    mkdir -p "$dir/rhesus_blastdb"
-
-    makeblastdb \
-        -in "$dir/hisat2_index_human/genome.fa" \
-        -dbtype nucl \
-        -parse_seqids \
-        -out "$dir/human_blastdb/human_blastdb"
-
-    makeblastdb \
-        -in "$dir/hisat2_index_mouse/genome.fa" \
-        -dbtype nucl \
-        -parse_seqids \
-        -out "$dir/mouse_blastdb/mouse_blastdb"
-
-    makeblastdb \
-        -in "$dir/hisat2_index_rhesus/genome.fa" \
-        -dbtype nucl \
-        -parse_seqids \
-        -out "$dir/rhesus_blastdb/rhesus_blastdb"
 }
 
 install_r412_and_annotation_packages() {
@@ -1796,60 +1603,24 @@ main() {
         "Preparing microbiome (virus, bacteria, archaea, protozoa, fungi, plasmid, UniVec_Core) database..."
     build_microbiome_kraken_database
 
-    show_progress ">>>>>>" "30%" "Preparing host (human) Kraken2 database..."
-    build_human_kraken_database
-
-    show_progress ">>>>>>>" "35%" "Preparing host (mouse) Kraken2 database..."
-    build_mouse_kraken_database
-
-    show_progress ">>>>>>>>" "40%" "Preparing host (rhesus monkey) Kraken2 database..."
-    build_rhesus_kraken_database
-
     show_progress ">>>>>>>>>" "45%" "Building Bracken database..."
     build_bracken_database
 
     show_progress ">>>>>>>>>>>" "55%" "Installing HUMAnN3 databases..."
     install_humann_databases
 
-    show_progress ">>>>>>>>>>>>>>" "70%" \
-        "Fetching host (rhesus, human, mouse) references from local storage: $offline_files_folder"
-    copy_host_reference_gtfs
-
-    show_progress ">>>>>>>>>>>>>>>" "75%" \
-        "Building host indexes (rhesus monkey) for HISAT2..."
-    build_hisat2_host_index \
-        "$dir/hisat2_index_rhesus" \
-        "$dir/ref_rhesus/Macaca_mulatta.Mmul_10.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Macaca_mulatta/Macaca_mulatta.Mmul_10.dna.toplevel.fa.gz"
-
-    show_progress ">>>>>>>>>>>>>>>>" "80%" \
-        "Building host indexes (mouse) for HISAT2..."
-    build_hisat2_host_index \
-        "$dir/hisat2_index_mouse" \
-        "$dir/ref_mouse/Mus_musculus.GRCm39.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Mus_musculus/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
-
-    show_progress ">>>>>>>>>>>>>>>>>" "85%" \
-        "Building host indexes (human) for HISAT2..."
-    build_hisat2_host_index \
-        "$dir/hisat2_index_human" \
-        "$dir/ref_human/Homo_sapiens.GRCh38.104.gtf.gz" \
-        "$offline_files_folder/Ref_genomes/Homo_sapiens/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz"
-
-    log_info "Creating BLAST databases for Magic-BLAST..."
-    build_magic_blast_databases
-
     show_progress ">>>>>>>>>>>>>>>>>>" "90%" "Installing R packages..."
     install_r412_and_annotation_packages
     show_r_package_versions
 
-    echo "${g}"
-    echo "*********************************"
-    echo
-    echo "MTD installation progress:"
-    echo ">>>>>>>>>>>>>>>>>>>>[100%]"
-    echo "MTD installation is finished"
-    echo "${w}"
+echo
+print_rule
+log_ok "MTD Explorer installation completed successfully."
+log_info "No default host database was installed."
+log_info "A host database must be created or installed before analyzing real data."
+log_info "Custom host setup:"
+log_info "  $dir/Create_custom_host.sh"
+print_rule
 }
 
 main "$@"
