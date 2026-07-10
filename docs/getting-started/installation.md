@@ -1,3 +1,57 @@
+## Install Git
+
+Git is required to download the MTD Explorer source code and to keep the
+installation updated.
+
+Check whether Git is already installed:
+
+```bash
+git --version
+```
+
+When Git is available, the command displays its installed version.
+
+If Git is not installed, install it using the package manager of your Linux
+distribution.
+
+### Ubuntu and Linux Mint
+
+```bash
+sudo apt update
+sudo apt install -y git
+```
+
+Confirm the installation:
+
+```bash
+git --version
+```
+
+## Clone the MTD Explorer repository
+
+After installing Git, download the MTD Explorer repository.
+
+### Using HTTPS
+
+```bash
+cd ~
+git clone https://github.com/patrick-douglas/MTD.git
+cd MTD
+```
+
+HTTPS is the recommended method for users who have not configured an SSH
+key for GitHub.
+
+Confirm that the repository was downloaded correctly:
+
+```bash
+git status
+git log -1 --oneline
+```
+
+The installation commands in the following sections should be executed
+from inside the MTD Explorer repository directory.
+
 ## Installer command
 
 The MTD Explorer installer is executed through `Install.sh`.
