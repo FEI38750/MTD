@@ -60,29 +60,7 @@ hide:
 
       <div class="mtd-base-legend-v2" aria-label="Nucleotide colour legend">
 
-        <span class="mtd-base-v2">
-          <i class="mtd-base-dot mtd-base-dot-a">A</i>
-          Adenine
-        </span>
-
-        <span class="mtd-base-v2">
-          <i class="mtd-base-dot mtd-base-dot-c">C</i>
-          Cytosine
-        </span>
-
-        <span class="mtd-base-v2">
-          <i class="mtd-base-dot mtd-base-dot-g">G</i>
-          Guanine
-        </span>
-
-        <span class="mtd-base-v2">
-          <i class="mtd-base-dot mtd-base-dot-t">U/T</i>
-          Uracil / Thymine
-        </span>
-
       </div>
-
-    </div>
 
    <div class="mtd-hero-v2-side mtd-hero-v2-side-right" aria-hidden="true">
   <img
