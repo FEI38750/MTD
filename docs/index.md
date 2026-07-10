@@ -7,72 +7,80 @@ hide:
 
 <div class="mtd-home">
 
-  <section class="mtd-hero-v2">
+<section class="mtd-hero-v2">
 
-    <div class="mtd-hero-v2-side mtd-hero-v2-side-left" aria-hidden="true">
-  <img
-    src="assets/images/home/mtd-hero-left-protein-rna.png"
-    alt=""
-    class="mtd-hero-side-art mtd-hero-side-art-left"
-    loading="lazy"
-    decoding="async"
-  >
-</div>
+  <!-- Left illustration -->
 
-    <div class="mtd-hero-v2-center">
+  <div class="mtd-hero-v2-side mtd-hero-v2-side-left" aria-hidden="true">
 
-      <img
-        src="assets/images/mtd-explorer-horizontal.webp"
-        alt="MTD Explorer"
-        class="mtd-main-logo-v2"
-        loading="eager"
-        decoding="async"
+    <img
+      src="assets/images/home/mtd-hero-left-protein-rna.png"
+      alt=""
+      class="mtd-hero-side-art mtd-hero-side-art-left"
+      loading="eager"
+      decoding="async"
+    >
+
+  </div>
+
+  <!-- Central content -->
+
+  <div class="mtd-hero-v2-center">
+
+    <img
+      src="assets/images/mtd-explorer-horizontal.webp"
+      alt="MTD Explorer"
+      class="mtd-main-logo-v2"
+      loading="eager"
+      decoding="async"
+    >
+
+    <h1 class="mtd-hero-v2-title">
+      Explore the full depth of host–microbe interactions
+      from RNA-seq data.
+    </h1>
+
+    <p class="mtd-hero-v2-description">
+      MTD Explorer is a suite of tools for profiling host and microbial
+      transcriptomes, functional activity, and their integration from
+      high-throughput sequencing data.
+    </p>
+
+    <div class="mtd-hero-v2-actions">
+
+      <a
+        href="getting-started/quick-start/"
+        class="md-button md-button--primary"
       >
+        Get started
+      </a>
 
-      <h1 class="mtd-hero-v2-title">
-        Explore the full depth of host–microbe interactions
-        from RNA-seq data.
-      </h1>
+      <a
+        href="getting-started/installation/"
+        class="md-button"
+      >
+        View documentation
+      </a>
 
-      <p class="mtd-hero-v2-description">
-        MTD Explorer is a suite of tools for profiling host and microbial
-        transcriptomes, functional activity, and their integration from
-        high-throughput sequencing data.
-      </p>
+    </div>
 
-      <div class="mtd-hero-v2-actions">
+  </div>
 
-        <a
-          href="getting-started/quick-start/"
-          class="md-button md-button--primary"
-        >
-          Get started
-        </a>
+  <!-- Right illustration -->
 
-        <a
-          href="getting-started/installation/"
-          class="md-button"
-        >
-          View documentation
-        </a>
+  <div class="mtd-hero-v2-side mtd-hero-v2-side-right" aria-hidden="true">
 
-      </div>
+    <img
+      src="assets/images/home/mtd-hero-right-clusters.png"
+      alt=""
+      class="mtd-hero-side-art mtd-hero-side-art-right"
+      loading="eager"
+      decoding="async"
+    >
 
-      <div class="mtd-base-legend-v2" aria-label="Nucleotide colour legend">
+  </div>
 
-      </div>
-
-   <div class="mtd-hero-v2-side mtd-hero-v2-side-right" aria-hidden="true">
-  <img
-    src="assets/images/home/mtd-hero-right-clusters.png"
-    alt=""
-    class="mtd-hero-side-art mtd-hero-side-art-right"
-    loading="lazy"
-    decoding="async"
-  >
-</div>
-
-  </section>
+</section>
 
   <section class="mtd-cards-v2">
 

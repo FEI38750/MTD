@@ -1350,3 +1350,369 @@ body[data-md-color-scheme="default"] .mtd-pipeline-step {
     height: 4rem;
   }
 }
+/* =========================================================
+   Fix hero layout after removing nucleotide legend
+   ========================================================= */
+
+.mtd-hero-v2 {
+  display: grid;
+
+  grid-template-columns:
+    minmax(16rem, 0.9fr)
+    minmax(32rem, 1.4fr)
+    minmax(16rem, 0.9fr);
+
+  column-gap: 1.5rem;
+  align-items: start;
+
+  padding: 2rem 1rem 1.5rem;
+}
+
+/* Keep every hero element in a fixed grid position */
+
+.mtd-hero-v2-side-left {
+  grid-column: 1;
+  grid-row: 1;
+
+  align-self: start;
+  justify-content: center;
+
+  min-height: 0;
+  padding-top: 3.5rem;
+}
+
+.mtd-hero-v2-center {
+  grid-column: 2;
+  grid-row: 1;
+
+  align-self: start;
+}
+
+.mtd-hero-v2-side-right {
+  grid-column: 3;
+  grid-row: 1;
+
+  align-self: start;
+  justify-content: center;
+
+  min-height: 0;
+  padding-top: 3rem;
+}
+
+/* Prevent the images from controlling the hero height */
+
+.mtd-hero-side-art {
+  display: block;
+
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+
+  object-fit: contain;
+}
+
+.mtd-hero-side-art-left {
+  max-width: 22rem;
+  max-height: 21rem;
+}
+
+.mtd-hero-side-art-right {
+  max-width: 20rem;
+  max-height: 21rem;
+}
+
+/* Keep the central logo and text compact */
+
+.mtd-main-logo-v2 {
+  margin-bottom: 0.8rem;
+}
+
+.mtd-hero-v2-title {
+  margin-bottom: 0.8rem;
+}
+
+.mtd-hero-v2-description {
+  margin-bottom: 1.15rem;
+}
+
+.mtd-hero-v2-actions {
+  margin-bottom: 0;
+}
+
+/* Tablet */
+
+@media screen and (max-width: 82rem) {
+  .mtd-hero-v2 {
+    grid-template-columns:
+      minmax(12rem, 0.8fr)
+      minmax(28rem, 1.4fr)
+      minmax(12rem, 0.8fr);
+
+    column-gap: 0.8rem;
+  }
+
+  .mtd-hero-side-art-left,
+  .mtd-hero-side-art-right {
+    max-width: 16rem;
+  }
+}
+
+/* Smaller screens */
+
+@media screen and (max-width: 60rem) {
+  .mtd-hero-v2 {
+    grid-template-columns: 1fr;
+  }
+
+  .mtd-hero-v2-center {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .mtd-hero-v2-side-left,
+  .mtd-hero-v2-side-right {
+    display: none;
+  }
+}
+/* =========================================================
+   FINAL HERO LAYOUT OVERRIDE
+   Keep left artwork, content and right artwork on one row
+   ========================================================= */
+
+@media screen and (min-width: 70.01rem) {
+
+  .mtd-home .mtd-hero-v2 {
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(15rem, 0.9fr)
+      minmax(34rem, 1.45fr)
+      minmax(15rem, 0.9fr) !important;
+
+    grid-template-areas:
+      "hero-left hero-center hero-right" !important;
+
+    align-items: center !important;
+    justify-items: stretch;
+
+    gap: 1.5rem !important;
+
+    width: 100%;
+    padding: 2.2rem 1rem 1.8rem !important;
+  }
+
+  .mtd-home .mtd-hero-v2-side-left {
+    grid-area: hero-left !important;
+
+    display: flex !important;
+    position: static !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mtd-home .mtd-hero-v2-center {
+    grid-area: hero-center !important;
+
+    position: static !important;
+    align-self: center;
+
+    width: 100%;
+    margin: 0 auto !important;
+  }
+
+  .mtd-home .mtd-hero-v2-side-right {
+    grid-area: hero-right !important;
+
+    display: flex !important;
+    position: static !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mtd-home .mtd-hero-side-art {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto !important;
+
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .mtd-home .mtd-hero-side-art-left {
+    max-width: 23rem !important;
+    max-height: 23rem !important;
+  }
+
+  .mtd-home .mtd-hero-side-art-right {
+    max-width: 21rem !important;
+    max-height: 23rem !important;
+  }
+
+}
+/* Tablet and mobile */
+
+@media screen and (max-width: 70rem) {
+
+  .mtd-home .mtd-hero-v2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "hero-center"
+      "hero-left"
+      "hero-right" !important;
+
+    gap: 1.5rem;
+  }
+
+  .mtd-home .mtd-hero-v2-center {
+    grid-area: hero-center !important;
+  }
+
+  .mtd-home .mtd-hero-v2-side-left {
+    grid-area: hero-left !important;
+  }
+
+  .mtd-home .mtd-hero-v2-side-right {
+    grid-area: hero-right !important;
+  }
+
+  .mtd-home .mtd-hero-v2-side-left,
+  .mtd-home .mtd-hero-v2-side-right {
+    display: none !important;
+  }
+
+}
+/* =========================================================
+   Definitive three-column homepage hero
+   ========================================================= */
+
+@media screen and (min-width: 70.01rem) {
+
+  .mtd-home .mtd-hero-v2 {
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(15rem, 0.85fr)
+      minmax(34rem, 1.5fr)
+      minmax(15rem, 0.85fr) !important;
+
+    grid-template-areas:
+      "left center right" !important;
+
+    align-items: center !important;
+    gap: 1.5rem !important;
+
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    padding: 2.4rem 1rem 1.8rem !important;
+  }
+
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-side-left {
+    grid-area: left !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    position: static !important;
+
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-center {
+    grid-area: center !important;
+
+    position: static !important;
+
+    width: 100%;
+    margin: 0 auto !important;
+
+    text-align: center;
+  }
+
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-side-right {
+    grid-area: right !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    position: static !important;
+
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mtd-home .mtd-hero-side-art {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto !important;
+
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .mtd-home .mtd-hero-side-art-left {
+    max-width: 23rem !important;
+    max-height: 23rem !important;
+  }
+
+  .mtd-home .mtd-hero-side-art-right {
+    max-width: 21rem !important;
+    max-height: 23rem !important;
+  }
+
+  .mtd-home .mtd-main-logo-v2 {
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto 0.8rem;
+  }
+
+}
+
+
+/* Tablet and mobile */
+
+@media screen and (max-width: 70rem) {
+
+  .mtd-home .mtd-hero-v2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "center" !important;
+
+    padding: 1.5rem 1rem !important;
+  }
+
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-center {
+    grid-area: center !important;
+  }
+
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-side-left,
+  .mtd-home .mtd-hero-v2 > .mtd-hero-v2-side-right {
+    display: none !important;
+  }
+
+}
