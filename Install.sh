@@ -45,12 +45,14 @@ init_colors() {
         g="$(tput setaf 2)"
         y="$(tput setaf 3)"
         p="$(tput setaf 5)"
+        c="$(tput setaf 6)"
     else
         w=""
         r=""
         g=""
         y=""
         p=""
+        c=""
     fi
 }
 
@@ -75,15 +77,38 @@ log_error() {
 }
 
 show_progress() {
-    local bar="$1"
-    local percent="$2"
-    local message="$3"
+    local percent="$1"
+    local message="$2"
+    local width=30
+    local filled
+    local empty
+    local filled_bar
+    local empty_bar
 
-    echo "${g}"
-    echo "MTD installation progress:"
-    printf '%-20s[%s]\n' "$bar" "$percent"
-    echo "$message"
-    echo "${w}"
+    if ! [[ "$percent" =~ ^[0-9]+$ ]] ||
+       (( percent < 0 || percent > 100 )); then
+        log_error "Invalid installation progress percentage: $percent"
+        return 1
+    fi
+
+    filled=$((percent * width / 100))
+    empty=$((width - filled))
+
+    printf -v filled_bar '%*s' "$filled" ''
+    printf -v empty_bar '%*s' "$empty" ''
+
+    filled_bar="${filled_bar// /#}"
+    empty_bar="${empty_bar// /-}"
+
+    echo
+    print_rule
+    printf '%sMTD Explorer installation%s\n' "$p" "$w"
+    printf '[%s%s%s%s] %s%3d%%%s\n' \
+        "$g" "$filled_bar" \
+        "$w" "$empty_bar" \
+        "$c" "$percent" "$w"
+    printf '%s%s%s\n' "$g" "$message" "$w"
+    print_rule
 }
 
 restore_conda_channel_priority() {
@@ -1406,34 +1431,42 @@ add_local_plasmid_library() {
 build_microbiome_kraken_database() {
     local database="$dir/kraken2DB_micro"
 
+    show_progress 40 "Preparing microbiome manifests"
     prepare_microbiome_manifests
 
     chmod +x "$dir/kraken2-build-download-taxonomy"
-    log_info "Preparing shared NCBI taxonomy for the microbiome database..."
+
+    show_progress 42 "Preparing the shared NCBI taxonomy"
     install_shared_kraken2_taxonomy "$database"
 
+    show_progress 45 "Adding archaeal genomes to the microbiome database"
     add_local_archaea_library "$database"
+
+    show_progress 49 "Adding bacterial genomes to the microbiome database"
     add_local_bacteria_library "$database"
 
-    log_info "Downloading RefSeq Protozoa library..."
+    show_progress 55 "Adding RefSeq protozoan genomes"
     download_kraken2_library_until_success "$database" "protozoa" --use-ftp
 
-    log_info "Downloading RefSeq Fungi library..."
+    show_progress 58 "Adding RefSeq fungal genomes"
     download_kraken2_library_until_success "$database" "fungi" --use-ftp
 
+    show_progress 61 "Adding plasmid sequences"
     add_local_plasmid_library "$database"
 
-    log_info "Downloading UniVec_Core library..."
+    show_progress 64 "Adding the UniVec_Core library"
     download_kraken2_library_until_success "$database" "UniVec_Core" --use-ftp
 
-    log_info "Adding custom viral sequences to Kraken2 database..."
+    show_progress 66 "Adding custom viral sequences"
     kraken2-build \
         --add-to-library "$dir/viruses4kraken.fa" \
         --threads "$threads" \
         --db "$database"
 
-    log_info "Building final Kraken2 microbiome database..."
+    show_progress 68 "Building the final Kraken2 microbiome database"
     build_kraken2_database "$database"
+
+    show_progress 72 "Kraken2 microbiome database completed"
 }
 
 build_bracken_database() {
@@ -1580,47 +1613,51 @@ main() {
     parse_arguments "$@"
     validate_arguments
 
+    show_progress 2 "Installing operating-system dependencies"
     install_system_dependencies
+
+    show_progress 5 "Installing Miniconda"
     install_miniconda
 
     configure_paths_and_options
     initialize_installation
 
-    show_progress ">" "5%" "Preparing persistent installation cache..."
+    show_progress 8 "Preparing the persistent installation cache"
     prepare_installation_cache
 
+    show_progress 12 "Creating the MTD Conda environments"
     create_conda_environments
 
-    show_progress ">>" "10%" "Installing HAllA dependencies..."
+    show_progress 27 "Installing HAllA dependencies"
     install_halla_dependencies
 
-    show_progress ">>>" "15%" "Preparing virome database and MTD tools..."
+    show_progress 34 "Installing MTD tools and preparing virome files"
     install_mtd_extra_tools
     prepare_virome_files
     install_default_kraken_helpers
 
-    show_progress ">>>>" "20%" \
-        "Preparing microbiome (virus, bacteria, archaea, protozoa, fungi, plasmid, UniVec_Core) database..."
     build_microbiome_kraken_database
 
-    show_progress ">>>>>>>>>" "45%" "Building Bracken database..."
+    show_progress 72 "Building the Bracken database"
     build_bracken_database
 
-    show_progress ">>>>>>>>>>>" "55%" "Installing HUMAnN3 databases..."
+    show_progress 82 "Installing and configuring HUMAnN databases"
     install_humann_databases
 
-    show_progress ">>>>>>>>>>>>>>>>>>" "90%" "Installing R packages..."
+    show_progress 90 "Installing R412 and annotation packages"
     install_r412_and_annotation_packages
+
+    show_progress 98 "Validating installed R packages"
     show_r_package_versions
 
-echo
-print_rule
-log_ok "MTD Explorer installation completed successfully."
-log_info "No default host database was installed."
-log_info "A host database must be created or installed before analyzing real data."
-log_info "Custom host setup:"
-log_info "  $dir/Create_custom_host.sh"
-print_rule
+    show_progress 100 "MTD Explorer installation completed successfully"
+
+    echo
+    log_ok "MTD Explorer is ready."
+    log_info "No default host database was installed."
+    log_info "Create a host database before analyzing real data:"
+    log_info "  $dir/Create_custom_host.sh"
+    echo
 }
 
 main "$@"
