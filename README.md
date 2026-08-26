@@ -1,3 +1,5 @@
+
+
 # MTD: Meta-Transcriptome Detector
 MTD is a software that has two sub-pipelines to jointly analyze of host transcriptome with its microbiome by using bulk RNA-seq and single-cell RNA-seq data, respectively. It supports comprehensive microbiome species, including viruses, bacteria, protozoa, fungi, plasmids, and vectors. MTD is executed in Bash in GNU/Linux system. Users can easily install and run MTD using only one command line and without requiring root privileges. The outputs (graphs, tables, count matrixes, etc.) are automatically generated and stored in the designated directory/folder defined by the user.
 # Key Points
@@ -106,7 +108,7 @@ host pathways and microbiome species
   - In addition to initially supported human, mouse, and rhesus monkey, users can easily add any other host species by one command line:\
     **bash Customized_host.sh -t [threads] -d [host_genome_Ensembl_address] -c [host_taxid] -g [host_gtf_Ensembl_address]**\
       For example:\
-      <code>bash ~/MTD/Customized_host.sh -t 20 -d http://ftp.ensembl.org/pub/release-104/fasta/callithrix_jacchus/dna/Callithrix_jacchus.ASM275486v1.dna.toplevel.fa.gz -c 9483 -g http://ftp.ensembl.org/pub/release-104/gtf/callithrix_jacchus/Callithrix_jacchus.ASM275486v1.104.gtf.gz </code>
+      <code>bash ~/MTD/Customized_host.sh -t 20 -d http://ftp.ensembl.org/pub/release-104/fasta/callithrix_jacchus/dna/Callithrix_jacchus.ASM275486v1.dna.toplevel.fa.gz -c 9483 -g http://ftp.ensembl.org/pub/release-104/gtf/callithrix_jacchus/Callithrix_jacchus.ASM275486v1.104.gtf.gz </code>
   - MTD supported ~200 host species. Please refer to HostSpecies.csv for their Taxonomy IDs and names.
   - Users can update microbiome databases easily by one command line: **bash Update.sh -t [threads]**\
       For example:\
@@ -121,7 +123,7 @@ Then just to add the flag <code>-m [path/to/metadata.csv]</code> in the MTD bulk
         <code>bash [path/to/MTD]/MTD.sh -i [path/to/samplesheet.csv] -o [path/to/output_folder] -h [host species taxonomy ID] -t [threads] -m [path/to/metadata.csv]</code>
   - For users who want to tune parameters, MTD has the optional settings by additional flags for the potential important steps. Please refer to the MTD/Tutorial/Advanced_options.xlsx for explanations.
   - For users who have advanced knowledge and wants to have further complicated settings, could add or change corresponding parameters inside the source code MTD/MTD.sh, for example, by searching *# fastp* to locate the code block of fastp settings then add additional parameters according to the options on https://github.com/OpenGene/fastp#all-options. Searching *# HISAT2* or *# Magic-BLAST* to the place for parameters adjustion for the host reads mapping.
-  - For users who run the MTD job on HPC interactively, it is optimal running through the Linux GNU Screen tool, which can prevent the interruption due to the user end (e.g. internet disconnect). Screen has already installed in the MTD Conda environment, user first type: <code>bash conda activate MTD</code> to activate the environment.\
+  - For users who run the MTD job on HPC interactively, it is optimal running through the Linux GNU Screen tool, which can prevent the interruption due to the user end (e.g. internet disconnect). Screen has already installed in the MTD Conda environment, user first type: <code>conda activate MTD</code> to activate the environment.\
     To start a screen session, simply type screen in your console: <code>screen</code> \
     To resume your screen session use the following command: <code>screen -r</code> \
     To close your screen session use: <code>screen -X -S [session # you want to kill] quit</code>
